@@ -25,7 +25,8 @@
     <link rel="stylesheet" href="~/Content/css/_all-skins.min.css">
     <link rel="apple-touch-icon" href="~/Content/img/apple-touch-icon.png">
     <link rel="shortcut icon" href="~/Content/img/favicon.ico">
-    
+    <!-- Select-Picker -->
+    @Styles.Render("~/Content/css/bootstrap-select.min.css")
     @Styles.Render("~/Content/plugins/bootstrap-sweetalert/sweet-alert.css")
     @Styles.Render("~/Content/plugins/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css")
     <!-- CSS DataTables -->
@@ -140,14 +141,14 @@
                             <i class="fa fa-folder"></i> <span>Administración</span>
                             <i class="fa fa-angle-left pull-right"></i>
                         </a>
-                        <ul class="treeview-menu">                            
-                            <li><a href="#"><i class="fa fa-circle-o"></i> @Html.ActionLink("Vistas", "Vistas", "Vistas")</a></li>
-                            <li><a href="permiso.php"><i class="fa fa-circle-o"></i> Roles</a></li>
-                            <li><a href="usuario.php"><i class="fa fa-circle-o"></i> Usuarios</a></li>                            
+                        <ul class="treeview-menu">
+                            <li><a href="usuario.php"><i class="fa fa-circle-o"></i> Usuarios</a></li>
+                            <li><a href="usuario.php"><i class="fa fa-circle-o"></i> Permisos</a></li>
                             <li><a href="permiso.php"><i class="fa fa-circle-o"></i> Dispositivos</a></li>
-                            <li><a href="permiso.php"><i class="fa fa-circle-o"></i> Empresas</a></li>
-                            <li><a href="permiso.php"><i class="fa fa-circle-o"></i> Sucursales</a></li>                            
-                            <li><a href="permiso.php"><i class="fa fa-circle-o"></i> Departamento</a></li>                            
+                            <li><a href="permiso.php"><i class="fa fa-circle-o"></i> Sucursales</a></li>
+                            <li><a href="permiso.php"><i class="fa fa-circle-o"></i> Configuracion</a></li>
+                            <li><a href="permiso.php"><i class="fa fa-circle-o"></i> Catalogos</a></li>
+
                         </ul>
                     </li>
                     <li class="treeview">
@@ -231,7 +232,8 @@
             </footer>
         </div>*@
 
-   
+   <!-- Select-Picker -->
+   @Scripts.Render("~/Content/js/bootstrap-select.min.js")
     @Scripts.Render("~/Content/plugins/bootstrap-sweetalert/sweet-alert.js")
     @Scripts.Render("~/Content/plugins/bootstrap-sweetalert/sweet-alert.min.js")
     @Scripts.Render("~/Content/plugins/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js")
