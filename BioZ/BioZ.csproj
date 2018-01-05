@@ -196,6 +196,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\Administracion\VistasController.cs" />
     <Compile Include="Controllers\AsistenciaController.cs" />
     <Compile Include="Controllers\Dispositivo\DeviceManipulator.cs" />
     <Compile Include="Controllers\Dispositivo\UniversalStatic.cs" />
@@ -713,6 +714,7 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Empleados\Empleados.cshtml" />
     <Content Include="Views\Asistencia\Registro.cshtml" />
+    <Content Include="Views\Vistas\Vistas.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -1,0 +1,252 @@
+﻿
+@{
+    ViewBag.Title = "Vistas";
+}
+
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="box" id="secc_lista">
+            <div class="box-header with-border">
+                <h1 class="box-title 0">Lista de Vistas </h1>
+                <div class="box-tools pull-right">
+                    <button class="btn btn-success" onclick="Agregar()"><i class="fa fa-plus-circle"></i> Agregar</button>
+                </div>
+            </div>
+            <!-- /.box-header -->
+            <!-- centro -->
+            <div class="panel-body table-responsive">
+                <div class="card-box">
+                    <table id="Lista_Empleados" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>&nbsp; &nbsp; &nbsp;No.</th>
+                                <th>&nbsp; &nbsp; &nbsp;Vista</th>
+                                <th>&nbsp; &nbsp; &nbsp;Url</th>
+                                <th>&nbsp; &nbsp; &nbsp;Activo</th>
+                                <th width="50px"></th>
+                                <th width="50px"></th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+            <!--Fin centro -->
+        </div><!-- /.box -->
+        <div class="box" id="secc_add" style="display:none;">
+            <div class="box-header with-border">
+                <h1 class="box-title 0">Vistas </h1>
+                <div class="box-tools pull-right">
+                </div>
+            </div>
+            <!-- /.box-header -->
+            <!-- centro -->
+            <div class="panel-body table-responsive">
+                <div class="card-box">
+                    <form>
+                        <div class="row">
+                            <div class="form-horizontal">
+                                <div class="col-lg-6">
+                                    <input type="text" id="id" value="" hidden />                                   
+                                    <div class="form-group col-md-12">
+                                        <label class="col-sm-6 control-label" for="">*Nombre:</label>
+                                        <div class="col-sm-6">
+                                            <input type="text" id="txt_usuarioNombre" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-12">
+                                        <label class="col-sm-6 control-label" for="">*Permisos:</label>
+                                        <div class="col-sm-6">
+                                            <select class="form-control" id="ddl_permisos" required data-parsley-trigger="change">
+                                                <option value="0">Normal</option>
+                                                <option value="1">Supervidor</option>
+                                                <option value="2">Administrador</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="cancelar()">Cancelar</button>
+                            <button type="button" class="btn btn-primary waves-effect waves-light validate" data-dismiss="modal" onclick="Guardar()">Guardar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <!--Fin centro -->
+        </div>
+        <!-- Modal Eliminar -->
+        <div class="modal fade" id="Form_DeleteTipo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="mensaje_modal">Eliminar Licencia</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body ">
+                        <form role="form" data-toggle="validator">
+                            <h4 id="lbl_msjborrar"></h4>
+                            <span id="txt_idborrar" style="display:none;"></span>
+                        </form>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-primary" onclick="borrar(); return false;"><i class="fa fa-check" aria-hidden="true"></i> SÍ</button>
+                        <button class="btn btn-danger" onclick="cancelar()" ; return false;" data-dismiss="modal"><i class="fa fa-times" aria-hidden="true"></i> NO</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div><!-- /.col -->
+</div><!-- /.row -->
+<script>
+    $(document).ready(function () {
+
+        $('#Lista_Empleados').DataTable();
+
+        Cargar_Empleados();
+
+    });
+
+    function Cargar_Empleados() {
+        $('#Lista_Empleados').DataTable({
+            destroy: true,
+            searching: true,
+            "ajax": {
+                "url": "/Empleados/ObtenerEmpleados/",
+                "type": "GET"
+            },
+            "columns": [
+                { "data": "EnrollNumber" },
+                { "data": "Name" },
+                { "data": "Privelage" },
+                { "data": "Enabled" },
+                { "defaultContent": "<i>..</i>" },
+                { "defaultContent": "<i>..</i>" }
+            ],
+            "columnDefs": [{
+                "targets": 4, "data": "EnrollNumber", "render": function (data, type, full, meta) {
+                    return "<button type='button' title='Editar' id='btn_mas" + data + "' class='btn btn-warning' onclick='ver_detalle(" + data + ")'  ><i class='fa fa-edit'></i></button> "
+                }
+            },
+                {
+                    "targets": 5, "data": "EnrollNumber", "render": function (data, type, full, meta) {
+                        return "<button type='button' title='Eliminar' id='btn_borrar" + data + "' class='btn btn-danger' onclick='confirma_borrar(" + data + ")'><i class='fa fa-trash'></i></button> "
+                    }
+                }]
+        });
+    }
+    function ver_detalle(Id) {
+        $("#FormEditar").show();
+        $.ajax({
+            url: "/Empleados/ObtenerEmpleadosID/",
+            async: true,
+            dataType: "json",
+            data: '{ id:' + Id + '}',
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                limpiar();
+                $("#secc_lista").hide();
+                $("#secc_add").show();
+                console.log(data);
+                $("#id").html(data.data.EnrollNumber);
+                $("#txt_nocredencial").val(data.data.EnrollNumber);
+                $("#txt_usuarioNombre").val(data.data.Name);
+                $("#ddl_permisos option[value='" + data.data.Privelage + "']").prop('selected', true);
+            },
+            error: function (request, status, error) {
+                console.log("error" + error);
+            }
+        });
+    }
+    function Guardar() {
+        UsuarioInformacion = {
+
+            "NumeroCredencial": $("#txt_nocredencial").val(),
+            "Nombre": $("#txt_usuarioNombre").val(),
+            "Permiso": $("#ddl_permisos").val(),
+        };
+        console.log(UsuarioInformacion),
+        $.ajax(
+        {
+            url: "/Empleados/Guardar/",
+            async: true,
+            dataType: "json",
+            data: JSON.stringify(UsuarioInformacion),
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                swal({ title: "Empleados", text: "Guardada Correctamente", type: "success" }, function () { Cargar_Empleados(); cancelar(); });
+            },
+            error: function (request, status, error) {
+                swal("Error al Guardar la Licencia");
+                console.log("error" + error);
+            }
+        });
+    }
+    function Conectar() {
+        $.ajax(
+  {
+      url: "/Empleados/Conectar/",
+      async: true,
+      dataType: "json",
+      type: "POST",
+      contentType: "application/json; charset=utf-8",
+      success: function (data) {
+          swal({ title: "BioZ", text: "Conectado Correctamente", type: "success" }, function () {  });
+      },
+      error: function (request, status, error) {
+          swal("Error al Conectar");
+          console.log("error" + error);
+      }
+  });
+    }
+    function Agregar() {
+        $("#secc_lista").hide();
+        $("#secc_add").show();
+        limpiar();
+    }
+    function cancelar() {
+        $("#secc_lista").show();
+        $("#secc_add").hide();
+    }
+    function limpiar() {
+        $("#txt_nocredencial").html("");
+        $("#txt_nocredencial").val("");
+        $("#txt_usuarioNombre").val("");
+        $("#ddl_permisos").val("")
+    }
+    function confirma_borrar(id_borrar) {
+        $('#Form_DeleteTipo').modal('show');
+        $("#lbl_msjborrar").html("Se va a eliminar al Empleado No. " + id_borrar + ". <br/>¿Desea Continuar?");
+        $("#txt_idborrar").text(id_borrar);
+    }
+    function borrar() {
+        Id = $("#txt_idborrar").text();
+        $.ajax({
+            url: "/Empleados/BorrarEmpleado/",
+            async: true,
+            dataType: "json",
+            data: '{id:' + Id + '}',
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                $('#Form_DeleteTipo').modal('hide');
+                swal({ title: "Empleados", text: "Se elimino Correctamente", type: "success" }, function () { Cargar_Empleados(); });
+            },
+            error: function (request, status, error) {
+                console.log("error" + error);
+            }
+        });
+    }
+</script>
+
+
+
+
