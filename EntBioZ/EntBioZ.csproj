@@ -30,7 +30,16 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.0.0\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.0.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -43,6 +52,14 @@
     <Compile Include="Generales\Entidad.cs" />
     <Compile Include="Generales\responseBioZ.cs" />
     <Compile Include="Modelo\BioZ\dispositivoBioZ.cs" />
+    <Compile Include="Modelo\BioZ\EntChekinout.cs" />
+    <Compile Include="Modelo\BioZ\EntDepartamento.cs" />
+    <Compile Include="Modelo\BioZ\EntDispositivo.cs" />
+    <Compile Include="Modelo\BioZ\EntEmpleado.cs" />
+    <Compile Include="Modelo\BioZ\EntEmpresa.cs" />
+    <Compile Include="Modelo\BioZ\EntEnrolamiento.cs" />
+    <Compile Include="Modelo\BioZ\EntJornada.cs" />
+    <Compile Include="Modelo\BioZ\EntSucursal.cs" />
     <Compile Include="Modelo\BioZ\fechaHoraBioZ.cs" />
     <Compile Include="Modelo\Info\DeviceTimeInfo.cs" />
     <Compile Include="Modelo\Info\FingerUser.cs" />
@@ -52,9 +69,16 @@
     <Compile Include="Modelo\Info\UserInfo.cs" />
     <Compile Include="Modelo\BioZ\marcajeBioZ.cs" />
     <Compile Include="Modelo\BioZ\usuarioBioZ.cs" />
+    <Compile Include="Modelo\Seguridad\EntRolesVista.cs" />
+    <Compile Include="Modelo\Seguridad\EntUsuario.cs" />
+    <Compile Include="Modelo\Seguridad\EntRoles.cs" />
+    <Compile Include="Modelo\Seguridad\EntVistas.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
