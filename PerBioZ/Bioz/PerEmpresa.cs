@@ -19,7 +19,7 @@ namespace PerBioZ.Bioz
             {
                 AbrirConexion();
                 StringBuilder CadenaSql = new StringBuilder();
-                var sql = "SELECT id_empresa, razon_social, direccion, estado, municipio FROM empresa";
+                var sql = "SELECT id_empresa, razon_social, direccion, estado, municipio FROM informix.empresa";
                 IfxCommand cmd = new IfxCommand(sql, Conexion);                
                 using (var dr = cmd.ExecuteReader())
                 {
@@ -53,9 +53,10 @@ namespace PerBioZ.Bioz
             {
                 AbrirConexion();
                 StringBuilder CadenaSql = new StringBuilder();
-                var sql = "SELECT id_empresa, razon_social, direccion, estado, municipio FROM empresa WHERE id_empresa=?";
-                IfxCommand cmd = new IfxCommand(sql, Conexion);
-                cmd.Parameters.Add(id);
+                
+                IfxCommand cmd = new IfxCommand(string.Empty, Conexion);
+                cmd.CommandText = "SELECT id_empresa, razon_social, direccion, estado, municipio FROM empresa WHERE id_empresa=?";
+                cmd.Parameters.Add(new IfxParameter()).Value = id;
                 using (var dr = cmd.ExecuteReader())
                 {
                     if (dr.Read())
@@ -86,12 +87,11 @@ namespace PerBioZ.Bioz
             try
             {
                 AbrirConexion();
-                var sql = "execute procedure dml_empresa (?,?,?,?,?,?);";
+                var sql = "execute procedure dml_empresa (?,NULL,?,?,?,?);";
                 using (var cmd = new IfxCommand(sql, Conexion))
                 {
                     cmd.Connection = Conexion;
-                    cmd.Parameters.Add(new IfxParameter()).Value = "INSERT";
-                    cmd.Parameters.Add(new IfxParameter()).Value = null;
+                    cmd.Parameters.Add(new IfxParameter()).Value = "INSERT";                    
                     cmd.Parameters.Add(new IfxParameter()).Value = entidad.razon_social;
                     cmd.Parameters.Add(new IfxParameter()).Value = entidad.direccion;
                     cmd.Parameters.Add(new IfxParameter()).Value = entidad.estado;
@@ -131,7 +131,7 @@ namespace PerBioZ.Bioz
                 using (var cmd = new IfxCommand(sql, Conexion))
                 {
                     cmd.Connection = Conexion;
-                    cmd.Parameters.Add(new IfxParameter()).Value = "Update";
+                    cmd.Parameters.Add(new IfxParameter()).Value = "UPDATE";
                     cmd.Parameters.Add(new IfxParameter()).Value = entidad.id_empresa;
                     cmd.Parameters.Add(new IfxParameter()).Value = entidad.razon_social;
                     cmd.Parameters.Add(new IfxParameter()).Value = entidad.direccion;
