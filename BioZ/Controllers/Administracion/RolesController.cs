@@ -6,9 +6,9 @@ using System.Web.Mvc;
 
 namespace BioZ.Controllers.Administracion
 {
-    public class VistasController : Controller
+    public class RolesController : Controller
     {
-        // GET: Vistas
+        // GET: Roles
         public ActionResult Index()
         {
             return View();
