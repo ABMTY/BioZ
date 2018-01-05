@@ -25,7 +25,8 @@
     <link rel="stylesheet" href="~/Content/css/_all-skins.min.css">
     <link rel="apple-touch-icon" href="~/Content/img/apple-touch-icon.png">
     <link rel="shortcut icon" href="~/Content/img/favicon.ico">
-    
+    <!-- Select-Picker -->
+    @Styles.Render("~/Content/css/bootstrap-select.min.css")
     @Styles.Render("~/Content/plugins/bootstrap-sweetalert/sweet-alert.css")
     @Styles.Render("~/Content/plugins/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css")
     <!-- CSS DataTables -->
@@ -107,13 +108,9 @@
                             <i class="fa fa-angle-left pull-right"></i>
                         </a>
                         <ul class="treeview-menu">
-                            <li><a href="articulo.php"><i class="fa fa-circle-o"></i> @Html.ActionLink("Registro", "Empleados", "Empleados")</a></li>
+                            <li><a href="articulo.php"><i class="fa fa-circle-o"></i> @Html.ActionLink("Registro", "Empleados", "Empleados")</a></li>                            
+                            <li><a href="categoria.php"><i class="fa fa-circle-o"></i> Enrolamiento</a></li>
                             <li><a href="categoria.php"><i class="fa fa-circle-o"></i> Departamentos</a></li>
-                            <li><a href="categoria.php"><i class="fa fa-circle-o"></i> Organigrama</a></li>
-                            <li><a href="categoria.php"><i class="fa fa-circle-o"></i> Acta Administrativa</a></li>
-                            <li><a href="categoria.php"><i class="fa fa-circle-o"></i> Bonos</a></li>
-                            <li><a href="categoria.php"><i class="fa fa-circle-o"></i> Ausencias</a></li>                            
-                            <li><a href="categoria.php"><i class="fa fa-circle-o"></i> Prenomina</a></li>
                         </ul>
                     </li>
 
@@ -125,11 +122,7 @@
                         </a>
                         <ul class="treeview-menu">
                             <li><a href="ingreso.php"><i class="fa fa-circle-o"></i> @Html.ActionLink("Registro", "Registro", "Asistencia")</a></li>
-                            <li><a href="proveedor.php"><i class="fa fa-circle-o"></i> Incidencias</a></li>
-                            <li><a href="proveedor.php"><i class="fa fa-circle-o"></i> Vacaciones</a></li>
-                            <li><a href="proveedor.php"><i class="fa fa-circle-o"></i> Politicas</a></li>
-                            <li><a href="proveedor.php"><i class="fa fa-circle-o"></i> Turnos</a></li>
-                            <li><a href="proveedor.php"><i class="fa fa-circle-o"></i> Planificadores</a></li>
+                            <li><a href="proveedor.php"><i class="fa fa-circle-o"></i> Jornadas</a></li>                            
                         </ul>
                     </li>
                     <li class="treeview">
@@ -239,7 +232,8 @@
             </footer>
         </div>*@
 
-   
+   <!-- Select-Picker -->
+   @Scripts.Render("~/Content/js/bootstrap-select.min.js")
     @Scripts.Render("~/Content/plugins/bootstrap-sweetalert/sweet-alert.js")
     @Scripts.Render("~/Content/plugins/bootstrap-sweetalert/sweet-alert.min.js")
     @Scripts.Render("~/Content/plugins/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js")
