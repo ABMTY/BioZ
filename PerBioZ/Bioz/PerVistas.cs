@@ -19,7 +19,7 @@ namespace PerBioZ.Bioz
             {
                 AbrirConexion();
                 StringBuilder CadenaSql = new StringBuilder();
-                var sql = "SELECT id_vista, ventana, url FROM informix.Vistas";
+                var sql = "SELECT id_vista, ventana, url FROM informix.vistas";
                 IfxCommand cmd = new IfxCommand(sql, Conexion);
                 using (var dr = cmd.ExecuteReader())
                 {
@@ -53,7 +53,7 @@ namespace PerBioZ.Bioz
                 StringBuilder CadenaSql = new StringBuilder();
 
                 IfxCommand cmd = new IfxCommand(string.Empty, Conexion);
-                cmd.CommandText = "SELECT id_vista, ventana, url FROM informix.vistas WHERE id_Vistas=?";
+                cmd.CommandText = "SELECT id_vista, ventana, url FROM informix.vistas WHERE id_vista=?";
                 cmd.Parameters.Add(new IfxParameter()).Value = id;
                 using (var dr = cmd.ExecuteReader())
                 {
