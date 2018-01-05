@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bioz\CtrlEmpresa.cs" />
+    <Compile Include="Bioz\CtrlRoles.cs" />
     <Compile Include="Bioz\CtrlUsuarios.cs" />
     <Compile Include="Bioz\CtrlVistas.cs" />
     <Compile Include="Class1.cs" />
