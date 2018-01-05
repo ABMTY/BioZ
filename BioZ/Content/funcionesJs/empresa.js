@@ -6,6 +6,7 @@ function init() {
     //listar();
     $("#formulario").on("submit", function (e) {
         //guardaryeditar(e);
+        console.log("Entro a la funcion");
     })
 }
 //Función para limpiar los campos del formulario
