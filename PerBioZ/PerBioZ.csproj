@@ -33,6 +33,7 @@
     <Reference Include="IBM.Data.Informix, Version=3.0.0.2, Culture=neutral, PublicKeyToken=7c307b91aa13d208, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>bin\IBM.Data.Informix.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
@@ -46,6 +47,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bioz\PerEmpresa.cs" />
+    <Compile Include="Bioz\PerRoles.cs" />
+    <Compile Include="Bioz\PerUsuarios.cs" />
+    <Compile Include="Bioz\PerVistas.cs" />
     <Compile Include="Class1.cs" />
     <Compile Include="General\Persistencia.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
