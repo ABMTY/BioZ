@@ -1,116 +1,110 @@
-﻿//Variable Global
-//var tabla;
-//Función que se ejecutara al inicio
-function init() {
-    mostrarForm(false);
-    //listar();
-    $("#formulario").on("submit", function (e) {
-        //guardaryeditar(e);
-        console.log("Entro a la funcion");
-    })
+﻿$(document).ready(function () {
+    $("#secc_form").hide();
+    $('#tbllistado').DataTable();
+    listar();
+});
+
+//Listar las Empresas
+function listar() {
+    $('#tbllistado').DataTable({
+        destroy: true,
+        searching: true,
+        "ajax": {
+            "url": "/Empresa/GetEmpresas/",
+            "type": "GET"
+        },
+        "columns": [
+            { "defaultContent": "" },
+            { "data": "razon_social" },
+            { "data": "direccion" },
+            { "data": "estado" },
+            { "data": "municipio" }
+        ],
+        "columnDefs": [{
+            "targets": 0, "data": "id_empresa", "render": function (data, type, full, meta) {
+                return "<button type='button' title='Editar' id='btn_mas" + data + "' class='btn btn-warning' onclick='verDetalle(" + data + ")'  ><i class='fa fa-edit'></i></button>"
+    }
+}]
+    });
 }
-//Función para limpiar los campos del formulario
+
+//Mostrar Formulario de Agregar Empresa
+function Agregar() {
+    $("#listadoregistros").hide();
+    $("#secc_form").show();
+    $("#btnAgregar").hide();
+    limpiar();
+}
+
+//No envia los datos del formulario y carga la tabla de empresas
+function cancelarForm() {
+    $("#listadoregistros").show();
+    $("#secc_form").hide();
+    $("#btnAgregar").show();
+    limpiar();
+}
+
+//Limpia los campos del formulario
 function limpiar() {
     $("#razon_soc").val("");
     $("#direccion").val("");
     $("#estado").val("");
     $("#municipio").val("");
 }
-//Función Mostrar Formulario
-function mostrarForm(flag) {
-    limpiar();
-    if (flag) {
-        $("#listadoregistros").hide();
-        $("#formularioregistros").show();
-        $("#btnGuardar").prop("disabled", false);
-        $("#btnAgregar").hide();
-    } else {
-        $("#listadoregistros").show();
-        $("#formularioregistros").hide();
-        $("#btnAgregar").show();
+
+//Funcion para Guardar y Editar Empresa
+function guardarEditar() {
+    parametros = {
+        "id_empresa": $("#idEmpresa").val(),
+        "razon_social": $("#razon_soc").val(),
+        "direccion": $("#direccion").val(),
+        "estado": $("#estado").val(),
+        "municipio": $("#municipio").val()
     }
+    $.ajax({
+        url: "/Empresa/Guardar/",
+        async: true,
+        dataType: "json",
+        data: JSON.stringify(parametros),
+        type: "POST",
+        contentType: "application/json; charset=utf-8",
+        success: function () {
+            swal({ title: "Empresa", text: "Guardada Correctamente", type: "success" }, function () { listar(); $("#btnAgregar").show(); });
+        },
+        error: function (request, status, error) {
+            swal({ title: "Error", text: "al guardar la Empresa", type: "error" }, function () { listar(); $("#btnAgregar").show(); });
+        }
+    });
 }
-//Función Cancelar Formulario
-function cancelarForm() {
-    limpiar();
-    mostrarForm(false);
+
+//Funcion Editar la Empresa
+function verDetalle(id_empresa) {
+    Agregar();
+    $.ajax({
+        url: "/Empresa/GetEmpresa/" + id_empresa,
+        async: true,
+        beforeSend: function () { },
+        dataType: "json",
+        data: '{ }',
+        type: "POST",
+        contentType: "application/json; charset=utf-8",
+        success: function (data) {
+            console.log(data);
+            $("#idEmpresa").val(data.data.id_empresa),
+            $("#razon_soc").val(data.data.razon_social),
+            $("#direccion").val(data.data.direccion),
+            $("#estado").val(data.data.estado),
+            $("#municipio").val(data.data.municipio)
+        },
+        xhr: function () {
+            var xhr = $.ajaxSettings.xhr();
+            xhr.onprogress = function (evt) {
+                var porcentaje = Math.floor((evt.loaded / evt.total * 100));
+            };
+            return xhr;
+        },
+        error: function (request, status, error) {
+            console.log("Error => " + error);
+        }
+    })
 }
-//Función Listar
-//function listar() {
-//    tabla = $("#tbllistado").dataTable({
-//        "aProcessing": true, //Activa Procesamiento de DataTables
-//        "aServerSide": true, //Paginación y filtrado realizado por el servidor
-//        dom: "Bfrtip",
-//        buttons: [
-//            "copyHtml5",
-//            "excelHtml5",
-//            "csvHtml5",
-//            "pdf"
-//        ],
-//        "ajax": {
-//            url: "../ajax/categoria.php?op=listar",
-//            type: "get",
-//            dataType: "json",
-//            error: function (e) {
-//                console.log(e.responseText);
-//            }
-//        },
-//        "bDestroy": true,
-//        "iDisplayLength": 5,
-//        "order": [[0, "desc"]]
-//    }).DataTable();
-//}
-////Función Guardar o Editar
-//function guardaryeditar(e) {
-//    e.preventDefault(); //No se activará la acción predeterminada del botón
-//    $("#btnGuardar").prop("disabled", true);
-//    var formData = new FormData($("#formulario")[0]);
-//    $.ajax({
-//        url: "../ajax/categoria.php?op=guardaryeditar",
-//        type: "POST",
-//        data: formData,
-//        contentType: false,
-//        processData: false,
-//        success: function (datos) {
-//            swal(datos, "", "success");
-//            //alert(datos);
-//            mostrarForm(false);
-//            tabla.ajax.reload();
-//        }
-//    });
-//    limpiar();
-//}
-////Función para Mostrar en el formulario los datos que se enviaran a Editar
-//function mostrar(idcategoria) {
-//    $.post("../ajax/categoria.php?op=mostrar", { idcategoria: idcategoria }, function (data, status) {
-//        data = JSON.parse(data);
-//        mostrarForm(true);
-//        $("#idcategoria").val(data.idcategoria);
-//        $("#nombre").val(data.nombre);
-//        $("#descripcion").val(data.descripcion);
-//    });
-//}
-////Funcion para Activar Categoría
-//function activar(idcategoria) {
-//    swal({
-//        title: '¿Está seguro que desea activar la categoría?',
-//        text: "",
-//        type: 'warning',
-//        showCancelButton: true,
-//        confirmButtonColor: '#3085d6',
-//        cancelButtonColor: '#d33',
-//        confirmButtonText: 'Confirmar'
-//    }).then((result) => {
-//        if (result.value) {
-//            $.post("../ajax/categoria.php?op=activar", { idcategoria: idcategoria }, function (e) {
-//                tabla.ajax.reload();
-//                swal(
-//                    e,
-//                    '',
-//                    'success'
-//                )
-//            })
-//        }
-//    })
-//}
-init();
