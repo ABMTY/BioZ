@@ -46,6 +46,7 @@ function cancelarForm() {
 
 //Limpia los campos del formulario
 function limpiar() {
+    $("#idEmpresa").val("");
     $("#razon_soc").val("");
     $("#direccion").val("");
     $("#estado").val("");
@@ -65,14 +66,18 @@ function guardarEditar() {
         url: "/Empresa/Guardar/",
         async: true,
         dataType: "json",
+        beforeSend: function () { },
         data: JSON.stringify(parametros),
+        cache: false,
         type: "POST",
         contentType: "application/json; charset=utf-8",
-        success: function () {
-            swal({ title: "Empresa", text: "Guardada Correctamente", type: "success" }, function () { listar(); $("#btnAgregar").show(); });
+        success: function (data) {
+            cancelarForm();
+            swal({ title: "Empresa", text: "Registrada Correctamente", type: "success" }, function () { listar(); });
         },
         error: function (request, status, error) {
-            swal({ title: "Error", text: "al guardar la Empresa", type: "error" }, function () { listar(); $("#btnAgregar").show(); });
+            cancelarForm();
+            swal({ title: "Error", text: "al guardar la Empresa", type: "error" }, function () { listar(); });
         }
     });
 }

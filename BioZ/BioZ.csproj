@@ -196,6 +196,8 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\Administracion\DispositivosController.cs" />
+    <Compile Include="Controllers\Administracion\JornadasController.cs" />
     <Compile Include="Controllers\Administracion\RolesController.cs" />
     <Compile Include="Controllers\Administracion\UsuariosController.cs" />
     <Compile Include="Controllers\Administracion\VistasController.cs" />
@@ -893,6 +895,8 @@
     <Content Include="Views\Vistas\Index.cshtml" />
     <Content Include="Views\Roles\Index.cshtml" />
     <Content Include="Views\Usuarios\Index.cshtml" />
+    <Content Include="Views\Dispositivos\Index.cshtml" />
+    <Content Include="Views\Jornadas\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

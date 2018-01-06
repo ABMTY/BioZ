@@ -1,0 +1,284 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="box" id="secc_lista">
+            <div class="box-header with-border">
+                <h1 class="box-title 0">Lista de Dispositivos </h1>
+                <div class="box-tools pull-right">
+                    <button class="btn btn-success" onclick="Agregar()"><i class="fa fa-plus-circle"></i> Agregar</button>
+                </div>
+            </div>
+            <!-- /.box-header -->
+            <!-- centro -->
+            <div class="panel-body table-responsive">
+                <div class="card-box">
+                    <table id="Lista_Dispositivos" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>&nbsp; &nbsp; &nbsp;No.</th>
+                                <th>&nbsp; &nbsp; &nbsp;Dispositivo</th>
+                                <th>&nbsp; &nbsp; &nbsp;No. Serie</th>
+                                <th>&nbsp; &nbsp; &nbsp;IP</th>
+                                <th>&nbsp; &nbsp; &nbsp;Puerto</th>
+                                <th>&nbsp; &nbsp; &nbsp;Sucursal</th>
+                                <th width="50px"></th>
+                                <th width="50px"></th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+            <!--Fin centro -->
+        </div><!-- /.box -->
+        <div class="box" id="secc_add" style="display:none;">
+            <div class="box-header with-border">
+                <h1 class="box-title 0">Dispositivos </h1>
+                <div class="box-tools pull-right">
+                </div>
+            </div>
+            <!-- /.box-header -->
+            <!-- centro -->
+            <div class="panel-body">
+                <div class="card-box">
+                    <form>
+                        <div class="row">
+                            <div class="form-horizontal">
+                                <div class="col-lg-6">
+                                    <input type="text" id="id" value="" hidden />
+                                    <div class="form-group col-md-12">
+                                        <label class="control-label" for="">Dispositivo *</label>
+                                        <div>
+                                            <input type="text" id="txt_Dispositivo" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-12">
+                                        <label class="control-label" for="">Empresa *</label>
+                                        <div>
+                                            <select class="form-control selectpicker" id="ddl_Empresa" required data-live-search="true">
+                                                <option value="0">Grupo Z</option>
+                                                <option value="1">Abarrotes Monterrey</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-12">
+                                        <label class="control-label" for="">Sucursal *</label>
+                                        <div>
+                                            <select class="form-control selectpicker" id="ddl_Sucursal" required data-live-search="true">
+                                                <option value="0">1</option>
+                                                <option value="1">2</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group col-md-12">
+                                        <label class="control-label" for="">No. de serie *</label>
+                                        <div>
+                                            <input type="text" id="txt_Serie" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-12">
+                                        <label class="control-label" for="">IP *</label>
+                                        <div>
+                                            <input type="text" id="txt_Ip" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-12">
+                                        <label class="control-label" for="">Puerto *</label>
+                                        <div>
+                                            <input type="text" id="txt_Puerto" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="Cancelar()">Cancelar</button>
+                            <button type="button" class="btn btn-primary waves-effect waves-light validate" data-dismiss="modal" onclick="Guardar()">Guardar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <!--Fin centro -->
+        </div>
+        <!-- Modal Eliminar -->
+        <div class="modal fade" id="Form_DeleteTipo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="mensaje_modal">Eliminar Dispositivo</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body ">
+                        <form role="form" data-toggle="validator">
+                            <h4 id="lbl_msjborrar"></h4>
+                            <span id="txt_idborrar" style="display:none;"></span>
+                        </form>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-primary" onclick="Eliminar(); return false;"><i class="fa fa-check" aria-hidden="true"></i> SÍ</button>
+                        <button class="btn btn-danger" onclick="Cancelar()" ; return false;" data-dismiss="modal"><i class="fa fa-times" aria-hidden="true"></i> NO</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div><!-- /.col -->
+</div><!-- /.row -->
+<script>
+
+    $(document).ready(function () {
+        $('#Lista_Dispositivos').DataTable();
+        //Cargar_Dispositivos();
+        Cargar_Roles();
+    });
+
+    function Agregar() {
+        $("#secc_lista").hide();
+        $("#secc_add").show();
+        Limpiar();
+    }
+    function Cancelar() {
+        $("#secc_lista").show();
+        $("#secc_add").hide();
+    }
+    function Limpiar() {
+        $("#txt_Dispositivo").html("");
+        $("#txt_Contraseña").html("");
+        $("#chk_activo").val("");
+        $("#ddl_Roles").val("")
+    }
+
+    function Cargar_Dispositivos() {
+        $('#Lista_Dispositivos').DataTable({
+            destroy: true,
+            searching: true,
+            "ajax": {
+                "url": "/Dispositivos/ObtenerDispositivos/",
+                "type": "GET"
+            },
+            "columns": [
+                { "data": "id_Dispositivo" },
+                { "data": "Dispositivo" },
+                { "data": "rol" },
+                { "data": "activo" },
+                { "defaultContent": "<i>..</i>" },
+                { "defaultContent": "<i>..</i>" }
+            ],
+            "columnDefs": [{
+                "targets": 4, "data": "id_Dispositivo", "render": function (data, type, full, meta) {
+                    return "<button type='button' title='Editar' id='btn_mas" + data + "' class='btn btn-warning' onclick='Editar(" + data + ")'  ><i class='fa fa-edit'></i></button> "
+                }
+            },
+                {
+                    "targets": 5, "data": "id_Dispositivo", "render": function (data, type, full, meta) {
+                        return "<button type='button' title='Eliminar' id='btn_borrar" + data + "' class='btn btn-danger' onclick='Confirma_Eliminar(" + data + ")'><i class='fa fa-trash'></i></button> "
+                    }
+                }]
+        });
+    }
+    function Cargar_Roles() {
+
+        $("#ddl_Roles").html("");
+
+        $.ajax({
+            url: "/Roles/ObtenerRoles/",
+            async: true,
+            dataType: "json",
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                $.each(data.data, function (i, Item) {
+                    $("#ddl_Roles").append("<option value='" + Item.id_rol + "'>" + Item.desc_rol + "</option>");
+                });
+            },
+            error: function (request, status, error) {
+                console.log("error" + error);
+            }
+        });
+    }
+    function Editar(Id_Dispositivo) {
+        $("#FormEditar").show();
+        $.ajax({
+            url: "/Dispositivos/ObtenerDispositivoID/",
+            async: true,
+            dataType: "json",
+            data: '{ Id_Dispositivo:' + Id_Dispositivo + '}',
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                Limpiar();
+                $("#secc_lista").hide();
+                $("#secc_add").show();
+                console.log(data);
+                $("#id").html(data.data.id_Dispositivo);
+                $("#txt_Dispositivo").val(data.data.Dispositivo);
+                $("#txt_Contraseña").val(data.data.password);
+                $("#chk_activo").val(data.data.activo);
+                $("#ddl_Roles option[value='" + data.data.id_rol + "']").prop('selected', true);
+            },
+            error: function (request, status, error) {
+                console.log("error" + error);
+            }
+        });
+    }
+    function Guardar() {
+        Dispositivo = {
+            "Dispositivo": $("#txt_Dispositivo").val(),
+            "password": $("#txt_Contraseña").val(),
+            "activo": $("#chk_activo").is(':checked'),
+            "id_rol": $("#ddl_Roles").val(),
+        };
+        console.log(Dispositivo),
+        $.ajax(
+        {
+            url: "/Dispositivos/Guardar/",
+            async: true,
+            dataType: "json",
+            data: JSON.stringify(Dispositivo),
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                swal({ title: "Dispositivos", text: "Guardada Correctamente", type: "success" }, function () { Cargar_Dispositivos(); Cancelar(); });
+            },
+            error: function (request, status, error) {
+                swal("Error al Guardar la Dispositivo");
+                console.log("error" + error);
+            }
+        });
+    }
+
+
+    function Confirma_Eliminar(Id_Dispositivo) {
+        $('#Form_DeleteTipo').modal('show');
+        $("#lbl_msjborrar").html("Se va a eliminar la Dispositivo No. " + Id_Dispositivo + ". <br/>¿Desea Continuar?");
+        $("#txt_idborrar").text(id_borrar);
+    }
+    function Eliminar() {
+        Id_Dispositivo = $("#txt_idborrar").text();
+        $.ajax({
+            url: "/Dispositivos/EliminarDispositivo/",
+            async: true,
+            dataType: "json",
+            data: '{id_Dispositivo:' + Id_Dispositivo + '}',
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                $('#Form_DeleteTipo').modal('hide');
+                swal({ title: "Dispositivos", text: "Se elimino Correctamente", type: "success" }, function () { Cargar_Dispositivos(); });
+            },
+            error: function (request, status, error) {
+                console.log("error" + error);
+            }
+        });
+    }
+</script>
+
+
