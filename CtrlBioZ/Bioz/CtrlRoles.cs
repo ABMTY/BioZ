@@ -18,9 +18,9 @@ namespace CtrlBioZ.Bioz
         {
             PerRoles = new PerRoles();
         }
-        public List<EntVistas> ObtenerTodos()
+        public List<EntRoles> ObtenerTodos()
         {
-            return (List<EntVistas>)new PerVistas().ObtenerTodos();
+            return (List<EntRoles>)new PerRoles().ObtenerTodos();
         }
         public EntRoles Obtener(int Id_Rol)
         {

@@ -1,4 +1,4 @@
-﻿using EntBioZ.Modelo.Seguridad;
+﻿using EntBioZ.Modelo.BioZ;
 using IBM.Data.Informix;
 using PerBioZ.General;
 using System;
@@ -9,26 +9,25 @@ using System.Threading.Tasks;
 
 namespace PerBioZ.Bioz
 {
-    public class PerVistas : Persistencia
+    public class PerDepartamentos : Persistencia
     {
-        public List<EntVistas> ObtenerTodos()
+        public List<EntDepartamento> ObtenerTodos()
         {
-            List<EntVistas> Lista = new List<EntVistas>();
-            EntVistas entidad = null;
+            List<EntDepartamento> Lista = new List<EntDepartamento>();
+            EntDepartamento entidad = null;
             try
             {
                 AbrirConexion();
                 StringBuilder CadenaSql = new StringBuilder();
-                var sql = "SELECT id_vista, ventana, url FROM informix.vistas";
+                var sql = "SELECT id_departamento, desc_departamento FROM informix.departamentos";
                 IfxCommand cmd = new IfxCommand(sql, Conexion);
                 using (var dr = cmd.ExecuteReader())
                 {
                     while (dr.Read())
                     {
-                        entidad = new EntVistas();
-                        entidad.id_vista = int.Parse(dr["id_vista"].ToString());
-                        entidad.ventana = dr["ventana"].ToString();
-                        entidad.url = dr["url"].ToString();                        
+                        entidad = new EntDepartamento();
+                        entidad.id_departamento = int.Parse(dr["id_departamento"].ToString());
+                        entidad.desc_departamento = dr["desc_departamento"].ToString();
                         Lista.Add(entidad);
                     }
                 }
@@ -44,25 +43,24 @@ namespace PerBioZ.Bioz
             return Lista;
 
         }
-        public EntVistas Obtener(int id)
+        public EntDepartamento Obtener(int id)
         {
-            EntVistas entidad = null;
+            EntDepartamento entidad = null;
             try
             {
                 AbrirConexion();
                 StringBuilder CadenaSql = new StringBuilder();
 
                 IfxCommand cmd = new IfxCommand(string.Empty, Conexion);
-                cmd.CommandText = "SELECT id_vista, ventana, url FROM informix.vistas WHERE id_vista=?";
+                cmd.CommandText = "SELECT id_departamento, desc_departamento FROM informix.departamentos WHERE id_departamento=?";
                 cmd.Parameters.Add(new IfxParameter()).Value = id;
                 using (var dr = cmd.ExecuteReader())
                 {
                     if (dr.Read())
                     {
-                        entidad = new EntVistas();
-                        entidad.id_vista = int.Parse(dr["id_vista"].ToString());
-                        entidad.ventana = dr["ventana"].ToString();
-                        entidad.url = dr["url"].ToString();
+                        entidad = new EntDepartamento();
+                        entidad.id_departamento = int.Parse(dr["id_departamento"].ToString());
+                        entidad.desc_departamento = dr["desc_departamento"].ToString();
                     }
                 }
             }
@@ -77,19 +75,18 @@ namespace PerBioZ.Bioz
             return entidad;
 
         }
-        public bool Insert(EntVistas entidad)
+        public bool Insert(EntDepartamento entidad)
         {
             bool respuesta = false;
             try
             {
                 AbrirConexion();
-                var sql = "execute procedure dml_vistas (?,NULL,?,?);";
+                var sql = "execute procedure dml_departamentos (?,NULL,?);";
                 using (var cmd = new IfxCommand(sql, Conexion))
                 {
                     cmd.Connection = Conexion;
                     cmd.Parameters.Add(new IfxParameter()).Value = "INSERT";
-                    cmd.Parameters.Add(new IfxParameter()).Value = entidad.ventana;
-                    cmd.Parameters.Add(new IfxParameter()).Value = entidad.url;
+                    cmd.Parameters.Add(new IfxParameter()).Value = entidad.desc_departamento;
                     cmd.ExecuteNonQuery();
                 }
                 respuesta = true;
@@ -99,13 +96,13 @@ namespace PerBioZ.Bioz
             catch (InvalidCastException ex)
             {
                 ApplicationException excepcion = new ApplicationException("Se genero un error con el siguiente mensaje: " + ex.Message, ex);
-                excepcion.Source = "Insert Vistas";
+                excepcion.Source = "Insert Departamentos";
                 throw excepcion;
             }
             catch (Exception ex)
             {
                 ApplicationException excepcion = new ApplicationException("Se genero un error de aplicación con el siguiente mensaje: " + ex.Message, ex);
-                excepcion.Source = "Insert Vistas";
+                excepcion.Source = "Insert Departamentos";
                 throw excepcion;
             }
             finally
@@ -115,20 +112,19 @@ namespace PerBioZ.Bioz
             return respuesta;
 
         }
-        public bool Update(EntVistas entidad)
+        public bool Update(EntDepartamento entidad)
         {
             bool respuesta = false;
             try
             {
                 AbrirConexion();
-                var sql = "execute procedure dml_vistas (?,?,?,?);";
+                var sql = "execute procedure dml_departamentos (?,?,?);";
                 using (var cmd = new IfxCommand(sql, Conexion))
                 {
                     cmd.Connection = Conexion;
                     cmd.Parameters.Add(new IfxParameter()).Value = "UPDATE";
-                    cmd.Parameters.Add(new IfxParameter()).Value = entidad.id_vista;
-                    cmd.Parameters.Add(new IfxParameter()).Value = entidad.ventana;
-                    cmd.Parameters.Add(new IfxParameter()).Value = entidad.url;
+                    cmd.Parameters.Add(new IfxParameter()).Value = entidad.id_departamento;
+                    cmd.Parameters.Add(new IfxParameter()).Value = entidad.desc_departamento;
                     cmd.ExecuteNonQuery();
                 }
                 respuesta = true;
@@ -138,13 +134,13 @@ namespace PerBioZ.Bioz
             catch (InvalidCastException ex)
             {
                 ApplicationException excepcion = new ApplicationException("Se genero un error con el siguiente mensaje: " + ex.Message, ex);
-                excepcion.Source = "Update Vistas";
+                excepcion.Source = "Update Departamentos";
                 throw excepcion;
             }
             catch (Exception ex)
             {
                 ApplicationException excepcion = new ApplicationException("Se genero un error de aplicación con el siguiente mensaje: " + ex.Message, ex);
-                excepcion.Source = "Update Vistas";
+                excepcion.Source = "Update Departamentos";
                 throw excepcion;
             }
             finally
