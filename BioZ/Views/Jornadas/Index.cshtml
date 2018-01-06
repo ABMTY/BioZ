@@ -1,0 +1,310 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="box" id="secc_lista">
+            <div class="box-header with-border">
+                <h1 class="box-title 0">Lista de Jornadas </h1>
+                <div class="box-tools pull-right">
+                    <button class="btn btn-success" onclick="Agregar()"><i class="fa fa-plus-circle"></i> Agregar</button>
+                </div>
+            </div>
+            <!-- /.box-header -->
+            <!-- centro -->
+            <div class="panel-body table-responsive">
+                <div class="card-box">
+                    <table id="Lista_Jornadas" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>&nbsp; &nbsp; &nbsp;No.</th>
+                                <th>&nbsp; &nbsp; &nbsp;Nombre</th>
+                                <th>&nbsp; &nbsp; &nbsp;Hora Entrada</th>
+                                <th>&nbsp; &nbsp; &nbsp;Hora Salida</th>
+                                <th>&nbsp; &nbsp; &nbsp;Horas de Trabajo</th>
+                                <th>&nbsp; &nbsp; &nbsp;Descanso</th>                               
+                                <th width="50px"></th>
+                                <th width="50px"></th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+            <!--Fin centro -->
+        </div><!-- /.box -->
+        <div class="box" id="secc_add" style="display:none;">
+            <div class="box-header with-border">
+                <h1 class="box-title 0">Jornadas </h1>
+                <div class="box-tools pull-right">
+                </div>
+            </div>
+            <!-- /.box-header -->
+            <!-- centro -->
+            <div class="panel-body">
+                <div class="card-box">
+                    <form>
+                        <div class="row">
+                            <div class="form-horizontal">
+                                <div class="col-lg-6">
+                                    <input type="text" id="id" value="" hidden />
+                                    <div class="form-group col-md-12">
+                                        <label class="control-label" for="">Nombre *</label>
+                                        <div>
+                                            <input type="text" id="txt_Jornada" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-12">
+                                        <label class="control-label" for="">Hora de Entrada *</label>
+                                        <div>
+                                            <input type="text" id="txt_HoraEntrada" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-12">
+                                        <label class="control-label" for="">Hora de Salida *</label>
+                                        <div>
+                                            <input type="text" id="txt_HoraSalida" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group col-md-12">
+                                        <label class="control-label" for="">Domingo</label>
+                                        <div class="checkbox-inline">
+                                            <input type="checkbox" id="chk_domingo" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-12">
+                                        <label class="control-label" for="">Lunes</label>
+                                        <div class="checkbox-inline">
+                                            <input type="checkbox" id="chk_lunes" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-12">
+                                        <label class="control-label" for="">Martes</label>
+                                        <div class="checkbox-inline">
+                                            <input type="checkbox" id="chk_martes" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-12">
+                                        <label class="control-label" for="">Miercoles</label>
+                                        <div class="checkbox-inline">
+                                            <input type="checkbox" id="chk_miercoles" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-12">
+                                        <label class="control-label" for="">Jueves</label>
+                                        <div class="checkbox-inline">
+                                            <input type="checkbox" id="chk_jueves" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-12">
+                                        <label class="control-label" for="">Viernes</label>
+                                        <div class="checkbox-inline">
+                                            <input type="checkbox" id="chk_viernes" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-12">
+                                        <label class="control-label" for="">Sabado</label>
+                                        <div class="checkbox-inline">
+                                            <input type="checkbox" id="chk_sabado" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="Cancelar()">Cancelar</button>
+                            <button type="button" class="btn btn-primary waves-effect waves-light validate" data-dismiss="modal" onclick="Guardar()">Guardar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <!--Fin centro -->
+        </div>
+        <!-- Modal Eliminar -->
+        <div class="modal fade" id="Form_DeleteTipo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="mensaje_modal">Eliminar Jornada</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body ">
+                        <form role="form" data-toggle="validator">
+                            <h4 id="lbl_msjborrar"></h4>
+                            <span id="txt_idborrar" style="display:none;"></span>
+                        </form>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-primary" onclick="Eliminar(); return false;"><i class="fa fa-check" aria-hidden="true"></i> SÍ</button>
+                        <button class="btn btn-danger" onclick="Cancelar()" ; return false;" data-dismiss="modal"><i class="fa fa-times" aria-hidden="true"></i> NO</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div><!-- /.col -->
+</div><!-- /.row -->
+<script>
+
+    $(document).ready(function () {
+        $('#Lista_Jornadas').DataTable();
+        //Cargar_Jornadas();
+        Cargar_Roles();
+    });
+
+    function Agregar() {
+        $("#secc_lista").hide();
+        $("#secc_add").show();
+        Limpiar();
+    }
+    function Cancelar() {
+        $("#secc_lista").show();
+        $("#secc_add").hide();
+    }
+    function Limpiar() {
+        $("#txt_Jornada").html("");
+        $("#txt_HoraEntrada").html("");
+        $("#txt_HoraSalida").html("");        
+        $("#chk_domingo").val("");
+        $("#chk_lunes").val("");
+        $("#chk_martes").val("");
+        $("#chk_miercoles").val("");
+        $("#chk_jueves").val("");
+        $("#chk_viernes").val("");
+        $("#chk_sabado").val("");
+    }
+
+    function Cargar_Jornadas() {
+        $('#Lista_Jornadas').DataTable({
+            destroy: true,
+            searching: true,
+            "ajax": {
+                "url": "/Jornadas/ObtenerJornadas/",
+                "type": "GET"
+            },
+            "columns": [
+                { "data": "id_Jornada" },
+                { "data": "Jornada" },
+                { "data": "rol" },
+                { "data": "activo" },
+                { "defaultContent": "<i>..</i>" },
+                { "defaultContent": "<i>..</i>" }
+            ],
+            "columnDefs": [{
+                "targets": 4, "data": "id_Jornada", "render": function (data, type, full, meta) {
+                    return "<button type='button' title='Editar' id='btn_mas" + data + "' class='btn btn-warning' onclick='Editar(" + data + ")'  ><i class='fa fa-edit'></i></button> "
+                }
+            },
+                {
+                    "targets": 5, "data": "id_Jornada", "render": function (data, type, full, meta) {
+                        return "<button type='button' title='Eliminar' id='btn_borrar" + data + "' class='btn btn-danger' onclick='Confirma_Eliminar(" + data + ")'><i class='fa fa-trash'></i></button> "
+                    }
+                }]
+        });
+    }
+    function Cargar_Roles() {
+
+        $("#ddl_Roles").html("");
+
+        $.ajax({
+            url: "/Roles/ObtenerRoles/",
+            async: true,
+            dataType: "json",
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                $.each(data.data, function (i, Item) {
+                    $("#ddl_Roles").append("<option value='" + Item.id_rol + "'>" + Item.desc_rol + "</option>");
+                });
+            },
+            error: function (request, status, error) {
+                console.log("error" + error);
+            }
+        });
+    }
+    function Editar(Id_Jornada) {
+        $("#FormEditar").show();
+        $.ajax({
+            url: "/Jornadas/ObtenerJornadaID/",
+            async: true,
+            dataType: "json",
+            data: '{ Id_Jornada:' + Id_Jornada + '}',
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                Limpiar();
+                $("#secc_lista").hide();
+                $("#secc_add").show();
+                console.log(data);
+                $("#id").html(data.data.id_Jornada);
+                $("#txt_Jornada").val(data.data.Jornada);
+                $("#txt_Contraseña").val(data.data.password);
+                $("#chk_activo").val(data.data.activo);
+                $("#ddl_Roles option[value='" + data.data.id_rol + "']").prop('selected', true);
+            },
+            error: function (request, status, error) {
+                console.log("error" + error);
+            }
+        });
+    }
+    function Guardar() {
+        Jornada = {
+            "Jornada": $("#txt_Jornada").val(),
+            "password": $("#txt_Contraseña").val(),
+            "activo": $("#chk_activo").is(':checked'),
+            "id_rol": $("#ddl_Roles").val(),
+        };
+        console.log(Jornada),
+        $.ajax(
+        {
+            url: "/Jornadas/Guardar/",
+            async: true,
+            dataType: "json",
+            data: JSON.stringify(Jornada),
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                swal({ title: "Jornadas", text: "Guardada Correctamente", type: "success" }, function () { Cargar_Jornadas(); Cancelar(); });
+            },
+            error: function (request, status, error) {
+                swal("Error al Guardar la Jornada");
+                console.log("error" + error);
+            }
+        });
+    }
+
+
+    function Confirma_Eliminar(Id_Jornada) {
+        $('#Form_DeleteTipo').modal('show');
+        $("#lbl_msjborrar").html("Se va a eliminar la Jornada No. " + Id_Jornada + ". <br/>¿Desea Continuar?");
+        $("#txt_idborrar").text(id_borrar);
+    }
+    function Eliminar() {
+        Id_Jornada = $("#txt_idborrar").text();
+        $.ajax({
+            url: "/Jornadas/EliminarJornada/",
+            async: true,
+            dataType: "json",
+            data: '{id_Jornada:' + Id_Jornada + '}',
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                $('#Form_DeleteTipo').modal('hide');
+                swal({ title: "Jornadas", text: "Se elimino Correctamente", type: "success" }, function () { Cargar_Jornadas(); });
+            },
+            error: function (request, status, error) {
+                console.log("error" + error);
+            }
+        });
+    }
+</script>
+
+
+
+
