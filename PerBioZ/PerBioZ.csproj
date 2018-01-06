@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Bioz\PerDepartamentos.cs" />
     <Compile Include="Bioz\PerEmpresa.cs" />
     <Compile Include="Bioz\PerRoles.cs" />
     <Compile Include="Bioz\PerUsuarios.cs" />
