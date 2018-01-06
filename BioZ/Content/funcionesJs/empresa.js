@@ -46,6 +46,7 @@ function cancelarForm() {
 
 //Limpia los campos del formulario
 function limpiar() {
+    $("#idEmpresa").val("");
     $("#razon_soc").val("");
     $("#direccion").val("");
     $("#estado").val("");

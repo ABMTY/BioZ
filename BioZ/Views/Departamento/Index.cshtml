@@ -10,7 +10,7 @@
             <div class="box-header with-border">
                 <h1 class="box-title">
                     Departamentos
-                    <button class="btn btn-success" onclick="mostrarForm(true)" id="btnAgregar">
+                    <button class="btn btn-success" onclick="Agregar()" id="btnAgregar">
                         <i class="fa fa-plus-circle"></i> Agregar
                     </button>
                 </h1>
@@ -28,21 +28,20 @@
                     <tbody></tbody>
                 </table>
             </div>
-            <div class="panel-body" style="height: 400px;" id="formularioregistros">
-                <form name="formulario" id="formulario" method="post">
+            <div class="panel-body" id="secc_form">
                     <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                        <input type="hidden" value="" id="IdDepartamento" />
                         <label>Departamento (*):</label>
                         <input type="text" class="form-control" name="departamento" id="departamento" maxlength="20" required>
                     </div>
                     <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <button class="btn btn-primary" type="submit" id="btnGuardar">
+                        <button class="btn btn-primary" type="submit" id="btnGuardar" onclick="guardarEditar()">
                             <i class="fa fa-save"></i> Guardar
                         </button>
                         <button class="btn btn-danger" onclick="cancelarForm()" type="button">
                             <i class="fa fa-arrow-circle-left"></i> Cancelar
                         </button>
                     </div>
-                </form>
             </div>
             <!--Fin centro -->
         </div><!-- /.box -->
