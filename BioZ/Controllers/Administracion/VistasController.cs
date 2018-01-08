@@ -33,7 +33,7 @@ namespace BioZ.Controllers.Administracion
             }
             catch (Exception ex)
             {
-                return View("Error", new HandleErrorInfo(ex, "Roles", "Create"));
+                return View("Error", new HandleErrorInfo(ex, "Vistas", "Create"));
             }
         }
         public ActionResult GetVistas()
@@ -53,6 +53,25 @@ namespace BioZ.Controllers.Administracion
             var json = Json(new { data = Vista }, JsonRequestBehavior.AllowGet);
             json.MaxJsonLength = 500000000;
             return json;
+        }
+
+        public ActionResult EliminarVista(int id)
+        {
+            try
+            {
+                var r =  control.Eliminar(id);
+
+                if (!r)
+                {
+                    return Json("Error al realizar la operacion", JsonRequestBehavior.AllowGet);
+                }
+
+                return Json("Realizado", JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return View("Error", new HandleErrorInfo(ex, "Vistas", "Eliminar"));
+            }
         }
     }
 }
