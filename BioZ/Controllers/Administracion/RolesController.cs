@@ -24,14 +24,13 @@ namespace BioZ.Controllers.Administracion
             {
                 if (entidad.id_rol > 0)
                 {
-                    r = control.Actualizar(entidad);
-                    int id = control.ObtenerTodos().ToList().Max(p => p.id_rol);
-
+                    r = control.Actualizar(entidad);                    
+                    ctrlRolesVista.Eliminar(entidad.id_rol);
                     foreach (EntRolesVista item in entidad.rolVistas)
                     {
                         ctrlRolesVista.Insertar(new EntRolesVista
                         {
-                            id_rol_vista = id,
+                            id_rol_vista = item.id_rol_vista,
                             id_rol = item.id_rol,
                             id_vista = item.id_vista
                         });
@@ -39,10 +38,11 @@ namespace BioZ.Controllers.Administracion
                 }
                 else
                 {
-                    r = control.Insertar(entidad);
+                    r = control.Insertar(entidad);                    
+
                     foreach (EntRolesVista item in entidad.rolVistas)
                     {
-                        ctrlRolesVista.Eli()
+                        int id = control.ObtenerTodos().ToList().Max(p => p.id_rol);
                         ctrlRolesVista.Insertar(new EntRolesVista
                         {
                             id_rol_vista = id,
