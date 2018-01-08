@@ -10,7 +10,7 @@
             <div class="box-header with-border">
                 <h1 class="box-title">
                     Sucursales
-                    <button class="btn btn-success" onclick="mostrarForm(true)" id="btnAgregar">
+                    <button class="btn btn-success" onclick="Agregar()" id="btnAgregar">
                         <i class="fa fa-plus-circle"></i> Agregar
                     </button>
                 </h1>
@@ -24,39 +24,31 @@
                     <thead>
                         <th>Opciones</th>
                         <th>Sucursal</th>
-                        <th>Descripcion</th>
                         <th>Empresa</th>
                     </thead>
                     <tbody></tbody>
                 </table>
             </div>
-            <div class="panel-body" style="height: 400px;" id="formularioregistros">
-                <form name="formulario" id="formulario" method="post">
+            <div class="panel-body" style="height: 400px;" id="secc_form">
                     <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                        <input type="hidden" id="id_sucursal" value="" />
+                        <input type="hidden" id="id_empresa" value="" />
                         <label>Sucursal (*):</label>
                         <input type="text" class="form-control" name="sucursal" id="sucursal" maxlength="20" required>
                     </div>
                     <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                        <label>Descripción:</label>
-                        <input type="text" class="form-control" name="descripcion" id="descripcion">
-                    </div>
-                    <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
                         <label>Empresa (*):</label>
                         <select name="empresa" id="empresa" class="form-control selectpicker" data-live-search="true" required>
-                            <option value="Empresa1">Empresa 1</option>
-                            <option value="Empresa2">Empresa 2</option>
-                            <option value="Empresa3">Empresa 3</option>
                         </select>
                     </div>
                     <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <button class="btn btn-primary" type="submit" id="btnGuardar">
+                        <button class="btn btn-primary" type="submit" id="btnGuardar" onclick="guardarEditar()">
                             <i class="fa fa-save"></i> Guardar
                         </button>
                         <button class="btn btn-danger" onclick="cancelarForm()" type="button">
                             <i class="fa fa-arrow-circle-left"></i> Cancelar
                         </button>
                     </div>
-                </form>
             </div>
             <!--Fin centro -->
         </div><!-- /.box -->
