@@ -12,5 +12,6 @@ namespace EntBioZ.Modelo.Seguridad
         public string desc_rol { get; set; }
         public List<EntRolesVista> vistas { get; set; }
         public List<EntUsuario> usuarios { get; set; }
+        public List<EntRolesVista> rolVistas { get; set; }
     }
 }

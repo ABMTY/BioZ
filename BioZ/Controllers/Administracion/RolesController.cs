@@ -11,6 +11,7 @@ namespace BioZ.Controllers.Administracion
     public class RolesController : Controller
     {
         CtrlRoles control = new CtrlRoles();
+        CtrlRolesVista ctrlRolesVista = new CtrlRolesVista();
         // GET: Roles
         public ActionResult Index()
         {
@@ -18,11 +19,38 @@ namespace BioZ.Controllers.Administracion
         }
         public ActionResult Guardar(EntRoles entidad)
         {
+            var r = false;
             try
             {
-                var r = entidad.id_rol > 0 ?
-                   control.Actualizar(entidad) :
-                   control.Insertar(entidad);
+                if (entidad.id_rol > 0)
+                {
+                    r = control.Actualizar(entidad);
+                    int id = control.ObtenerTodos().ToList().Max(p => p.id_rol);
+
+                    foreach (EntRolesVista item in entidad.rolVistas)
+                    {
+                        ctrlRolesVista.Insertar(new EntRolesVista
+                        {
+                            id_rol_vista = id,
+                            id_rol = item.id_rol,
+                            id_vista = item.id_vista
+                        });
+                    }
+                }
+                else
+                {
+                    r = control.Insertar(entidad);
+                    foreach (EntRolesVista item in entidad.rolVistas)
+                    {
+                        ctrlRolesVista.Eli()
+                        ctrlRolesVista.Insertar(new EntRolesVista
+                        {
+                            id_rol_vista = id,
+                            id_rol = item.id_rol,
+                            id_vista = item.id_vista
+                        });
+                    }
+                }
 
                 if (!r)
                 {

@@ -17,13 +17,12 @@ namespace BioZ.Controllers.Administracion
             return View();
         }
         public ActionResult Guardar(EntVistas entidad)
-        {
+        {            
+
             try
             {
-                var r = entidad.id_vista > 0 ?
-                   control.Actualizar(entidad) :
-                   control.Insertar(entidad);
-
+                var r = entidad.id_vista > 0 ? control.Actualizar(entidad) : control.Insertar(entidad);                
+                
                 if (!r)
                 {
                     return Json("Error al realizar la operacion", JsonRequestBehavior.AllowGet);

@@ -43,7 +43,9 @@
     <Compile Include="Bioz\CtrlDepartamentos.cs" />
     <Compile Include="Bioz\CtrlDispositivos.cs" />
     <Compile Include="Bioz\CtrlEmpresa.cs" />
+    <Compile Include="Bioz\CtrlJornadas.cs" />
     <Compile Include="Bioz\CtrlRoles.cs" />
+    <Compile Include="Bioz\CtrlRolesVista.cs" />
     <Compile Include="Bioz\CtrlSucursales.cs" />
     <Compile Include="Bioz\CtrlUsuarios.cs" />
     <Compile Include="Bioz\CtrlVistas.cs" />

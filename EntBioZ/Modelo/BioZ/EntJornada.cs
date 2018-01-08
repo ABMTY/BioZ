@@ -11,8 +11,8 @@ namespace EntBioZ.Modelo.BioZ
     {
         public int id_jornada { get; set; }
         public string desc_jornada { get; set; }
-        public DateTime hora_entrada { get; set; }
-        public DateTime hora_salida { get; set; }
+        public string hora_entrada { get; set; }
+        public string hora_salida { get; set; }
         public bool domingo { get; set; }
         public bool lunes { get; set; }
         public bool martes { get; set; }
@@ -20,6 +20,6 @@ namespace EntBioZ.Modelo.BioZ
         public bool jueves { get; set; }
         public bool viernes { get; set; }
         public bool sabado { get; set; }
-        public int id_empresa { get; set; }
+       
     }
 }

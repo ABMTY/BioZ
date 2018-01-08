@@ -49,7 +49,9 @@
     <Compile Include="Bioz\PerDepartamentos.cs" />
     <Compile Include="Bioz\PerDispositivos.cs" />
     <Compile Include="Bioz\PerEmpresa.cs" />
+    <Compile Include="Bioz\PerJornadas.cs" />
     <Compile Include="Bioz\PerRoles.cs" />
+    <Compile Include="Bioz\PerRolesVista.cs" />
     <Compile Include="Bioz\PerSucursales.cs" />
     <Compile Include="Bioz\PerUsuarios.cs" />
     <Compile Include="Bioz\PerVistas.cs" />
