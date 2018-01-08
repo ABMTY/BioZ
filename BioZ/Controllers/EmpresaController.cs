@@ -54,6 +54,6 @@ namespace BioZ.Controllers
             var json = Json(new { data = empresa }, JsonRequestBehavior.AllowGet);
             json.MaxJsonLength = 500000000;
             return json;
-        }
+        }        
     }
 }
