@@ -9,27 +9,27 @@ using System.Threading.Tasks;
 
 namespace PerBioZ.Bioz
 {
-    public class PerSucursales : Persistencia
+    public class PerDispositivos : Persistencia
     {
-        public List<EntSucursal> ObtenerTodos()
+        public List<EntDispositivo> ObtenerTodos()
         {
-            List<EntSucursal> Lista = new List<EntSucursal>();
-            EntSucursal entidad = null;
+            List<EntDispositivo> Lista = new List<EntDispositivo>();
+            EntDispositivo entidad = null;
             try
             {
                 AbrirConexion();
                 StringBuilder CadenaSql = new StringBuilder();
-                var sql = "SELECT a.id_sucursal, a.desc_sucursal,a.id_empresa, b.razon_social FROM informix.sucursales a left join informix.empresa b on a.id_empresa = b.id_empresa";
+                var sql = "SELECT id_dispositivo, nombre_dispositivo,ip_dispositivo,puerto_dispositivo,id_sucursal FROM informix.dispositivos";
                 IfxCommand cmd = new IfxCommand(sql, Conexion);
                 using (var dr = cmd.ExecuteReader())
                 {
                     while (dr.Read())
                     {
-                        entidad = new EntSucursal();
+                        entidad = new EntDispositivo();
+                        entidad.id_dispositivo = int.Parse(dr["id_dispositivo"].ToString());
+                        entidad.nombre_dispositivo = dr["nombre_dispositivo"].ToString();
+                        entidad.puerto = dr["puerto"].ToString();
                         entidad.id_sucursal = int.Parse(dr["id_sucursal"].ToString());
-                        entidad.desc_sucursal = dr["desc_sucursal"].ToString();
-                        entidad.id_empresa = int.Parse(dr["id_empresa"].ToString());
-                        entidad.razon_social = dr["razon_social"].ToString();
                         Lista.Add(entidad);
                     }
                 }
@@ -45,26 +45,27 @@ namespace PerBioZ.Bioz
             return Lista;
 
         }
-        public EntSucursal Obtener(int id)
+        public EntDispositivo Obtener(int id)
         {
-            EntSucursal entidad = null;
+            EntDispositivo entidad = null;
             try
             {
                 AbrirConexion();
                 StringBuilder CadenaSql = new StringBuilder();
 
                 IfxCommand cmd = new IfxCommand(string.Empty, Conexion);
-                cmd.CommandText = "SELECT a.id_sucursal, a.desc_sucursal,a.id_empresa, b.razon_social FROM informix.sucursales a left join informix.empresa b on a.id_empresa = b.id_empresa WHERE a.id_sucursal=?";
+                cmd.CommandText = "SELECT id_dispositivo, nombre_dispositivo,ip_dispositivo,puerto_dispositivo,id_sucursal FROM informix.dispositivos WHERE id_dispositivo=?";
                 cmd.Parameters.Add(new IfxParameter()).Value = id;
                 using (var dr = cmd.ExecuteReader())
                 {
                     if (dr.Read())
                     {
-                        entidad = new EntSucursal();
+                        entidad = new EntDispositivo();
+                        entidad.id_dispositivo = int.Parse(dr["id_dispositivo"].ToString());
+                        entidad.nombre_dispositivo = dr["nombre_dispositivo"].ToString();
+                        entidad.nombre_dispositivo = dr["ip_dispositivo"].ToString();
+                        entidad.puerto = dr["puerto"].ToString();
                         entidad.id_sucursal = int.Parse(dr["id_sucursal"].ToString());
-                        entidad.desc_sucursal = dr["desc_sucursal"].ToString();
-                        entidad.id_empresa = int.Parse(dr["id_empresa"].ToString());
-                        entidad.razon_social = dr["razon_social"].ToString();
                     }
                 }
             }
@@ -79,19 +80,21 @@ namespace PerBioZ.Bioz
             return entidad;
 
         }
-        public bool Insert(EntSucursal entidad)
+        public bool Insert(EntDispositivo entidad)
         {
             bool respuesta = false;
             try
             {
                 AbrirConexion();
-                var sql = "execute procedure dml_sucursales (?,NULL,?,?);";
+                var sql = "execute procedure dml_dispositivo (?,NULL,?,?);";
                 using (var cmd = new IfxCommand(sql, Conexion))
                 {
                     cmd.Connection = Conexion;
                     cmd.Parameters.Add(new IfxParameter()).Value = "INSERT";
-                    cmd.Parameters.Add(new IfxParameter()).Value = entidad.desc_sucursal;
-                    cmd.Parameters.Add(new IfxParameter()).Value = entidad.id_empresa;
+                    cmd.Parameters.Add(new IfxParameter()).Value = entidad.nombre_dispositivo;
+                    cmd.Parameters.Add(new IfxParameter()).Value = entidad.ip_dispositivo;
+                    cmd.Parameters.Add(new IfxParameter()).Value = entidad.puerto;
+                    cmd.Parameters.Add(new IfxParameter()).Value = entidad.id_sucursal;
                     cmd.ExecuteNonQuery();
                 }
                 respuesta = true;
@@ -101,13 +104,13 @@ namespace PerBioZ.Bioz
             catch (InvalidCastException ex)
             {
                 ApplicationException excepcion = new ApplicationException("Se genero un error con el siguiente mensaje: " + ex.Message, ex);
-                excepcion.Source = "Insert Sucursales";
+                excepcion.Source = "Insert Dispositivo";
                 throw excepcion;
             }
             catch (Exception ex)
             {
                 ApplicationException excepcion = new ApplicationException("Se genero un error de aplicación con el siguiente mensaje: " + ex.Message, ex);
-                excepcion.Source = "Insert Sucursales";
+                excepcion.Source = "Insert Dispositivo";
                 throw excepcion;
             }
             finally
@@ -117,20 +120,22 @@ namespace PerBioZ.Bioz
             return respuesta;
 
         }
-        public bool Update(EntSucursal entidad)
+        public bool Update(EntDispositivo entidad)
         {
             bool respuesta = false;
             try
             {
                 AbrirConexion();
-                var sql = "execute procedure dml_sucursales (?,?,?,?);";
+                var sql = "execute procedure dml_dispositivo (?,?,?,?);";
                 using (var cmd = new IfxCommand(sql, Conexion))
                 {
                     cmd.Connection = Conexion;
                     cmd.Parameters.Add(new IfxParameter()).Value = "UPDATE";
+                    cmd.Parameters.Add(new IfxParameter()).Value = entidad.id_dispositivo;
+                    cmd.Parameters.Add(new IfxParameter()).Value = entidad.nombre_dispositivo;
+                    cmd.Parameters.Add(new IfxParameter()).Value = entidad.ip_dispositivo;
+                    cmd.Parameters.Add(new IfxParameter()).Value = entidad.puerto;
                     cmd.Parameters.Add(new IfxParameter()).Value = entidad.id_sucursal;
-                    cmd.Parameters.Add(new IfxParameter()).Value = entidad.desc_sucursal;
-                    cmd.Parameters.Add(new IfxParameter()).Value = entidad.id_empresa;
                     cmd.ExecuteNonQuery();
                 }
                 respuesta = true;
@@ -140,13 +145,13 @@ namespace PerBioZ.Bioz
             catch (InvalidCastException ex)
             {
                 ApplicationException excepcion = new ApplicationException("Se genero un error con el siguiente mensaje: " + ex.Message, ex);
-                excepcion.Source = "Update Sucursales";
+                excepcion.Source = "Update Dispositivo";
                 throw excepcion;
             }
             catch (Exception ex)
             {
                 ApplicationException excepcion = new ApplicationException("Se genero un error de aplicación con el siguiente mensaje: " + ex.Message, ex);
-                excepcion.Source = "Update Sucursales";
+                excepcion.Source = "Update Dispositivo";
                 throw excepcion;
             }
             finally
