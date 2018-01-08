@@ -48,6 +48,7 @@
   <ItemGroup>
     <Compile Include="Bioz\PerDepartamentos.cs" />
     <Compile Include="Bioz\PerDispositivos.cs" />
+    <Compile Include="Bioz\PerEmpleados.cs" />
     <Compile Include="Bioz\PerEmpresa.cs" />
     <Compile Include="Bioz\PerJornadas.cs" />
     <Compile Include="Bioz\PerRoles.cs" />

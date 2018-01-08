@@ -14,7 +14,7 @@ namespace PerBioZ.Bioz
         public List<EntRolesVista> ObtenerTodos()
         {
             List<EntRolesVista> Lista = new List<EntRolesVista>();
-            EntRoles entidad = null;
+            EntRolesVista entidad = null;
             try
             {
                 AbrirConexion();
@@ -25,9 +25,10 @@ namespace PerBioZ.Bioz
                 {
                     while (dr.Read())
                     {
-                        entidad = new EntRoles();
+                        entidad = new EntRolesVista();
+                        entidad.id_rol_vista = int.Parse(dr["id_rol_vista"].ToString());
                         entidad.id_rol = int.Parse(dr["id_rol"].ToString());
-                        entidad.desc_rol = dr["desc_rol"].ToString();
+                        entidad.id_vista = int.Parse(dr["id_vista"].ToString());
                         Lista.Add(entidad);
                     }
                 }
