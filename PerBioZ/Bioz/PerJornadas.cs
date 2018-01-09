@@ -19,7 +19,7 @@ namespace PerBioZ.Bioz
             {
                 AbrirConexion();
                 StringBuilder CadenaSql = new StringBuilder();
-                var sql = "SELECT id_jornada, desc_jornada, hora_entrada, hora_salida, domingo, lunes, martes, miercoles, jueves, viernes, sabado FROM informix.jornadas";
+                var sql = "SELECT id_jornada, desc_jornada, TO_CHAR(hora_entrada, '%H:%M') as hora_entrada,TO_CHAR(hora_salida, '%H:%M') as hora_salida, domingo, lunes, martes, miercoles, jueves, viernes, sabado FROM informix.jornadas";
                 IfxCommand cmd = new IfxCommand(sql, Conexion);
                 using (var dr = cmd.ExecuteReader())
                 {
@@ -62,7 +62,7 @@ namespace PerBioZ.Bioz
                 StringBuilder CadenaSql = new StringBuilder();
 
                 IfxCommand cmd = new IfxCommand(string.Empty, Conexion);
-                cmd.CommandText = "SELECT id_jornada, desc_jornada, hora_entrada, hora_salida, domingo, lunes, martes, miercoles, jueves, viernes, sabado FROM informix.jornadas WHERE id_jornada=?";
+                cmd.CommandText = "SELECT id_jornada, desc_jornada, TO_CHAR(hora_entrada, '%H:%M') as hora_entrada,TO_CHAR(hora_salida, '%H:%M') as hora_salida, domingo, lunes, martes, miercoles, jueves, viernes, sabado FROM informix.jornadas WHERE id_jornada=?";
                 cmd.Parameters.Add(new IfxParameter()).Value = id;
                 using (var dr = cmd.ExecuteReader())
                 {
