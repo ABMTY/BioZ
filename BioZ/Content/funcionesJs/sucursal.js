@@ -84,7 +84,6 @@ function limpiar() {
 
 //Funcion para Guardar y Editar Empresa
 function guardarEditar() {
-    debugger;
     var e = document.getElementById("empresa");
     var empresa = e.options[e.selectedIndex].value;
     $("#id_empresa").val(empresa);
