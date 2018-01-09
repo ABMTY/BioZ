@@ -61,7 +61,7 @@ namespace PerBioZ.Bioz
 
                 IfxCommand cmd = new IfxCommand(string.Empty, Conexion);
                 var sql = "SELECT a.id_empleado,a.nombre,a.ap_paterno,a.ap_materno,a.id_departamento,a.id_sucursal,a.enrollnumber,b.desc_departamento,c.desc_sucursal FROM informix.empleados ";
-                sql = sql + "a left join informix.departamentos b on a.id_departamento=b.id_departamento left join informix.sucursales c on a.id_sucursal=c.id_sucursal where WHERE a.id_empleado=?";
+                sql = sql + "a left join informix.departamentos b on a.id_departamento=b.id_departamento left join informix.sucursales c on a.id_sucursal=c.id_sucursal WHERE a.id_empleado=?";
                 cmd.CommandText = sql;
                 
                 cmd.Parameters.Add(new IfxParameter()).Value = id;
