@@ -86,7 +86,7 @@ namespace BioZ.Controllers
                 return Json("Sin conexión", JsonRequestBehavior.AllowGet);
             return Json("Realizado", JsonRequestBehavior.AllowGet);
         }
-        public ActionResult GetEmpresas()
+        public ActionResult GetEmpleados()
         {
             var empleados = control.ObtenerTodos();
             var serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
@@ -95,7 +95,7 @@ namespace BioZ.Controllers
             json.MaxJsonLength = 500000000;
             return json;
         }
-        public ActionResult GetEmpresa(int id)
+        public ActionResult GetEmpleado(int id)
         {
             var empleado = control.Obtener(id);
             var serializer = new System.Web.Script.Serialization.JavaScriptSerializer();

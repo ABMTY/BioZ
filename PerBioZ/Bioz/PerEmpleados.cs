@@ -28,7 +28,7 @@ namespace PerBioZ.Bioz
                     {
                         entidad = new EntEmpleado();
                         entidad.id_empleado = int.Parse(dr["id_empleado"].ToString());
-                        entidad.ap_paterno = dr["nombre"].ToString();
+                        entidad.nombre = dr["nombre"].ToString();
                         entidad.ap_paterno = dr["ap_paterno"].ToString();
                         entidad.ap_materno = dr["ap_materno"].ToString();
                         entidad.id_departamento = int.Parse(dr["id_departamento"].ToString());
@@ -71,7 +71,7 @@ namespace PerBioZ.Bioz
                     {
                         entidad = new EntEmpleado();
                         entidad.id_empleado = int.Parse(dr["id_empleado"].ToString());
-                        entidad.ap_paterno = dr["nombre"].ToString();
+                        entidad.nombre = dr["nombre"].ToString();
                         entidad.ap_paterno = dr["ap_paterno"].ToString();
                         entidad.ap_materno = dr["ap_materno"].ToString();
                         entidad.id_departamento = int.Parse(dr["id_departamento"].ToString());
