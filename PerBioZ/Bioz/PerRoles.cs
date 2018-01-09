@@ -63,6 +63,25 @@ namespace PerBioZ.Bioz
                         entidad.desc_rol = dr["desc_rol"].ToString();                        
                     }
                 }
+                #region GetRolVistas
+                entidad.rolVistas = new List<EntRolesVista>();
+                cmd.CommandText = "SELECT id_rol_vista, id_rol, id_vista from roles_vista where id_rol=?";
+                cmd.Parameters.Clear();
+                cmd.Parameters.Add(new IfxParameter()).Value = id;
+                using (var dr = cmd.ExecuteReader())
+                {
+                    while (dr.Read())
+                    {
+                        EntRolesVista entRolVista = new EntRolesVista();
+                        entRolVista.id_rol_vista = int.Parse(dr["id_rol_vista"].ToString());
+                        entRolVista.id_rol = int.Parse(dr["id_rol"].ToString());
+                        entRolVista.id_vista = int.Parse(dr["id_vista"].ToString());
+                        entidad.rolVistas.Add(entRolVista);
+                    }
+                }
+                #endregion
+
+
             }
             catch (Exception exc)
             {
