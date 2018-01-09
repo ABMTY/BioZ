@@ -30,23 +30,20 @@ namespace BioZ.Controllers.Administracion
                     {
                         ctrlRolesVista.Insertar(new EntRolesVista
                         {
-                            id_rol_vista = item.id_rol_vista,
-                            id_rol = item.id_rol,
+                            id_rol = entidad.id_rol,
                             id_vista = item.id_vista
                         });
                     }
                 }
                 else
                 {
-                    r = control.Insertar(entidad);                    
-
+                    r = control.Insertar(entidad);
+                    int id_rol = control.ObtenerTodos().ToList().Max(p => p.id_rol);
                     foreach (EntRolesVista item in entidad.rolVistas)
-                    {
-                        int id = control.ObtenerTodos().ToList().Max(p => p.id_rol);
+                    {                       
                         ctrlRolesVista.Insertar(new EntRolesVista
-                        {
-                            id_rol_vista = id,
-                            id_rol = item.id_rol,
+                        {                            
+                            id_rol = id_rol,
                             id_vista = item.id_vista
                         });
                     }
