@@ -19,7 +19,8 @@ namespace PerBioZ.Bioz
             {
                 AbrirConexion();
                 StringBuilder CadenaSql = new StringBuilder();
-                var sql = "SELECT id_empleado, nombre,ap_paterno,ap_materno,id_departamento,id_sucursal,enrollnumber FROM informix.empleados";
+                var sql = "SELECT a.id_empleado,a.nombre,a.ap_paterno,a.ap_materno,a.id_departamento,a.id_sucursal,a.enrollnumber,b.desc_departamento,c.desc_sucursal ";
+                sql = sql + "FROM informix.empleados a left join informix.departamentos b on a.id_departamento=b.id_departamento left join informix.sucursales c on a.id_sucursal=c.id_sucursal";
                 IfxCommand cmd = new IfxCommand(sql, Conexion);
                 using (var dr = cmd.ExecuteReader())
                 {
@@ -27,10 +28,13 @@ namespace PerBioZ.Bioz
                     {
                         entidad = new EntEmpleado();
                         entidad.id_empleado = int.Parse(dr["id_empleado"].ToString());
+                        entidad.ap_paterno = dr["nombre"].ToString();
                         entidad.ap_paterno = dr["ap_paterno"].ToString();
                         entidad.ap_materno = dr["ap_materno"].ToString();
                         entidad.id_departamento = int.Parse(dr["id_departamento"].ToString());
+                        entidad.desc_departamento = dr["desc_departamento"].ToString();
                         entidad.id_sucursal = int.Parse(dr["id_sucursal"].ToString());
+                        entidad.desc_sucursal = dr["desc_sucursal"].ToString();
                         entidad.enrollnumber = int.Parse(dr["enrollnumber"].ToString());
                         Lista.Add(entidad);
                     }
@@ -56,7 +60,10 @@ namespace PerBioZ.Bioz
                 StringBuilder CadenaSql = new StringBuilder();
 
                 IfxCommand cmd = new IfxCommand(string.Empty, Conexion);
-                cmd.CommandText = "SELECT id_empleado, nombre,ap_paterno,ap_materno,id_departamento,id_sucursal,enrollnumber FROM informix.empleados WHERE id_empleado=?";
+                var sql = "SELECT a.id_empleado,a.nombre,a.ap_paterno,a.ap_materno,a.id_departamento,a.id_sucursal,a.enrollnumber,b.desc_departamento,c.desc_sucursal FROM informix.empleados ";
+                sql = sql + "a left join informix.departamentos b on a.id_departamento=b.id_departamento left join informix.sucursales c on a.id_sucursal=c.id_sucursal where WHERE a.id_empleado=?";
+                cmd.CommandText = sql;
+                
                 cmd.Parameters.Add(new IfxParameter()).Value = id;
                 using (var dr = cmd.ExecuteReader())
                 {
@@ -64,10 +71,13 @@ namespace PerBioZ.Bioz
                     {
                         entidad = new EntEmpleado();
                         entidad.id_empleado = int.Parse(dr["id_empleado"].ToString());
+                        entidad.ap_paterno = dr["nombre"].ToString();
                         entidad.ap_paterno = dr["ap_paterno"].ToString();
                         entidad.ap_materno = dr["ap_materno"].ToString();
                         entidad.id_departamento = int.Parse(dr["id_departamento"].ToString());
+                        entidad.desc_departamento = dr["desc_departamento"].ToString();
                         entidad.id_sucursal = int.Parse(dr["id_sucursal"].ToString());
+                        entidad.desc_sucursal = dr["desc_sucursal"].ToString();
                         entidad.enrollnumber = int.Parse(dr["enrollnumber"].ToString());
                     }
                 }

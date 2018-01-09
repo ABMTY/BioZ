@@ -15,6 +15,8 @@ namespace EntBioZ.Modelo.BioZ
         public int id_departamento { get; set; }
         public int id_sucursal { get; set; }
         public int enrollnumber { get; set; }
+        public string desc_departamento { get; set; }
+        public string desc_sucursal { get; set; }
         public string nombre_completo { get { return nombre + " " + ap_paterno + " " + ap_materno; }  }
     }
 }
