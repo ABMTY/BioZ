@@ -76,6 +76,7 @@ namespace PerBioZ.Bioz
                         entRolVista.id_rol_vista = int.Parse(dr["id_rol_vista"].ToString());
                         entRolVista.id_rol = int.Parse(dr["id_rol"].ToString());
                         entRolVista.id_vista = int.Parse(dr["id_vista"].ToString());
+                        entRolVista.selected = true;
                         entidad.rolVistas.Add(entRolVista);
                     }
                 }
