@@ -54,5 +54,23 @@ namespace BioZ.Controllers.Administracion
             json.MaxJsonLength = 500000000;
             return json;
         }
+        public ActionResult Eliminar(int id)
+        {
+            try
+            {
+                var r = control.Eliminar(id);
+
+                if (!r)
+                {
+                    return Json("Error al realizar la operacion", JsonRequestBehavior.AllowGet);
+                }
+
+                return Json("Realizado", JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return View("Error", new HandleErrorInfo(ex, "Dispositivos", "Eliminar"));
+            }
+        }
     }
 }

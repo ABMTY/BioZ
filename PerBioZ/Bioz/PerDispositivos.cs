@@ -19,7 +19,7 @@ namespace PerBioZ.Bioz
             {
                 AbrirConexion();
                 StringBuilder CadenaSql = new StringBuilder();
-                var sql = "SELECT id_dispositivo, nombre_dispositivo,ip_dispositivo,puerto_dispositivo,id_sucursal FROM informix.dispositivos";
+                var sql = "SELECT a.id_dispositivo, a.nombre_dispositivo,a.ip_dispositivo,a.puerto,a.id_sucursal,b.desc_sucursal FROM informix.dispositivos a left join informix.sucursales b on a.id_sucursal=b.id_sucursal";
                 IfxCommand cmd = new IfxCommand(sql, Conexion);
                 using (var dr = cmd.ExecuteReader())
                 {
@@ -30,6 +30,7 @@ namespace PerBioZ.Bioz
                         entidad.nombre_dispositivo = dr["nombre_dispositivo"].ToString();
                         entidad.puerto = dr["puerto"].ToString();
                         entidad.id_sucursal = int.Parse(dr["id_sucursal"].ToString());
+                        entidad.desc_sucursal = dr["desc_sucursal"].ToString();
                         Lista.Add(entidad);
                     }
                 }
@@ -54,7 +55,7 @@ namespace PerBioZ.Bioz
                 StringBuilder CadenaSql = new StringBuilder();
 
                 IfxCommand cmd = new IfxCommand(string.Empty, Conexion);
-                cmd.CommandText = "SELECT id_dispositivo, nombre_dispositivo,ip_dispositivo,puerto_dispositivo,id_sucursal FROM informix.dispositivos WHERE id_dispositivo=?";
+                cmd.CommandText = "SELECT a.id_dispositivo, a.nombre_dispositivo,a.ip_dispositivo,a.puerto,a.id_sucursal,b.desc_sucursal FROM informix.dispositivos a left join informix.sucursales b on a.id_sucursal=b.id_sucursal WHERE a.id_dispositivo=?";
                 cmd.Parameters.Add(new IfxParameter()).Value = id;
                 using (var dr = cmd.ExecuteReader())
                 {
@@ -66,6 +67,7 @@ namespace PerBioZ.Bioz
                         entidad.nombre_dispositivo = dr["ip_dispositivo"].ToString();
                         entidad.puerto = dr["puerto"].ToString();
                         entidad.id_sucursal = int.Parse(dr["id_sucursal"].ToString());
+                        entidad.desc_sucursal = dr["desc_sucursal"].ToString();
                     }
                 }
             }
@@ -153,6 +155,33 @@ namespace PerBioZ.Bioz
                 ApplicationException excepcion = new ApplicationException("Se genero un error de aplicación con el siguiente mensaje: " + ex.Message, ex);
                 excepcion.Source = "Update Dispositivo";
                 throw excepcion;
+            }
+            finally
+            {
+                CerrarConexion();
+            }
+            return respuesta;
+
+        }
+        public bool Eliminar(int id)
+        {
+            bool respuesta = false;
+            try
+            {
+                AbrirConexion();
+                var sql = "execute procedure dml_dispositivo (?,?,NULL,NULL);";
+                using (var cmd = new IfxCommand(sql, Conexion))
+                {
+                    cmd.Connection = Conexion;
+                    cmd.Parameters.Add(new IfxParameter()).Value = "DELETE";
+                    cmd.Parameters.Add(new IfxParameter()).Value = id;
+                    cmd.ExecuteNonQuery();
+                }
+                respuesta = true;
+            }
+            catch (Exception exc)
+            {
+                throw exc;
             }
             finally
             {
