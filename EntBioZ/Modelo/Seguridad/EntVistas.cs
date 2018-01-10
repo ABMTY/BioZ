@@ -12,6 +12,6 @@ namespace EntBioZ.Modelo.Seguridad
         public int id_vista { get; set; }
         public string ventana { get; set; }
         public string url { get; set; }
-        public bool selected { get; set; }
+        public string selected { get; set; }
     }
 }
