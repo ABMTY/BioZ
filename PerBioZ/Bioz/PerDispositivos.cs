@@ -94,7 +94,7 @@ namespace PerBioZ.Bioz
             try
             {
                 AbrirConexion();
-                var sql = "execute procedure dml_dispositivo (?,NULL,?,?,?);";
+                var sql = "execute procedure dml_dispositivo (?,NULL,?,?,?,?,?);";
                 using (var cmd = new IfxCommand(sql, Conexion))
                 {
                     cmd.Connection = Conexion;
@@ -135,7 +135,7 @@ namespace PerBioZ.Bioz
             try
             {
                 AbrirConexion();
-                var sql = "execute procedure dml_dispositivo (?,?,?,?);";
+                var sql = "execute procedure dml_dispositivo (?,?,?,?,?,?,?);";
                 using (var cmd = new IfxCommand(sql, Conexion))
                 {
                     cmd.Connection = Conexion;
@@ -177,7 +177,7 @@ namespace PerBioZ.Bioz
             try
             {
                 AbrirConexion();
-                var sql = "execute procedure dml_dispositivo (?,?,NULL,NULL);";
+                var sql = "execute procedure dml_dispositivo (?,?,NULL,NULL,NULL,NULL,NULL);";
                 using (var cmd = new IfxCommand(sql, Conexion))
                 {
                     cmd.Connection = Conexion;
