@@ -29,6 +29,7 @@ namespace PerBioZ.Bioz
                         entidad = new EntDispositivo();
                         entidad.id_dispositivo = int.Parse(dr["id_dispositivo"].ToString());
                         entidad.nombre_dispositivo = dr["nombre_dispositivo"].ToString();
+                        entidad.ip_dispositivo = dr["ip_dispositivo"].ToString();
                         entidad.numero_serie = dr["numero_serie"].ToString();
                         entidad.puerto = dr["puerto"].ToString();
                         entidad.id_sucursal = int.Parse(dr["id_sucursal"].ToString());
@@ -69,7 +70,7 @@ namespace PerBioZ.Bioz
                         entidad.id_dispositivo = int.Parse(dr["id_dispositivo"].ToString());
                         entidad.nombre_dispositivo = dr["nombre_dispositivo"].ToString();
                         entidad.numero_serie = dr["numero_serie"].ToString();
-                        entidad.nombre_dispositivo = dr["ip_dispositivo"].ToString();
+                        entidad.ip_dispositivo = dr["ip_dispositivo"].ToString();
                         entidad.puerto = dr["puerto"].ToString();
                         entidad.id_sucursal = int.Parse(dr["id_sucursal"].ToString());
                         entidad.desc_sucursal = dr["desc_sucursal"].ToString();
