@@ -19,7 +19,7 @@ function listar() {
         ],
         "columnDefs": [{
             "targets": 0, "data": "id_departamento", "render": function (data, type, full, meta) {
-                return "<button type='button' title='Editar' id='btn_mas" + data + "' class='btn btn-warning' onclick='verDetalle(" + data + ")'  ><i class='fa fa-edit'></i></button>"
+                return "<button type='button' title='Editar' id='btn_mas" + data + "' class='btn btn-warning' onclick='verDetalle(" + data + ")'  ><i class='fa fa-edit'></i></button> <button type='button' title='Eliminar' id='btn_mas" + data + "' class='btn btn-danger' onclick='eliminar(" + data + ")'  ><i class='fa fa-trash'></i></button>"
             }
         }]
     });
@@ -100,4 +100,24 @@ function verDetalle(id_departamento) {
             console.log("Error => " + error);
         }
     })
+}
+
+//Función Eliminar la Empresa
+function eliminar(id_empresa) {
+    $.ajax({
+        url: "/Departamento/Eliminar/" + id_empresa,
+        async: true,
+        beforeSend: function () { },
+        dataType: "json",
+        data: JSON.stringify(),
+        cache: false,
+        type: "POST",
+        contentType: "application/json; charset=utf-8",
+        success: function () {
+            swal({ title: "Departamento", text: "Eliminado Correctamente", type: "success" }, function () { listar(); });
+        },
+        error: function (request, status, error) {
+            swal({ title: "Error", text: "al eliminar el Departamento", type: "error" }, function () { listar(); });
+        }
+    });
 }
