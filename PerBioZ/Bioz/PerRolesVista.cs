@@ -160,7 +160,7 @@ namespace PerBioZ.Bioz
             try
             {
                 AbrirConexion();
-                var sql = "execute procedure dml_roles_vista (?,?,NULL,NULL);";
+                var sql = "execute procedure dml_roles_vista (?,NULL,?,NULL);";
                 using (var cmd = new IfxCommand(sql, Conexion))
                 {
                     cmd.Connection = Conexion;

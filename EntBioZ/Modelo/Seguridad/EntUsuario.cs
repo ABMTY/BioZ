@@ -14,5 +14,6 @@ namespace EntBioZ.Modelo.Seguridad
         public string password { get; set; }
         public bool activo { get; set; }
         public int id_rol { get; set; }
+        public string desc_rol { get; set; }
     }
 }

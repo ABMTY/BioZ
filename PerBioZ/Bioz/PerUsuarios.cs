@@ -20,7 +20,7 @@ namespace PerBioZ.Bioz
             {
                 AbrirConexion();
                 StringBuilder CadenaSql = new StringBuilder();
-                var sql = "SELECT id_usuario, usuario, password, id_rol FROM informix.usuarios";
+                var sql = "SELECT a.id_usuario, a.usuario, a.password, a.id_rol, b.desc_rol FROM informix.usuarios a left join informix.roles b on a.id_rol=b.id_rol";
                 IfxCommand cmd = new IfxCommand(sql, Conexion);
                 using (var dr = cmd.ExecuteReader())
                 {
@@ -31,6 +31,7 @@ namespace PerBioZ.Bioz
                         entidad.usuario = dr["usuario"].ToString();
                         entidad.password = dr["password"].ToString();
                         entidad.id_rol = int.Parse(dr["id_rol"].ToString());
+                        entidad.desc_rol = dr["desc_rol"].ToString();
                         Lista.Add(entidad);
                     }
                 }
@@ -55,7 +56,7 @@ namespace PerBioZ.Bioz
                 StringBuilder CadenaSql = new StringBuilder();
 
                 IfxCommand cmd = new IfxCommand(string.Empty, Conexion);
-                cmd.CommandText = "SELECT id_usuario, usuario, password, id_rol FROM informix.usuarios WHERE id_usuario=?";
+                cmd.CommandText = "SELECT a.id_usuario, a.usuario, a.password, a.id_rol, b.desc_rol FROM informix.usuarios a left join informix.roles b on a.id_rol=b.id_rol WHERE a.id_usuario=?";
                 cmd.Parameters.Add(new IfxParameter()).Value = id;
                 using (var dr = cmd.ExecuteReader())
                 {
@@ -66,6 +67,7 @@ namespace PerBioZ.Bioz
                         entidad.usuario = dr["usuario"].ToString();
                         entidad.password = dr["password"].ToString();
                         entidad.id_rol = int.Parse(dr["id_rol"].ToString());
+                        entidad.desc_rol = dr["desc_rol"].ToString();
                     }
                 }
             }
