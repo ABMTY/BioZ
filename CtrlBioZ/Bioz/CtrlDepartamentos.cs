@@ -37,9 +37,9 @@ namespace CtrlBioZ.Bioz
             return PerDepartamentos.Update(Entidad);
         }
 
-        //public bool Eliminar(int Id_Vistas)
-        //{
-        //    return PerVistas.Eliminar(Id_Vistas);
-        //}
+        public bool Eliminar(int Id_Vistas)
+        {
+            return PerDepartamentos.Eliminar(Id_Vistas);
+        }
     }
 }

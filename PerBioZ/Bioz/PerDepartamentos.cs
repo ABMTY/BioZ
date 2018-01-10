@@ -150,5 +150,32 @@ namespace PerBioZ.Bioz
             return respuesta;
 
         }
+        public bool Eliminar(int id)
+        {
+            bool respuesta = false;
+            try
+            {
+                AbrirConexion();
+                var sql = "execute procedure dml_departamentos (?,?,NULL);";
+                using (var cmd = new IfxCommand(sql, Conexion))
+                {
+                    cmd.Connection = Conexion;
+                    cmd.Parameters.Add(new IfxParameter()).Value = "DELETE";
+                    cmd.Parameters.Add(new IfxParameter()).Value = id;
+                    cmd.ExecuteNonQuery();
+                }
+                respuesta = true;
+            }
+            catch (Exception exc)
+            {
+                throw exc;
+            }
+            finally
+            {
+                CerrarConexion();
+            }
+            return respuesta;
+
+        }
     }
 }
