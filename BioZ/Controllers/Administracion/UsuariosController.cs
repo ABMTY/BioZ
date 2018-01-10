@@ -54,7 +54,7 @@ namespace BioZ.Controllers.Administracion
             json.MaxJsonLength = 500000000;
             return json;
         }
-        public ActionResult EliminarVista(int id)
+        public ActionResult Eliminar(int id)
         {
             try
             {
