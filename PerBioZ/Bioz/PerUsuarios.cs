@@ -132,7 +132,7 @@ namespace PerBioZ.Bioz
                 {
                     cmd.Connection = Conexion;
                     cmd.Parameters.Add(new IfxParameter()).Value = "UPDATE";
-                    cmd.Parameters.Add(new IfxParameter()).Value = entidad.id_rol;
+                    cmd.Parameters.Add(new IfxParameter()).Value = entidad.id_usuario;
                     cmd.Parameters.Add(new IfxParameter()).Value = entidad.usuario;
                     cmd.Parameters.Add(new IfxParameter()).Value = entidad.password;
                     cmd.Parameters.Add(new IfxParameter()).Value = entidad.id_rol;
@@ -153,6 +153,33 @@ namespace PerBioZ.Bioz
                 ApplicationException excepcion = new ApplicationException("Se genero un error de aplicación con el siguiente mensaje: " + ex.Message, ex);
                 excepcion.Source = "Update Usuarios";
                 throw excepcion;
+            }
+            finally
+            {
+                CerrarConexion();
+            }
+            return respuesta;
+
+        }
+        public bool Eliminar(int id)
+        {
+            bool respuesta = false;
+            try
+            {
+                AbrirConexion();
+                var sql = "execute procedure dml_usuarios (?,?,NULL,NULL,NULL);";
+                using (var cmd = new IfxCommand(sql, Conexion))
+                {
+                    cmd.Connection = Conexion;
+                    cmd.Parameters.Add(new IfxParameter()).Value = "DELETE";
+                    cmd.Parameters.Add(new IfxParameter()).Value = id;
+                    cmd.ExecuteNonQuery();
+                }
+                respuesta = true;
+            }
+            catch (Exception exc)
+            {
+                throw exc;
             }
             finally
             {

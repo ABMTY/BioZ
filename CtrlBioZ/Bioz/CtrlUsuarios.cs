@@ -37,9 +37,9 @@ namespace CtrlBioZ.Bioz
             return PerUsuarios.Update(Entidad);
         }
 
-        //public bool Eliminar(int Id_Usuarios)
-        //{
-        //    return PerUsuarios.Eliminar(Id_Usuarios);
-        //}
+        public bool Eliminar(int Id_Usuarios)
+        {
+            return PerUsuarios.Eliminar(Id_Usuarios);
+        }
     }
 }
