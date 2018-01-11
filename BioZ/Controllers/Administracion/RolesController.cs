@@ -12,6 +12,7 @@ namespace BioZ.Controllers.Administracion
     {
         CtrlRoles control = new CtrlRoles();
         CtrlRolesVista ctrlRolesVista = new CtrlRolesVista();
+        CtrlVistas ctrlVistas = new CtrlVistas();
         // GET: Roles
         public ActionResult Index()
         {
@@ -76,6 +77,61 @@ namespace BioZ.Controllers.Administracion
             var serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
             serializer.MaxJsonLength = 500000000;
             var json = Json(new { data = Rol }, JsonRequestBehavior.AllowGet);
+            json.MaxJsonLength = 500000000;
+            return json;
+        }
+
+        public ActionResult EliminarRol(int id)
+        {
+            try
+            {
+                ctrlRolesVista.Eliminar(id);
+                var r = control.Eliminar(id);
+
+                if (!r)
+                {
+                    return Json("Error al realizar la operacion", JsonRequestBehavior.AllowGet);
+                }
+
+                return Json("Realizado", JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return View("Error", new HandleErrorInfo(ex, "Vistas", "Eliminar"));
+            }
+        }
+
+        public ActionResult GetRolesVistas(int id)
+        {
+            var Vistas = ctrlVistas.ObtenerTodos();
+            var Rol = control.Obtener(id);
+
+            //List<EntVistas> ListaentVistas = new List<EntVistas>();
+            //EntVistas entVistas = new EntVistas();
+            bool bandera = false;
+
+            foreach (var itemVista in Vistas)
+            {
+                foreach (var itemRolVista in Rol.rolVistas)
+                {
+
+                    if (itemRolVista.id_vista == itemVista.id_vista)
+                    {
+                        itemVista.selected = "checked='checked'" + "&"+ itemVista.id_vista;
+                        bandera = true;
+                    }
+                }
+
+                if (bandera == false)
+                {
+                    itemVista.selected = " &" + itemVista.id_vista.ToString();
+                }
+                bandera = false;
+            }
+
+            var serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
+            serializer.MaxJsonLength = 500000000;
+            var json = Json(new { data = Vistas }, JsonRequestBehavior.AllowGet);
             json.MaxJsonLength = 500000000;
             return json;
         }

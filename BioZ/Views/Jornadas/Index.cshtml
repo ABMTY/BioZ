@@ -8,10 +8,11 @@
     <div class="col-md-12">
         <div class="box" id="secc_lista">
             <div class="box-header with-border">
-                <h1 class="box-title 0">Lista de Jornadas </h1>
-                <div class="box-tools pull-right">
+                <h1 class="box-title 0">Lista de Jornadas 
                     <button class="btn btn-success" onclick="Agregar()"><i class="fa fa-plus-circle"></i> Agregar</button>
-                </div>
+                </h1>
+                @*<div class="box-tools pull-right">                    
+                </div>*@
             </div>
             <!-- /.box-header -->
             <!-- centro -->
@@ -20,14 +21,14 @@
                     <table id="Lista_Jornadas" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0">
                         <thead>
                             <tr>
+                                <th width="50px"></th>
+                                <th width="50px"></th>
                                 <th>&nbsp; &nbsp; &nbsp;No.</th>
                                 <th>&nbsp; &nbsp; &nbsp;Nombre</th>
                                 <th>&nbsp; &nbsp; &nbsp;Hora Entrada</th>
                                 <th>&nbsp; &nbsp; &nbsp;Hora Salida</th>
                                 <th>&nbsp; &nbsp; &nbsp;Horas de Trabajo</th>
-                                <th>&nbsp; &nbsp; &nbsp;Descanso</th>                               
-                                <th width="50px"></th>
-                                <th width="50px"></th>
+                                @*<th>&nbsp; &nbsp; &nbsp;Descanso</th>*@                                                               
                             </tr>
                         </thead>
                     </table>
@@ -60,64 +61,53 @@
                                         <label class="control-label" for="">Hora de Entrada *</label>
                                         <div>
                                             <input type="text" id="txt_HoraEntrada" class="form-control">
+                                        </div>                                        
                                         </div>
                                     </div>
                                     <div class="form-group col-md-12">
                                         <label class="control-label" for="">Hora de Salida *</label>
                                         <div>
                                             <input type="text" id="txt_HoraSalida" class="form-control">
-                                        </div>
+                                        </div>                                        
                                     </div>
                                 </div>
                                 <div class="col-lg-6">
                                     <div class="form-group col-md-12">
-                                        <label class="control-label" for="">Domingo</label>
-                                        <div class="checkbox-inline">
-                                            <input type="checkbox" id="chk_domingo" class="form-control">
-                                        </div>
+                                        <input type="checkbox" id="chk_domingo" >&nbsp; &nbsp;
+                                        <label class="control-label" for="">Domingo</label>                                       
                                     </div>
-                                    <div class="form-group col-md-12">
+                                    <div class="form-group col-md-12">                                        
+                                        <input type="checkbox" id="chk_lunes">&nbsp; &nbsp;                                        
                                         <label class="control-label" for="">Lunes</label>
-                                        <div class="checkbox-inline">
-                                            <input type="checkbox" id="chk_lunes" class="form-control">
-                                        </div>
                                     </div>
                                     <div class="form-group col-md-12">
-                                        <label class="control-label" for="">Martes</label>
-                                        <div class="checkbox-inline">
-                                            <input type="checkbox" id="chk_martes" class="form-control">
-                                        </div>
+                                        <input type="checkbox" id="chk_martes">&nbsp; &nbsp;
+                                        <label class="control-label" for="">Martes</label>                                        
+                                    </div>
+                                    <div class="form-group col-md-12">                                                                              
+                                        <input type="checkbox" id="chk_miercoles">&nbsp; &nbsp;
+                                        <label class="control-label" for="">Miercoles</label>  
                                     </div>
                                     <div class="form-group col-md-12">
-                                        <label class="control-label" for="">Miercoles</label>
-                                        <div class="checkbox-inline">
-                                            <input type="checkbox" id="chk_miercoles" class="form-control">
-                                        </div>
+                                        <input type="checkbox" id="chk_jueves">&nbsp; &nbsp;
+                                        <label class="control-label" for="">Jueves</label>                                        
                                     </div>
                                     <div class="form-group col-md-12">
-                                        <label class="control-label" for="">Jueves</label>
-                                        <div class="checkbox-inline">
-                                            <input type="checkbox" id="chk_jueves" class="form-control">
-                                        </div>
+                                        <input type="checkbox" id="chk_viernes">&nbsp; &nbsp;
+                                        <label class="control-label" for="">Viernes</label>                                                                                
                                     </div>
                                     <div class="form-group col-md-12">
-                                        <label class="control-label" for="">Viernes</label>
-                                        <div class="checkbox-inline">
-                                            <input type="checkbox" id="chk_viernes" class="form-control">
-                                        </div>
-                                    </div>
-                                    <div class="form-group col-md-12">
+                                        <input type="checkbox" id="chk_sabado">&nbsp; &nbsp;
                                         <label class="control-label" for="">Sabado</label>
-                                        <div class="checkbox-inline">
-                                            <input type="checkbox" id="chk_sabado" class="form-control">
-                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="Cancelar()">Cancelar</button>
-                            <button type="button" class="btn btn-primary waves-effect waves-light validate" data-dismiss="modal" onclick="Guardar()">Guardar</button>
+                        <div class="pull-left">
+                            <div class="modal-footer">                                
+                                <button type="button" class="btn btn-primary waves-effect waves-light validate" data-dismiss="modal" onclick="Guardar()">Guardar</button>
+                                <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="Cancelar()">Cancelar</button>
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -141,10 +131,12 @@
                         </form>
 
                     </div>
-                    <div class="modal-footer">
-                        <button class="btn btn-primary" onclick="Eliminar(); return false;"><i class="fa fa-check" aria-hidden="true"></i> SÍ</button>
-                        <button class="btn btn-danger" onclick="Cancelar()" ; return false;" data-dismiss="modal"><i class="fa fa-times" aria-hidden="true"></i> NO</button>
-                    </div>
+                    @*<div class="pull-left">*@
+                        <div class="modal-footer">
+                            <button class="btn btn-primary" onclick="Eliminar(); return false;"><i class="fa fa-check" aria-hidden="true"></i> SÍ</button>
+                            <button class="btn btn-danger" onclick="Cancelar()" ; return false;" data-dismiss="modal"><i class="fa fa-times" aria-hidden="true"></i> NO</button>
+                        </div>
+                    @*</div>*@
                 </div>
             </div>
         </div>
@@ -154,8 +146,7 @@
 
     $(document).ready(function () {
         $('#Lista_Jornadas').DataTable();
-        //Cargar_Jornadas();
-        Cargar_Roles();
+        Cargar_Jornadas();      
     });
 
     function Agregar() {
@@ -168,16 +159,17 @@
         $("#secc_add").hide();
     }
     function Limpiar() {
-        $("#txt_Jornada").html("");
-        $("#txt_HoraEntrada").html("");
-        $("#txt_HoraSalida").html("");        
-        $("#chk_domingo").val("");
-        $("#chk_lunes").val("");
-        $("#chk_martes").val("");
-        $("#chk_miercoles").val("");
-        $("#chk_jueves").val("");
-        $("#chk_viernes").val("");
-        $("#chk_sabado").val("");
+        $("#id").val("");
+        $("#txt_Jornada").val("");
+        $("#txt_HoraEntrada").val("");
+        $("#txt_HoraSalida").val("");
+        $("#chk_domingo").prop('checked', false);
+        $("#chk_lunes").prop('checked', false);
+        $("#chk_martes").prop('checked', false);
+        $("#chk_miercoles").prop('checked', false);
+        $("#chk_jueves").prop('checked', false);
+        $("#chk_viernes").prop('checked', false);
+        $("#chk_sabado").prop('checked', false);       
     }
 
     function Cargar_Jornadas() {
@@ -185,56 +177,38 @@
             destroy: true,
             searching: true,
             "ajax": {
-                "url": "/Jornadas/ObtenerJornadas/",
+                "url": "/Jornadas/GetJornadas/",
                 "type": "GET"
             },
             "columns": [
-                { "data": "id_Jornada" },
-                { "data": "Jornada" },
-                { "data": "rol" },
-                { "data": "activo" },
                 { "defaultContent": "<i>..</i>" },
-                { "defaultContent": "<i>..</i>" }
+                { "defaultContent": "<i>..</i>" },
+                { "data": "id_jornada" },
+                { "data": "desc_jornada" },
+                { "data": "hora_entrada" },
+                { "data": "hora_salida" },
+                { "data": "total_horas" },
             ],
             "columnDefs": [{
-                "targets": 4, "data": "id_Jornada", "render": function (data, type, full, meta) {
+                "targets": 0, "data": "id_jornada", "render": function (data, type, full, meta) {
                     return "<button type='button' title='Editar' id='btn_mas" + data + "' class='btn btn-warning' onclick='Editar(" + data + ")'  ><i class='fa fa-edit'></i></button> "
                 }
             },
                 {
-                    "targets": 5, "data": "id_Jornada", "render": function (data, type, full, meta) {
+                    "targets": 1, "data": "id_jornada", "render": function (data, type, full, meta) {
                         return "<button type='button' title='Eliminar' id='btn_borrar" + data + "' class='btn btn-danger' onclick='Confirma_Eliminar(" + data + ")'><i class='fa fa-trash'></i></button> "
                     }
                 }]
         });
     }
-    function Cargar_Roles() {
-
-        $("#ddl_Roles").html("");
-
-        $.ajax({
-            url: "/Roles/ObtenerRoles/",
-            async: true,
-            dataType: "json",
-            type: "POST",
-            contentType: "application/json; charset=utf-8",
-            success: function (data) {
-                $.each(data.data, function (i, Item) {
-                    $("#ddl_Roles").append("<option value='" + Item.id_rol + "'>" + Item.desc_rol + "</option>");
-                });
-            },
-            error: function (request, status, error) {
-                console.log("error" + error);
-            }
-        });
-    }
+    
     function Editar(Id_Jornada) {
         $("#FormEditar").show();
         $.ajax({
-            url: "/Jornadas/ObtenerJornadaID/",
+            url: "/Jornadas/GetJornada/",
             async: true,
             dataType: "json",
-            data: '{ Id_Jornada:' + Id_Jornada + '}',
+            data: '{ id:' + Id_Jornada + '}',
             type: "POST",
             contentType: "application/json; charset=utf-8",
             success: function (data) {
@@ -242,23 +216,36 @@
                 $("#secc_lista").hide();
                 $("#secc_add").show();
                 console.log(data);
-                $("#id").html(data.data.id_Jornada);
-                $("#txt_Jornada").val(data.data.Jornada);
-                $("#txt_Contraseña").val(data.data.password);
-                $("#chk_activo").val(data.data.activo);
-                $("#ddl_Roles option[value='" + data.data.id_rol + "']").prop('selected', true);
+                $("#id").val(Id_Jornada);               
+                $("#txt_Jornada").val(data.data.desc_jornada);
+                $("#txt_HoraEntrada").val(data.data.hora_entrada);
+                $("#txt_HoraSalida").val(data.data.hora_salida);
+                $("#chk_domingo").prop('checked', data.data.domingo);                
+                $("#chk_lunes").prop('checked', data.data.lunes);
+                $("#chk_martes").prop('checked', data.data.martes);
+                $("#chk_miercoles").prop('checked', data.data.miercoles);
+                $("#chk_jueves").prop('checked', data.data.jueves);
+                $("#chk_viernes").prop('checked', data.data.viernes);
+                $("#chk_sabado").prop('checked', data.data.sabado);
             },
             error: function (request, status, error) {
                 console.log("error" + error);
             }
         });
     }
-    function Guardar() {
+    function Guardar() {        
         Jornada = {
-            "Jornada": $("#txt_Jornada").val(),
-            "password": $("#txt_Contraseña").val(),
-            "activo": $("#chk_activo").is(':checked'),
-            "id_rol": $("#ddl_Roles").val(),
+            "id_jornada": $("#id").val() == "" ? 0 : $("#id").val(),
+            "desc_jornada": $("#txt_Jornada").val(),
+            "hora_entrada": $("#txt_HoraEntrada").val(),
+            "hora_salida": $("#txt_HoraSalida").val(),
+            "domingo": $("#chb_lunes").is(':checked'),
+            "lunes": $("#chk_lunes").is(':checked'),
+            "martes": $("#chk_martes").is(':checked'),
+            "miercoles": $("#chk_miercoles").is(':checked'),
+            "jueves": $("#chk_jueves").is(':checked'),
+            "viernes": $("#chk_viernes").is(':checked'),
+            "sabado": $("#chk_sabado").is(':checked')
         };
         console.log(Jornada),
         $.ajax(
@@ -283,15 +270,15 @@
     function Confirma_Eliminar(Id_Jornada) {
         $('#Form_DeleteTipo').modal('show');
         $("#lbl_msjborrar").html("Se va a eliminar la Jornada No. " + Id_Jornada + ". <br/>¿Desea Continuar?");
-        $("#txt_idborrar").text(id_borrar);
+        $("#txt_idborrar").text(Id_Jornada);
     }
     function Eliminar() {
         Id_Jornada = $("#txt_idborrar").text();
         $.ajax({
-            url: "/Jornadas/EliminarJornada/",
+            url: "/Jornadas/Eliminar/",
             async: true,
             dataType: "json",
-            data: '{id_Jornada:' + Id_Jornada + '}',
+            data: '{id:' + Id_Jornada + '}',
             type: "POST",
             contentType: "application/json; charset=utf-8",
             success: function (data) {
