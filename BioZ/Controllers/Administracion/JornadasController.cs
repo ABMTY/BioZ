@@ -67,7 +67,7 @@ namespace BioZ.Controllers.Administracion
             return json;
         }
 
-        public ActionResult EliminarVista(int id)
+        public ActionResult Eliminar(int id)
         {
             try
             {

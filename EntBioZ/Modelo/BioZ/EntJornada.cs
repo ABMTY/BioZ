@@ -20,6 +20,7 @@ namespace EntBioZ.Modelo.BioZ
         public bool jueves { get; set; }
         public bool viernes { get; set; }
         public bool sabado { get; set; }
-       
+        public string total_horas { get; set; }
+
     }
 }
