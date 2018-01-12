@@ -31,9 +31,11 @@ namespace PerBioZ.Bioz
                         entidad.direccion = dr["direccion"].ToString();
                         entidad.estado = dr["estado"].ToString();
                         entidad.municipio = dr["municipio"].ToString();
-                        entidad.imagen = (byte[])dr["imagen"];
-                        entidad.imgBase64 = "data:image/png;base64," + Convert.ToBase64String((byte[])dr["imagen"]);
-
+                        if (dr["imagen"].ToString() != string.Empty)
+                        {
+                            entidad.imagen = (byte[])dr["imagen"];
+                            entidad.imgBase64 = "data:image/png;base64," + Convert.ToBase64String((byte[])dr["imagen"]);
+                        }
                         Lista.Add(entidad);
                     }
                 }
@@ -70,8 +72,11 @@ namespace PerBioZ.Bioz
                         entidad.direccion = dr["direccion"].ToString();
                         entidad.estado = dr["estado"].ToString();
                         entidad.municipio = dr["municipio"].ToString();
-                        entidad.imagen = (byte[])dr["imagen"];
-                        entidad.imgBase64 = "data:image/png;base64," + Convert.ToBase64String((byte[])dr["imagen"]);
+                        if (dr["imagen"].ToString() != string.Empty)
+                        {
+                            entidad.imagen = (byte[])dr["imagen"];
+                            entidad.imgBase64 = "data:image/png;base64," + Convert.ToBase64String((byte[])dr["imagen"]);
+                        }
                     }
                 }
             }
@@ -101,7 +106,7 @@ namespace PerBioZ.Bioz
                     cmd.Parameters.Add(new IfxParameter()).Value = entidad.direccion;
                     cmd.Parameters.Add(new IfxParameter()).Value = entidad.estado;
                     cmd.Parameters.Add(new IfxParameter()).Value = entidad.municipio;
-                    cmd.Parameters.Add(new IfxParameter()).Value = entidad.imagen;
+                    cmd.Parameters.Add(new IfxParameter()).Value = entidad.imgBase64;
                     cmd.ExecuteNonQuery();
                 }
                 respuesta = true;
@@ -143,7 +148,7 @@ namespace PerBioZ.Bioz
                     cmd.Parameters.Add(new IfxParameter()).Value = entidad.direccion;
                     cmd.Parameters.Add(new IfxParameter()).Value = entidad.estado;
                     cmd.Parameters.Add(new IfxParameter()).Value = entidad.municipio;
-                    cmd.Parameters.Add(new IfxParameter()).Value = entidad.imagen;
+                    cmd.Parameters.Add(new IfxParameter()).Value = entidad.imgBase64;
                     cmd.ExecuteNonQuery();
                 }
                 respuesta = true;

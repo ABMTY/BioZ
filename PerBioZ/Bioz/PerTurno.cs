@@ -19,7 +19,7 @@ namespace PerBioZ.Bioz
             {
                 AbrirConexion();
                 StringBuilder CadenaSql = new StringBuilder();
-                var sql = "SELECT id_turno, desc_turno, hora_entrada, hora_salida,(hora_salida-hora_entrada) as total_horas FROM turno";
+                var sql = "SELECT id_turno, desc_turno, TO_CHAR(hora_entrada, '%H:%M') as hora_entrada,TO_CHAR(hora_salida, '%H:%M') as hora_salida,(hora_salida-hora_entrada) as total_horas FROM turno";
                 IfxCommand cmd = new IfxCommand(sql, Conexion);
                 using (var dr = cmd.ExecuteReader())
                 {
@@ -55,7 +55,7 @@ namespace PerBioZ.Bioz
                 StringBuilder CadenaSql = new StringBuilder();
 
                 IfxCommand cmd = new IfxCommand(string.Empty, Conexion);
-                cmd.CommandText = "SELECT id_turno, desc_turno, hora_entrada, hora_salida,(hora_salida-hora_entrada) as total_horas FROM turno WHERE id_turno=?";
+                cmd.CommandText = "SELECT id_turno, desc_turno, TO_CHAR(hora_entrada, '%H:%M') as hora_entrada,TO_CHAR(hora_salida, '%H:%M') as hora_salida,(hora_salida-hora_entrada) as total_horas FROM turno WHERE id_turno=?";
                 cmd.Parameters.Add(new IfxParameter()).Value = id;
                 using (var dr = cmd.ExecuteReader())
                 {
