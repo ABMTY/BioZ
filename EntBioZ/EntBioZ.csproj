@@ -60,6 +60,7 @@
     <Compile Include="Modelo\BioZ\EntEnrolamiento.cs" />
     <Compile Include="Modelo\BioZ\EntJornada.cs" />
     <Compile Include="Modelo\BioZ\EntSucursal.cs" />
+    <Compile Include="Modelo\BioZ\EntTurno.cs" />
     <Compile Include="Modelo\BioZ\fechaHoraBioZ.cs" />
     <Compile Include="Modelo\Info\DeviceTimeInfo.cs" />
     <Compile Include="Modelo\Info\FingerUser.cs" />

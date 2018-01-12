@@ -54,6 +54,7 @@
     <Compile Include="Bioz\PerRoles.cs" />
     <Compile Include="Bioz\PerRolesVista.cs" />
     <Compile Include="Bioz\PerSucursales.cs" />
+    <Compile Include="Bioz\PerTurno.cs" />
     <Compile Include="Bioz\PerUsuarios.cs" />
     <Compile Include="Bioz\PerVistas.cs" />
     <Compile Include="Class1.cs" />

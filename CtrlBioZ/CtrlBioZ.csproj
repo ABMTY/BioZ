@@ -48,6 +48,7 @@
     <Compile Include="Bioz\CtrlRoles.cs" />
     <Compile Include="Bioz\CtrlRolesVista.cs" />
     <Compile Include="Bioz\CtrlSucursales.cs" />
+    <Compile Include="Bioz\CtrlTurno.cs" />
     <Compile Include="Bioz\CtrlUsuarios.cs" />
     <Compile Include="Bioz\CtrlVistas.cs" />
     <Compile Include="Class1.cs" />
