@@ -199,6 +199,7 @@
     <Compile Include="Controllers\Administracion\DispositivosController.cs" />
     <Compile Include="Controllers\Administracion\JornadasController.cs" />
     <Compile Include="Controllers\Administracion\RolesController.cs" />
+    <Compile Include="Controllers\Administracion\TurnosController.cs" />
     <Compile Include="Controllers\Administracion\UsuariosController.cs" />
     <Compile Include="Controllers\Administracion\VistasController.cs" />
     <Compile Include="Controllers\AsistenciaController.cs" />
@@ -897,6 +898,7 @@
     <Content Include="Views\Usuarios\Index.cshtml" />
     <Content Include="Views\Dispositivos\Index.cshtml" />
     <Content Include="Views\Jornadas\Index.cshtml" />
+    <Content Include="Views\Turnos\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
