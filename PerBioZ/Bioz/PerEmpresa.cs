@@ -3,6 +3,8 @@ using IBM.Data.Informix;
 using PerBioZ.General;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -106,7 +108,7 @@ namespace PerBioZ.Bioz
                     cmd.Parameters.Add(new IfxParameter()).Value = entidad.direccion;
                     cmd.Parameters.Add(new IfxParameter()).Value = entidad.estado;
                     cmd.Parameters.Add(new IfxParameter()).Value = entidad.municipio;
-                    cmd.Parameters.Add(new IfxParameter()).Value = entidad.imgBase64;
+                    cmd.Parameters.Add(new IfxParameter()).Value = Convert.FromBase64String(entidad.imgBase64);
                     cmd.ExecuteNonQuery();
                 }
                 respuesta = true;
@@ -134,7 +136,7 @@ namespace PerBioZ.Bioz
         }
         public bool Update(EntEmpresa entidad)
         {
-            bool respuesta = false;
+            bool respuesta = false;            
             try
             {
                 AbrirConexion();
@@ -148,12 +150,12 @@ namespace PerBioZ.Bioz
                     cmd.Parameters.Add(new IfxParameter()).Value = entidad.direccion;
                     cmd.Parameters.Add(new IfxParameter()).Value = entidad.estado;
                     cmd.Parameters.Add(new IfxParameter()).Value = entidad.municipio;
-                    cmd.Parameters.Add(new IfxParameter()).Value = entidad.imgBase64;
+                    cmd.Parameters.Add(new IfxParameter()).Value = Convert.FromBase64String(entidad.imgBase64);
                     cmd.ExecuteNonQuery();
                 }
                 respuesta = true;
 
-            }
+            }      
 
             catch (InvalidCastException ex)
             {
@@ -173,7 +175,7 @@ namespace PerBioZ.Bioz
             }
             return respuesta;
 
-        }
+        }       
     }
  
 }
