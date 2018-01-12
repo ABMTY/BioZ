@@ -18,5 +18,6 @@ namespace EntBioZ.Modelo.BioZ
         public string desc_departamento { get; set; }
         public string desc_sucursal { get; set; }
         public string nombre_completo { get { return nombre + " " + ap_paterno + " " + ap_materno; }  }
+        public string imagen { get; set; }
     }
 }

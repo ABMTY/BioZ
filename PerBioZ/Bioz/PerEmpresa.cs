@@ -19,7 +19,7 @@ namespace PerBioZ.Bioz
             {
                 AbrirConexion();
                 StringBuilder CadenaSql = new StringBuilder();
-                var sql = "SELECT id_empresa, razon_social, direccion, estado, municipio FROM informix.empresa";
+                var sql = "SELECT id_empresa, razon_social, direccion, estado, municipio,imagen FROM informix.empresa";
                 IfxCommand cmd = new IfxCommand(sql, Conexion);                
                 using (var dr = cmd.ExecuteReader())
                 {
@@ -31,6 +31,8 @@ namespace PerBioZ.Bioz
                         entidad.direccion = dr["direccion"].ToString();
                         entidad.estado = dr["estado"].ToString();
                         entidad.municipio = dr["municipio"].ToString();
+                        entidad.imagen = dr["imagen"].ToString();
+                       
                         Lista.Add(entidad);
                     }
                 }
@@ -55,7 +57,7 @@ namespace PerBioZ.Bioz
                 StringBuilder CadenaSql = new StringBuilder();
                 
                 IfxCommand cmd = new IfxCommand(string.Empty, Conexion);
-                cmd.CommandText = "SELECT id_empresa, razon_social, direccion, estado, municipio FROM empresa WHERE id_empresa=?";
+                cmd.CommandText = "SELECT id_empresa, razon_social, direccion, estado, municipio,imagen FROM empresa WHERE id_empresa=?";
                 cmd.Parameters.Add(new IfxParameter()).Value = id;
                 using (var dr = cmd.ExecuteReader())
                 {
@@ -66,7 +68,8 @@ namespace PerBioZ.Bioz
                         entidad.razon_social = dr["razon_social"].ToString();
                         entidad.direccion = dr["direccion"].ToString();
                         entidad.estado = dr["estado"].ToString();
-                        entidad.municipio = dr["municipio"].ToString();                        
+                        entidad.municipio = dr["municipio"].ToString();
+                        entidad.imagen = dr["imagen"].ToString();
                     }
                 }
             }
@@ -87,7 +90,7 @@ namespace PerBioZ.Bioz
             try
             {
                 AbrirConexion();
-                var sql = "execute procedure dml_empresa (?,NULL,?,?,?,?);";
+                var sql = "execute procedure dml_empresa (?,NULL,?,?,?,?,?);";
                 using (var cmd = new IfxCommand(sql, Conexion))
                 {
                     cmd.Connection = Conexion;
@@ -127,7 +130,7 @@ namespace PerBioZ.Bioz
             try
             {
                 AbrirConexion();
-                var sql = "execute procedure dml_empresa (?,?,?,?,?,?);";
+                var sql = "execute procedure dml_empresa (?,?,?,?,?,?,?);";
                 using (var cmd = new IfxCommand(sql, Conexion))
                 {
                     cmd.Connection = Conexion;
