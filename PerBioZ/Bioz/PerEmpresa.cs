@@ -99,6 +99,7 @@ namespace PerBioZ.Bioz
                     cmd.Parameters.Add(new IfxParameter()).Value = entidad.direccion;
                     cmd.Parameters.Add(new IfxParameter()).Value = entidad.estado;
                     cmd.Parameters.Add(new IfxParameter()).Value = entidad.municipio;
+                    cmd.Parameters.Add(new IfxParameter()).Value = entidad.imagen;
                     cmd.ExecuteNonQuery();
                 }
                 respuesta = true;
@@ -140,6 +141,7 @@ namespace PerBioZ.Bioz
                     cmd.Parameters.Add(new IfxParameter()).Value = entidad.direccion;
                     cmd.Parameters.Add(new IfxParameter()).Value = entidad.estado;
                     cmd.Parameters.Add(new IfxParameter()).Value = entidad.municipio;
+                    cmd.Parameters.Add(new IfxParameter()).Value = entidad.imagen;
                     cmd.ExecuteNonQuery();
                 }
                 respuesta = true;
