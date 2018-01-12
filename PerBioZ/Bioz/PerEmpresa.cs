@@ -31,8 +31,9 @@ namespace PerBioZ.Bioz
                         entidad.direccion = dr["direccion"].ToString();
                         entidad.estado = dr["estado"].ToString();
                         entidad.municipio = dr["municipio"].ToString();
-                        entidad.imagen = dr["imagen"].ToString();
-                       
+                        entidad.imagen = (byte[])dr["imagen"];
+                        entidad.imgBase64 = "data:image/png;base64," + Convert.ToBase64String((byte[])dr["imagen"]);
+
                         Lista.Add(entidad);
                     }
                 }
@@ -69,7 +70,8 @@ namespace PerBioZ.Bioz
                         entidad.direccion = dr["direccion"].ToString();
                         entidad.estado = dr["estado"].ToString();
                         entidad.municipio = dr["municipio"].ToString();
-                        entidad.imagen = dr["imagen"].ToString();
+                        entidad.imagen = (byte[])dr["imagen"];
+                        entidad.imgBase64 = "data:image/png;base64," + Convert.ToBase64String((byte[])dr["imagen"]);
                     }
                 }
             }

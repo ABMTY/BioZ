@@ -33,7 +33,7 @@ namespace BioZ.Controllers.Administracion
             }
             catch (Exception ex)
             {
-                return View("Error", new HandleErrorInfo(ex, "Roles", "Create"));
+                return View("Error", new HandleErrorInfo(ex, "Usuarios", "Create"));
             }
         }
         public ActionResult GetUsuarios()
