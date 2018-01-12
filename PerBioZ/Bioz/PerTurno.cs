@@ -19,7 +19,7 @@ namespace PerBioZ.Bioz
             {
                 AbrirConexion();
                 StringBuilder CadenaSql = new StringBuilder();
-                var sql = "SELECT id_turno, desc_turno, hora_entrada, hora_salida FROM turno";
+                var sql = "SELECT id_turno, desc_turno, hora_entrada, hora_salida,(hora_salida-hora_entrada) as total_horas FROM turno";
                 IfxCommand cmd = new IfxCommand(sql, Conexion);
                 using (var dr = cmd.ExecuteReader())
                 {
@@ -29,8 +29,8 @@ namespace PerBioZ.Bioz
                         entidad.id_turno = int.Parse(dr["id_turno"].ToString());
                         entidad.desc_turno = dr["desc_turno"].ToString();
                         entidad.hora_entrada = dr["hora_entrada"].ToString();
-                        entidad.hora_salida = dr["hora_salida"].ToString();                        
-
+                        entidad.hora_salida = dr["hora_salida"].ToString();
+                        entidad.total_horas = dr["total_horas"].ToString();
                         Lista.Add(entidad);
                     }
                 }
@@ -55,7 +55,7 @@ namespace PerBioZ.Bioz
                 StringBuilder CadenaSql = new StringBuilder();
 
                 IfxCommand cmd = new IfxCommand(string.Empty, Conexion);
-                cmd.CommandText = "SELECT id_turno, desc_turno, hora_entrada, hora_salida FROM turno WHERE id_turno=?";
+                cmd.CommandText = "SELECT id_turno, desc_turno, hora_entrada, hora_salida,(hora_salida-hora_entrada) as total_horas FROM turno WHERE id_turno=?";
                 cmd.Parameters.Add(new IfxParameter()).Value = id;
                 using (var dr = cmd.ExecuteReader())
                 {
@@ -66,6 +66,7 @@ namespace PerBioZ.Bioz
                         entidad.desc_turno = dr["desc_turno"].ToString();
                         entidad.hora_entrada = dr["hora_entrada"].ToString();
                         entidad.hora_salida = dr["hora_salida"].ToString();
+                        entidad.total_horas = dr["total_horas"].ToString();
                     }
                 }
             }
@@ -94,6 +95,7 @@ namespace PerBioZ.Bioz
                     cmd.Parameters.Add(new IfxParameter()).Value = entidad.desc_turno;
                     cmd.Parameters.Add(new IfxParameter()).Value = entidad.hora_entrada;
                     cmd.Parameters.Add(new IfxParameter()).Value = entidad.hora_salida;
+
                     cmd.ExecuteNonQuery();
                 }
                 respuesta = true;
@@ -151,6 +153,33 @@ namespace PerBioZ.Bioz
                 ApplicationException excepcion = new ApplicationException("Se genero un error de aplicación con el siguiente mensaje: " + ex.Message, ex);
                 excepcion.Source = "Update Turno";
                 throw excepcion;
+            }
+            finally
+            {
+                CerrarConexion();
+            }
+            return respuesta;
+
+        }
+        public bool Eliminar(int id)
+        {
+            bool respuesta = false;
+            try
+            {
+                AbrirConexion();
+                var sql = "execute procedure dml_turno (?,?,NULL,NULL,NULL);";
+                using (var cmd = new IfxCommand(sql, Conexion))
+                {
+                    cmd.Connection = Conexion;
+                    cmd.Parameters.Add(new IfxParameter()).Value = "DELETE";
+                    cmd.Parameters.Add(new IfxParameter()).Value = id;
+                    cmd.ExecuteNonQuery();
+                }
+                respuesta = true;
+            }
+            catch (Exception exc)
+            {
+                throw exc;
             }
             finally
             {

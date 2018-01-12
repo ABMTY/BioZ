@@ -35,6 +35,10 @@ namespace CtrlBioZ.Bioz
         public bool Actualizar(EntTurno Entidad)
         {
             return PerTurno.Update(Entidad);
-        }        
+        }
+        public bool Eliminar(int Id_Vistas)
+        {
+            return PerTurno.Eliminar(Id_Vistas);
+        }
     }
 }

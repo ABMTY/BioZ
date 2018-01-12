@@ -12,5 +12,6 @@ namespace EntBioZ.Modelo.BioZ
         public string desc_turno { get; set; }
         public string hora_entrada { get; set; }
         public string hora_salida { get; set; }
+        public string total_horas { get; set; }
     }
 }
