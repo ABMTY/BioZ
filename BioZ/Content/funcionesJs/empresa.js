@@ -18,13 +18,20 @@ function listar() {
             { "data": "razon_social" },
             { "data": "direccion" },
             { "data": "estado" },
-            { "data": "municipio" }
+            { "data": "municipio" },
+            { "defaultContent": "" }
         ],
         "columnDefs": [{
             "targets": 0, "data": "id_empresa", "render": function (data, type, full, meta) {
                 return "<button type='button' title='Editar' id='btn_mas" + data + "' class='btn btn-warning' onclick='verDetalle(" + data + ")'  ><i class='fa fa-edit'></i></button>"
-    }
-}]
+            }
+        },
+        {
+            "targets": 5, "data": "imgBase64", "render": function (data, type, full, meta) {
+                return "<img src=" + data + " width='30%;' height='30%;' />"
+            }
+        }]
+        
     });
 }
 
@@ -51,6 +58,9 @@ function limpiar() {
     $("#direccion").val("");
     $("#estado").val("");
     $("#municipio").val("");
+    $("#subirImagen").val("");
+    $("#imgBase64").text("");
+    document.getElementById("imagen").src = "";
 }
 
 //Funcion para Guardar y Editar Empresa
@@ -60,7 +70,8 @@ function guardarEditar() {
         "razon_social": $("#razon_soc").val(),
         "direccion": $("#direccion").val(),
         "estado": $("#estado").val(),
-        "municipio": $("#municipio").val()
+        "municipio": $("#municipio").val(),
+        "imgBase64": $("#imgBase64").text()
     }
     $.ajax({
         url: "/Empresa/Guardar/",
@@ -112,4 +123,24 @@ function verDetalle(id_empresa) {
             console.log("Error => " + error);
         }
     })
+}
+
+//Convertir imagen a base64
+function convertirImagen() {
+    var archivoImagen = document.getElementById("subirImagen").files;
+    if (archivoImagen.length > 0) {
+        var archivoCargar = archivoImagen[0];
+        var archivoLeer = new FileReader();
+
+        archivoLeer.onload = function (eventoCargarArchivo) {
+            var srcData = eventoCargarArchivo.target.result; //Imagen base64
+            //alert(srcData);
+            var Logo = srcData.split(',')[1];
+            alert(Logo)
+            document.getElementById("imagen").src = srcData;
+            document.getElementById("imgBase64").textContent = Logo;
+            
+        }
+        archivoLeer.readAsDataURL(archivoCargar);
+    }
 }
