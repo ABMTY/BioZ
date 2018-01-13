@@ -35,7 +35,7 @@ namespace PerBioZ.Bioz
                         entidad.municipio = dr["municipio"].ToString();
                         if (dr["imagen"].ToString() != string.Empty)
                         {
-                            entidad.imagen = Convert.FromBase64String(dr["imagen"].ToString());
+                            entidad.imagen = (byte[])dr["imagen"];
                             entidad.imgBase64 = "data:image/png;base64," + Convert.ToBase64String(entidad.imagen);                            
                         }
                         Lista.Add(entidad);
@@ -76,8 +76,8 @@ namespace PerBioZ.Bioz
                         entidad.municipio = dr["municipio"].ToString();
                         if (dr["imagen"].ToString() != string.Empty)
                         {
-                            entidad.imagen = (byte[])dr["imagen"];
-                            entidad.imgBase64 = "data:image/png;base64," + Convert.ToBase64String((byte[])dr["imagen"]);
+                            entidad.imagen = Convert.FromBase64String(dr["imagen"].ToString());
+                            entidad.imgBase64 = "data:image/png;base64," + Convert.ToBase64String(entidad.imagen);
                         }
                     }
                 }
@@ -108,7 +108,7 @@ namespace PerBioZ.Bioz
                     cmd.Parameters.Add(new IfxParameter()).Value = entidad.direccion;
                     cmd.Parameters.Add(new IfxParameter()).Value = entidad.estado;
                     cmd.Parameters.Add(new IfxParameter()).Value = entidad.municipio;
-                    cmd.Parameters.Add(new IfxParameter()).Value = Convert.FromBase64String(entidad.imgBase64);
+                    cmd.Parameters.Add(new IfxParameter()).Value = BitConverter.ToString(Convert.FromBase64String(entidad.imgBase64));
                     cmd.ExecuteNonQuery();
                 }
                 respuesta = true;
