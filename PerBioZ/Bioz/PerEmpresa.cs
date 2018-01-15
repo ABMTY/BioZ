@@ -75,7 +75,7 @@ namespace PerBioZ.Bioz
                         entidad.municipio = dr["municipio"].ToString();
                         if (dr["imagen"].ToString() != string.Empty)
                         {
-                            entidad.imagen = "data:image/png;base64," + entidad.imagen;                            
+                            entidad.imagen = "data:image/png;base64," + dr["imagen"].ToString();                            
                         }
                     }
                 }
@@ -96,8 +96,13 @@ namespace PerBioZ.Bioz
             bool respuesta = false;
             try
             {
+                var sql = string.Empty;
                 AbrirConexion();
-                var sql = "execute procedure dml_empresa (?,NULL,?,?,?,?,?);";
+                if (entidad.imagen!=null)
+                    sql = "execute procedure dml_empresa (?,NULL,?,?,?,?,?);";
+                else
+                    sql = "execute procedure dml_empresa (?,NULL,?,?,?,?,NULL);";
+
                 using (var cmd = new IfxCommand(sql, Conexion))
                 {
                     cmd.Connection = Conexion;
@@ -106,7 +111,8 @@ namespace PerBioZ.Bioz
                     cmd.Parameters.Add(new IfxParameter()).Value = entidad.direccion;
                     cmd.Parameters.Add(new IfxParameter()).Value = entidad.estado;
                     cmd.Parameters.Add(new IfxParameter()).Value = entidad.municipio;
-                    cmd.Parameters.Add(new IfxParameter()).Value = entidad.imagen;
+                    if (entidad.imagen!=null)
+                        cmd.Parameters.Add(new IfxParameter()).Value = entidad.imagen;
                     cmd.ExecuteNonQuery();
                 }
                 respuesta = true;
@@ -137,8 +143,13 @@ namespace PerBioZ.Bioz
             bool respuesta = false;            
             try
             {
+                var sql = string.Empty;
                 AbrirConexion();
-                var sql = "execute procedure dml_empresa (?,?,?,?,?,?,?);";
+                if (entidad.imagen!=null)
+                    sql = "execute procedure dml_empresa (?,?,?,?,?,?,?);";
+                else
+                    sql = "execute procedure dml_empresa (?,?,?,?,?,?,NULL);";
+
                 using (var cmd = new IfxCommand(sql, Conexion))
                 {
                     cmd.Connection = Conexion;
@@ -148,7 +159,8 @@ namespace PerBioZ.Bioz
                     cmd.Parameters.Add(new IfxParameter()).Value = entidad.direccion;
                     cmd.Parameters.Add(new IfxParameter()).Value = entidad.estado;
                     cmd.Parameters.Add(new IfxParameter()).Value = entidad.municipio;
-                    cmd.Parameters.Add(new IfxParameter()).Value = Convert.FromBase64String(entidad.imagen);
+                    if (entidad.imagen!=null)
+                        cmd.Parameters.Add(new IfxParameter()).Value = entidad.imagen;
                     cmd.ExecuteNonQuery();
                 }
                 respuesta = true;
