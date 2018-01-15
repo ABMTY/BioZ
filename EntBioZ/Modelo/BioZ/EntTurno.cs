@@ -10,8 +10,14 @@ namespace EntBioZ.Modelo.BioZ
     {
         public int id_turno { get; set; }
         public string desc_turno { get; set; }
-        public string hora_entrada { get; set; }
-        public string hora_salida { get; set; }
-        public string total_horas { get; set; }
+        public bool domingo { get; set; }
+        public bool lunes { get; set; }
+        public bool martes { get; set; }
+        public bool miercoles { get; set; }
+        public bool jueves { get; set; }
+        public bool viernes { get; set; }
+        public bool sabado { get; set; }
+        public int id_horario { get; set; }
+        public string desc_horario { get; set; }
     }
 }
