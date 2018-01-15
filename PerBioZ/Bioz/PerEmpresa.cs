@@ -75,7 +75,7 @@ namespace PerBioZ.Bioz
                         entidad.municipio = dr["municipio"].ToString();
                         if (dr["imagen"].ToString() != string.Empty)
                         {
-                            entidad.imagen = "data:image/png;base64," + entidad.imagen;                            
+                            entidad.imagen = "data:image/png;base64," + dr["imagen"].ToString();                            
                         }
                     }
                 }
@@ -97,7 +97,11 @@ namespace PerBioZ.Bioz
             try
             {
                 AbrirConexion();
-                var sql = "execute procedure dml_empresa (?,NULL,?,?,?,?,?);";
+                var sql = string.Empty;
+                if (entidad.imagen!=null)
+                    sql = "execute procedure dml_empresa (?,NULL,?,?,?,?,?);";
+                else
+                    sql = "execute procedure dml_empresa (?,NULL,?,?,?,?,NULL);";
                 using (var cmd = new IfxCommand(sql, Conexion))
                 {
                     cmd.Connection = Conexion;
@@ -106,7 +110,8 @@ namespace PerBioZ.Bioz
                     cmd.Parameters.Add(new IfxParameter()).Value = entidad.direccion;
                     cmd.Parameters.Add(new IfxParameter()).Value = entidad.estado;
                     cmd.Parameters.Add(new IfxParameter()).Value = entidad.municipio;
-                    cmd.Parameters.Add(new IfxParameter()).Value = entidad.imagen;
+                    if (entidad.imagen != string.Empty)
+                        cmd.Parameters.Add(new IfxParameter()).Value = entidad.imagen;
                     cmd.ExecuteNonQuery();
                 }
                 respuesta = true;
@@ -148,7 +153,7 @@ namespace PerBioZ.Bioz
                     cmd.Parameters.Add(new IfxParameter()).Value = entidad.direccion;
                     cmd.Parameters.Add(new IfxParameter()).Value = entidad.estado;
                     cmd.Parameters.Add(new IfxParameter()).Value = entidad.municipio;
-                    cmd.Parameters.Add(new IfxParameter()).Value = Convert.FromBase64String(entidad.imagen);
+                    cmd.Parameters.Add(new IfxParameter()).Value = entidad.imagen;
                     cmd.ExecuteNonQuery();
                 }
                 respuesta = true;
