@@ -70,6 +70,7 @@ namespace PerBioZ.Bioz
                         entidad.password = dr["password"].ToString();
                         entidad.id_rol = int.Parse(dr["id_rol"].ToString());
                         entidad.desc_rol = dr["desc_rol"].ToString();
+                        entidad.activo = bool.Parse(dr["activo"].ToString());
                         entidad.s_activo = bool.Parse(dr["activo"].ToString()) ? "Activo" : "Inactivo";
                     }
                 }
