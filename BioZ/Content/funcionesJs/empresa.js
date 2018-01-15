@@ -27,8 +27,13 @@ function listar() {
             }
         },
         {
-            "targets": 5, "data": "imgBase64", "render": function (data, type, full, meta) {
-                return "<img src=" + data + " width='30%;' height='30%;' />"
+            "targets": 5, "data": "imagen", "render": function (data, type, full, meta) {
+                if (data != null) {
+                    return "<img src=" + data + " width='60px;' height='50px;' />"
+                } else {
+                    return "<p></p>"
+                }
+                
             }
         }]
         
@@ -61,6 +66,7 @@ function limpiar() {
     $("#subirImagen").val("");
     $("#imgBase64").text("");
     document.getElementById("imagen").src = "";
+    document.getElementById("imagenOriginal").src = "";
 }
 
 //Funcion para Guardar y Editar Empresa
@@ -71,7 +77,7 @@ function guardarEditar() {
         "direccion": $("#direccion").val(),
         "estado": $("#estado").val(),
         "municipio": $("#municipio").val(),
-        "imgBase64": $("#imgBase64").text()
+        "imagen": $("#imgBase64").text()
     }
     $.ajax({
         url: "/Empresa/Guardar/",
@@ -106,11 +112,20 @@ function verDetalle(id_empresa) {
         contentType: "application/json; charset=utf-8",
         success: function (data) {
             console.log(data);
+            var imagenOriginal = data.data.imagen;
+            if (imagenOriginal != null) {
+                var imagen = imagenOriginal.split(',')[1];
+            } else {
+                var imagen = imagenOriginal;
+            }
+            
             $("#idEmpresa").val(data.data.id_empresa),
             $("#razon_soc").val(data.data.razon_social),
             $("#direccion").val(data.data.direccion),
             $("#estado").val(data.data.estado),
-            $("#municipio").val(data.data.municipio)
+            $("#municipio").val(data.data.municipio),
+            $("#imgBase64").text(imagen)
+            document.getElementById("imagenOriginal").src = imagenOriginal;
         },
         xhr: function () {
             var xhr = $.ajaxSettings.xhr();
@@ -136,7 +151,7 @@ function convertirImagen() {
             var srcData = eventoCargarArchivo.target.result; //Imagen base64
             //alert(srcData);
             var Logo = srcData.split(',')[1];
-            alert(Logo)
+            //alert(Logo)
             document.getElementById("imagen").src = srcData;
             document.getElementById("imgBase64").textContent = Logo;
             
