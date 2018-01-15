@@ -3,7 +3,6 @@
     ViewBag.Title = "Index";
 }
 
-
 <div class="row">
     <div class="col-md-12">
         <div class="box" id="secc_lista">
@@ -50,7 +49,7 @@
                     <form>
                         <div class="row">
                             <div class="form-horizontal">
-                                <div class="col-lg-12">
+                                <div class="col-lg-6">
                                     <input type="text" id="id" value="" hidden />
                                     <div class="form-group col-md-12">
                                         <label class="control-label" for="">Nombre *</label>
@@ -59,58 +58,82 @@
                                         </div>
                                     </div>
                                     <div class="form-group col-md-12">
-                                        <label class="control-label" for="">Hora de Entrada *</label>
+                                        <label class="control-label" for="">Horario *</label>
                                         <div>
-                                            <input type="text" id="txt_HoraEntrada" class="form-control">
-                                        </div>
-                                    </div>
-                                    <div class="form-group col-md-12">
-                                        <label class="control-label" for="">Hora de Salida *</label>
-                                        <div>
-                                            <input type="text" id="txt_HoraSalida" class="form-control">
+                                            <select class="form-control selectpicker" id="ddl_Horarios" required data-live-search="true"></select>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="pull-left">
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-primary waves-effect waves-light validate" data-dismiss="modal" onclick="Guardar()">Guardar</button>
-                                    <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="Cancelar()">Cancelar</button>
+                                <div class="col-lg-6">
+                                    <div class="form-group col-md-12">
+                                        <input type="checkbox" id="chk_domingo">&nbsp; &nbsp;
+                                        <label class="control-label" for="">Domingo</label>
+                                    </div>
+                                    <div class="form-group col-md-12">
+                                        <input type="checkbox" id="chk_lunes">&nbsp; &nbsp;
+                                        <label class="control-label" for="">Lunes</label>
+                                    </div>
+                                    <div class="form-group col-md-12">
+                                        <input type="checkbox" id="chk_martes">&nbsp; &nbsp;
+                                        <label class="control-label" for="">Martes</label>
+                                    </div>
+                                    <div class="form-group col-md-12">
+                                        <input type="checkbox" id="chk_miercoles">&nbsp; &nbsp;
+                                        <label class="control-label" for="">Miercoles</label>
+                                    </div>
+                                    <div class="form-group col-md-12">
+                                        <input type="checkbox" id="chk_jueves">&nbsp; &nbsp;
+                                        <label class="control-label" for="">Jueves</label>
+                                    </div>
+                                    <div class="form-group col-md-12">
+                                        <input type="checkbox" id="chk_viernes">&nbsp; &nbsp;
+                                        <label class="control-label" for="">Viernes</label>
+                                    </div>
+                                    <div class="form-group col-md-12">
+                                        <input type="checkbox" id="chk_sabado">&nbsp; &nbsp;
+                                        <label class="control-label" for="">Sabado</label>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                </form>
-            </div>
-        </div>
-        <!--Fin centro -->
-    </div>
-    <!-- Modal Eliminar -->
-    <div class="modal fade" id="Form_DeleteTipo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title" id="mensaje_modal">Eliminar Turno</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body ">
-                    <form role="form" data-toggle="validator">
-                        <h4 id="lbl_msjborrar"></h4>
-                        <span id="txt_idborrar" style="display:none;"></span>
+                        <div class="pull-left">
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary waves-effect waves-light validate" data-dismiss="modal" onclick="Guardar()">Guardar</button>
+                                <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="Cancelar()">Cancelar</button>
+                            </div>
+                        </div>
                     </form>
+                </div>
+            </div>
+            <!--Fin centro -->
+        </div>
+        <!-- Modal Eliminar -->
+        <div class="modal fade" id="Form_DeleteTipo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="mensaje_modal">Eliminar Turno</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body ">
+                        <form role="form" data-toggle="validator">
+                            <h4 id="lbl_msjborrar"></h4>
+                            <span id="txt_idborrar" style="display:none;"></span>
+                        </form>
 
+                    </div>
+                    @*<div class="pull-left">*@
+                    <div class="modal-footer">
+                        <button class="btn btn-primary" onclick="Eliminar(); return false;"><i class="fa fa-check" aria-hidden="true"></i> SÍ</button>
+                        <button class="btn btn-danger" onclick="Cancelar()" ; return false;" data-dismiss="modal"><i class="fa fa-times" aria-hidden="true"></i> NO</button>
+                    </div>
+                    @*</div>*@
                 </div>
-                @*<div class="pull-left">*@
-                <div class="modal-footer">
-                    <button class="btn btn-primary" onclick="Eliminar(); return false;"><i class="fa fa-check" aria-hidden="true"></i> SÍ</button>
-                    <button class="btn btn-danger" onclick="Cancelar()" ; return false;" data-dismiss="modal"><i class="fa fa-times" aria-hidden="true"></i> NO</button>
-                </div>
-                @*</div>*@
             </div>
         </div>
-    </div>
-</div><!-- /.col -->
+    </div><!-- /.col -->
 </div><!-- /.row -->
 <script>
 
@@ -122,17 +145,51 @@
     function Agregar() {
         $("#secc_lista").hide();
         $("#secc_add").show();
-        Limpiar();
+        Limpiar();       
+        Cargar_Horarios();
     }
     function Cancelar() {
         $("#secc_lista").show();
         $("#secc_add").hide();
     }
     function Limpiar() {
-        $("#id").val("");
+        $("#id").val("");      
+        $("#ddl_Horarios").html("");
         $("#txt_Turno").val("");
         $("#txt_HoraEntrada").val("");
         $("#txt_HoraSalida").val("");
+        $("#chk_domingo").prop('checked', false);
+        $("#chk_lunes").prop('checked', false);
+        $("#chk_martes").prop('checked', false);
+        $("#chk_miercoles").prop('checked', false);
+        $("#chk_jueves").prop('checked', false);
+        $("#chk_viernes").prop('checked', false);
+        $("#chk_sabado").prop('checked', false);
+    }
+
+   
+
+    function Cargar_Horarios() {
+
+        $("#ddl_Horarios").html("");
+
+        $.ajax({
+            url: "/Horarios/GetHorarios/",
+            async: true,
+            dataType: "json",
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                $.each(data.data, function (i, Item) {
+                    $("#ddl_Horarios").append("<option value='" + Item.id_horario + "'>" + Item.desc_horario + "</option>");
+                });
+                $('#ddl_Horarios').selectpicker('refresh');
+
+            },
+            error: function (request, status, error) {
+                console.log("error" + error);
+            }
+        });
     }
 
     function Cargar_Turnos() {
@@ -150,7 +207,7 @@
                 { "data": "desc_turno" },
                 { "data": "hora_entrada" },
                 { "data": "hora_salida" },
-                { "data": "total_horas" }
+                { "data": "total_horas" },
             ],
             "columnDefs": [{
                 "targets": 0, "data": "id_turno", "render": function (data, type, full, meta) {
@@ -165,24 +222,33 @@
         });
     }
 
-    function Editar(id_turno) {
+    function Editar(Id_Turno) {
         $("#FormEditar").show();
         $.ajax({
             url: "/Turnos/GetTurno/",
             async: true,
             dataType: "json",
-            data: '{ id:' + id_turno + '}',
+            data: '{ id:' + Id_Turno + '}',
             type: "POST",
             contentType: "application/json; charset=utf-8",
             success: function (data) {
-                Limpiar();
+                Limpiar();                
+                Cargar_Horarios();
                 $("#secc_lista").hide();
                 $("#secc_add").show();
                 console.log(data);
-                $("#id").val(id_turno);
-                $("#txt_Turno").val(data.data.desc_Turno);
+                $("#id").val(Id_Turno);                
+                $("#ddl_Horarios option[value='" + data.data.id_horario + "']").prop('selected', true);
+                $("#txt_turno").val(data.data.desc_turno);
                 $("#txt_HoraEntrada").val(data.data.hora_entrada);
                 $("#txt_HoraSalida").val(data.data.hora_salida);
+                $("#chk_domingo").prop('checked', data.data.domingo);
+                $("#chk_lunes").prop('checked', data.data.lunes);
+                $("#chk_martes").prop('checked', data.data.martes);
+                $("#chk_miercoles").prop('checked', data.data.miercoles);
+                $("#chk_jueves").prop('checked', data.data.jueves);
+                $("#chk_viernes").prop('checked', data.data.viernes);
+                $("#chk_sabado").prop('checked', data.data.sabado);
             },
             error: function (request, status, error) {
                 console.log("error" + error);
@@ -192,9 +258,18 @@
     function Guardar() {
         Turno = {
             "id_turno": $("#id").val() == "" ? 0 : $("#id").val(),
-            "desc_turno": $("#txt_Turno").val(),
+            //"id_departamento": $("#ddl_Departamento").val(),
+            //"id_horario": $("#ddl_Horarios").val(),
+            "desc_turno": $("#txt_turno").val(),
             "hora_entrada": $("#txt_HoraEntrada").val(),
-            "hora_salida": $("#txt_HoraSalida").val()
+            "hora_salida": $("#txt_HoraSalida").val(),
+            "domingo": $("#chb_lunes").is(':checked'),
+            "lunes": $("#chk_lunes").is(':checked'),
+            "martes": $("#chk_martes").is(':checked'),
+            "miercoles": $("#chk_miercoles").is(':checked'),
+            "jueves": $("#chk_jueves").is(':checked'),
+            "viernes": $("#chk_viernes").is(':checked'),
+            "sabado": $("#chk_sabado").is(':checked')
         };
         console.log(turno),
         $.ajax(
@@ -202,32 +277,32 @@
             url: "/Turnos/Guardar/",
             async: true,
             dataType: "json",
-            data: JSON.stringify(turno),
+            data: JSON.stringify(Turno),
             type: "POST",
             contentType: "application/json; charset=utf-8",
             success: function (data) {
                 swal({ title: "Turnos", text: "Guardada Correctamente", type: "success" }, function () { Cargar_Turnos(); Cancelar(); });
             },
             error: function (request, status, error) {
-                swal("Error al Guardar el Turno");
+                swal("Error al Guardar la Turno");
                 console.log("error" + error);
             }
         });
     }
 
 
-    function Confirma_Eliminar(id_turno) {
+    function Confirma_Eliminar(Id_Turno) {
         $('#Form_DeleteTipo').modal('show');
-        $("#lbl_msjborrar").html("Se va a eliminar el Turno No. " + id_turno + ". <br/>¿Desea Continuar?");
-        $("#txt_idborrar").text(id_turno);
+        $("#lbl_msjborrar").html("Se va a eliminar la Turno No. " + Id_Turno + ". <br/>¿Desea Continuar?");
+        $("#txt_idborrar").text(Id_Turno);
     }
     function Eliminar() {
-        id_turno = $("#txt_idborrar").text();
+        Id_Turno = $("#txt_idborrar").text();
         $.ajax({
             url: "/Turnos/Eliminar/",
             async: true,
             dataType: "json",
-            data: '{id:' + id_turno + '}',
+            data: '{id:' + Id_Turno + '}',
             type: "POST",
             contentType: "application/json; charset=utf-8",
             success: function (data) {
@@ -240,6 +315,15 @@
         });
     }
 </script>
+
+
+
+
+
+
+
+
+
 
 
 
