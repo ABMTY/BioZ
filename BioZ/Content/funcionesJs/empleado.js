@@ -19,11 +19,24 @@ function listar() {
             { "data": "nombre_completo" },
             { "data": "desc_departamento" },
             { "data": "desc_sucursal" },
-            { "data": "enrollnumber"}
+            { "data": "enrollnumber" },
+            { "defaultContent": "" },
+
         ],
         "columnDefs": [{
             "targets": 0, "data": "id_empleado", "render": function (data, type, full, meta) {
                 return "<button type='button' title='Editar' id='btn_mas" + data + "' class='btn btn-warning' onclick='verDetalle(" + data + ")'  ><i class='fa fa-edit'></i></button>"
+            }
+        },
+        {
+            "targets": 6, "data": "imagen", "render": function (data, type, full, meta) {
+                if (data != null) {
+                    var url = "data:image/png;base64," + data;
+                    return "<img src=" + url + " width='60px;' height='50px;' />"
+                } else {
+                    return "<p></p>"
+                }
+
             }
         }]
     });
@@ -118,6 +131,10 @@ function limpiar() {
     $("#enrollnumber").val("");
     $("#sucursal").html("");
     $("#departamento").html("");
+    $("#imgBase64").text("");
+    $("#subirImagen").val("");
+    document.getElementById("imagen").src = "";
+    document.getElementById("imagenOriginal").src = "";
 }
 
 //Funcion para Guardar y Editar Empresa
@@ -137,7 +154,8 @@ function guardarEditar() {
         "ap_materno": $("#ap_materno").val(),
         "id_departamento": $("#id_departamento").val(),
         "id_sucursal": $("#id_sucursal").val(),
-        "enrollnumber": $("#enrollnumber").val()
+        "enrollnumber": $("#enrollnumber").val(),
+        "imagen": $("#imgBase64").text()
     }
     $.ajax({
         url: "/Empleado/Guardar/",
@@ -175,6 +193,7 @@ function verDetalle(id_empleado) {
         contentType: "application/json; charset=utf-8",
         success: function (data) {
             console.log(data);
+            var imagen = data.data.imagen;
             $("#departamento").html("");
             $("#sucursal").html("");
             $("#id_empleado").val(data.data.id_empleado);
@@ -190,6 +209,8 @@ function verDetalle(id_empleado) {
             listarSucursales();
             $("#sucursal").append("<option value=" + data.data.id_sucursal + ">" + data.data.desc_sucursal + "</option>");
             $("#sucursal").selectpicker('refresh');
+            $("#imgBase64").text(imagen)
+            document.getElementById("imagenOriginal").src = "data:image/png;base64," + imagen;
         },
         xhr: function () {
             var xhr = $.ajaxSettings.xhr();
@@ -202,4 +223,24 @@ function verDetalle(id_empleado) {
             console.log("Error => " + error);
         }
     })
+}
+
+//Convertir imagen a base64
+function convertirImagen() {
+    var archivoImagen = document.getElementById("subirImagen").files;
+    if (archivoImagen.length > 0) {
+        var archivoCargar = archivoImagen[0];
+        var archivoLeer = new FileReader();
+
+        archivoLeer.onload = function (eventoCargarArchivo) {
+            var srcData = eventoCargarArchivo.target.result; //Imagen base64
+            //alert(srcData);
+            var Logo = srcData.split(',')[1];
+            //alert(Logo)
+            document.getElementById("imagen").src = srcData;
+            document.getElementById("imgBase64").textContent = Logo;
+
+        }
+        archivoLeer.readAsDataURL(archivoCargar);
+    }
 }
