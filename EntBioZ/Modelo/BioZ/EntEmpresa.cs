@@ -15,7 +15,7 @@ namespace EntBioZ.Modelo.BioZ
         public string municipio { get; set; }
         public List<EntSucursal> sucursales { get; set; }
         public List<EntJornada> jornadas { get; set; }
-        public byte[] imagen { get; set; }
-        public string imgBase64 { get; set; }
+        public string imagen { get; set; }
+        
     }
 }
