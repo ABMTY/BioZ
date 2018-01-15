@@ -11,6 +11,8 @@ namespace BioZ.Controllers.Administracion
     public class JornadasController : Controller
     {
         CtrlJornadas control = new CtrlJornadas();
+        CtrlTurnoJornada ctrlTurnoJornada = new CtrlTurnoJornada();
+        CtrlJornadas ctrlJornadas = new CtrlJornadas();
         // GET: Jornadas
         public ActionResult Index()
         {
@@ -18,23 +20,40 @@ namespace BioZ.Controllers.Administracion
         }
         public ActionResult Guardar(EntJornada entidad)
         {
-            //EntJornada entidad = new EntJornada();
-            //entidad.id_jornada = 1;
-            //entidad.desc_jornada = "Jornada Mty...";
-            //entidad.hora_entrada = "06:00";
-            //entidad.hora_salida = "17:00";
-            //entidad.domingo = false;
-            //entidad.lunes = true;
-            //entidad.martes = true;
-            //entidad.miercoles = true;
-            //entidad.jueves = true;
-            //entidad.viernes = true;
-            //entidad.sabado = true;
+
             try
             {
                 var r = entidad.id_jornada > 0 ?
                    control.Actualizar(entidad) :
                    control.Insertar(entidad);
+
+                if (entidad.id_jornada > 0)
+                {
+                    control.Actualizar(entidad);
+                    ctrlTurnoJornada.Eliminar(entidad.id_jornada);
+
+                    foreach (EntTurnoJornada item in entidad.turnoJornadas)
+                    {
+                        ctrlTurnoJornada.Insertar(new EntTurnoJornada
+                        {
+                            id_jornada = entidad.id_jornada,
+                            id_turno = item.id_turno
+                        });
+                    }
+                }
+                else
+                {
+                    control.Insertar(entidad);
+                    int id_jornada = control.ObtenerTodos().ToList().Max(p => p.id_jornada);
+                    foreach (EntTurnoJornada item in entidad.turnoJornadas)
+                    {
+                        ctrlTurnoJornada.Insertar(new EntTurnoJornada
+                        {
+                            id_jornada = entidad.id_jornada,
+                            id_turno = item.id_turno
+                        });
+                    }
+                }
 
                 if (!r)
                 {

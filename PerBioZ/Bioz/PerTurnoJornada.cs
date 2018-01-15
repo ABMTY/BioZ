@@ -9,26 +9,26 @@ using System.Threading.Tasks;
 
 namespace PerBioZ.Bioz
 {
-    public class PerJornadas : Persistencia
+    public class PerTurnoJornada : Persistencia
     {
-        public List<EntJornada> ObtenerTodos()
+        public List<EntTurnoJornada> ObtenerTodos()
         {
-            List<EntJornada> Lista = new List<EntJornada>();
-            EntJornada entidad = null;
+            List<EntTurnoJornada> Lista = new List<EntTurnoJornada>();
+            EntTurnoJornada entidad = null;
             try
             {
                 AbrirConexion();
                 StringBuilder CadenaSql = new StringBuilder();
-                var sql = "SELECT id_jornada, desc_jornada FROM informix.jornadas";
+                var sql = "SELECT id_turno_jornada, id_jornada, id_turno FROM informix.turno_jornada";
                 IfxCommand cmd = new IfxCommand(sql, Conexion);
                 using (var dr = cmd.ExecuteReader())
                 {
                     while (dr.Read())
                     {
-                        entidad = new EntJornada();
+                        entidad = new EntTurnoJornada();
+                        entidad.id_turno_jornada = int.Parse(dr["id_turno_jornada"].ToString());
                         entidad.id_jornada = int.Parse(dr["id_jornada"].ToString());
-                        entidad.desc_jornada = dr["desc_jornada"].ToString();
-
+                        entidad.id_turno = int.Parse(dr["id_turno"].ToString());
                         Lista.Add(entidad);
                     }
                 }
@@ -44,47 +44,27 @@ namespace PerBioZ.Bioz
             return Lista;
 
         }
-        public EntJornada Obtener(int id)
+        public EntTurnoJornada Obtener(int id)
         {
-            EntJornada entidad = null;
+            EntTurnoJornada entidad = null;
             try
             {
                 AbrirConexion();
                 StringBuilder CadenaSql = new StringBuilder();
 
                 IfxCommand cmd = new IfxCommand(string.Empty, Conexion);
-                var sql = "SELECT id_jornada, desc_jornada  FROM informix.jornadas WHERE id_jornada=?";
-                cmd.CommandText = sql;
+                cmd.CommandText = "SELECT id_turno_jornada, id_jornada, id_turno FROM informix.turno_jornada WHERE id_turno_jornada=?";
                 cmd.Parameters.Add(new IfxParameter()).Value = id;
                 using (var dr = cmd.ExecuteReader())
                 {
                     if (dr.Read())
                     {
-                        entidad = new EntJornada();
+                        entidad = new EntTurnoJornada();
+                        entidad.id_turno_jornada = int.Parse(dr["id_turno_jornada"].ToString());
                         entidad.id_jornada = int.Parse(dr["id_jornada"].ToString());
-                        entidad.desc_jornada = dr["desc_jornada"].ToString();
-                       
-                    }                   
-                }
-                #region GetTurnoJornadas
-                entidad.turnoJornadas = new List<EntTurnoJornada>();
-                cmd.CommandText = "SELECT id_turno_jornada, id_jornada, id_turno from turno_jornada where id_jornada=?";
-                cmd.Parameters.Clear();
-                cmd.Parameters.Add(new IfxParameter()).Value = id;
-
-                using (var dr = cmd.ExecuteReader())
-                {
-                    while (dr.Read())
-                    {
-                        EntTurnoJornada entTurnoJornada = new EntTurnoJornada();
-                        entTurnoJornada.id_turno_jornada = int.Parse(dr["id_turno_jornada"].ToString());
-                        entTurnoJornada.id_jornada = int.Parse(dr["id_jornada"].ToString());
-                        entTurnoJornada.id_turno = int.Parse(dr["id_turno"].ToString());
-                        entTurnoJornada.selected = true;
-                        entidad.turnoJornadas.Add(entTurnoJornada);
+                        entidad.id_turno = int.Parse(dr["id_turno"].ToString());
                     }
                 }
-                #endregion
             }
             catch (Exception exc)
             {
@@ -97,19 +77,19 @@ namespace PerBioZ.Bioz
             return entidad;
 
         }
-        public bool Insert(EntJornada entidad)
+        public bool Insert(EntTurnoJornada entidad)
         {
             bool respuesta = false;
             try
             {
                 AbrirConexion();
-                var sql = "execute procedure dml_jornadas (?,NULL,?);";
+                var sql = "execute procedure dml_turno_jornada (?,NULL,?,?);";
                 using (var cmd = new IfxCommand(sql, Conexion))
                 {
                     cmd.Connection = Conexion;
                     cmd.Parameters.Add(new IfxParameter()).Value = "INSERT";
-                    cmd.Parameters.Add(new IfxParameter()).Value = entidad.desc_jornada;
-
+                    cmd.Parameters.Add(new IfxParameter()).Value = entidad.id_jornada;
+                    cmd.Parameters.Add(new IfxParameter()).Value = entidad.id_turno;
                     cmd.ExecuteNonQuery();
                 }
                 respuesta = true;
@@ -119,13 +99,13 @@ namespace PerBioZ.Bioz
             catch (InvalidCastException ex)
             {
                 ApplicationException excepcion = new ApplicationException("Se genero un error con el siguiente mensaje: " + ex.Message, ex);
-                excepcion.Source = "Insert Jornadas";
+                excepcion.Source = "Insert Turno Jornada";
                 throw excepcion;
             }
             catch (Exception ex)
             {
                 ApplicationException excepcion = new ApplicationException("Se genero un error de aplicación con el siguiente mensaje: " + ex.Message, ex);
-                excepcion.Source = "Insert Jornadas";
+                excepcion.Source = "Insert Turno Jornada";
                 throw excepcion;
             }
             finally
@@ -135,19 +115,20 @@ namespace PerBioZ.Bioz
             return respuesta;
 
         }
-        public bool Update(EntJornada entidad)
+        public bool Update(EntTurnoJornada entidad)
         {
             bool respuesta = false;
             try
             {
                 AbrirConexion();
-                var sql = "execute procedure dml_jornadas (?,?,?);";
+                var sql = "execute procedure dml_turno_jornada (?,?,?,?);";
                 using (var cmd = new IfxCommand(sql, Conexion))
                 {
                     cmd.Connection = Conexion;
                     cmd.Parameters.Add(new IfxParameter()).Value = "UPDATE";
+                    cmd.Parameters.Add(new IfxParameter()).Value = entidad.id_turno_jornada;
                     cmd.Parameters.Add(new IfxParameter()).Value = entidad.id_jornada;
-                    cmd.Parameters.Add(new IfxParameter()).Value = entidad.desc_jornada;
+                    cmd.Parameters.Add(new IfxParameter()).Value = entidad.id_turno;
                     cmd.ExecuteNonQuery();
                 }
                 respuesta = true;
@@ -157,13 +138,13 @@ namespace PerBioZ.Bioz
             catch (InvalidCastException ex)
             {
                 ApplicationException excepcion = new ApplicationException("Se genero un error con el siguiente mensaje: " + ex.Message, ex);
-                excepcion.Source = "Update Jornadas";
+                excepcion.Source = "Update Turno Jornada";
                 throw excepcion;
             }
             catch (Exception ex)
             {
                 ApplicationException excepcion = new ApplicationException("Se genero un error de aplicación con el siguiente mensaje: " + ex.Message, ex);
-                excepcion.Source = "Update Jornadas";
+                excepcion.Source = "Update Turno Jornada";
                 throw excepcion;
             }
             finally
@@ -179,7 +160,7 @@ namespace PerBioZ.Bioz
             try
             {
                 AbrirConexion();
-                var sql = "execute procedure dml_jornadas (?,?,NULL);";
+                var sql = "execute procedure dml_turno_jornada (?,NULL,?,NULL);";
                 using (var cmd = new IfxCommand(sql, Conexion))
                 {
                     cmd.Connection = Conexion;

@@ -97,7 +97,7 @@ namespace BioZ.Controllers.Administracion
             }
             catch (Exception ex)
             {
-                return View("Error", new HandleErrorInfo(ex, "Vistas", "Eliminar"));
+                return View("Error", new HandleErrorInfo(ex, "Roles", "Eliminar"));
             }
         }
 
