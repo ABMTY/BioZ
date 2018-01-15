@@ -20,7 +20,7 @@ namespace PerBioZ.Bioz
             {
                 AbrirConexion();
                 StringBuilder CadenaSql = new StringBuilder();
-                var sql = "SELECT a.id_usuario, a.usuario, a.password, a.id_rol, b.desc_rol FROM informix.usuarios a left join informix.roles b on a.id_rol=b.id_rol";
+                var sql = "SELECT a.id_usuario, a.usuario, a.password, a.id_rol, b.desc_rol, a.activo FROM informix.usuarios a left join informix.roles b on a.id_rol=b.id_rol";
                 IfxCommand cmd = new IfxCommand(sql, Conexion);
                 using (var dr = cmd.ExecuteReader())
                 {
@@ -32,6 +32,8 @@ namespace PerBioZ.Bioz
                         entidad.password = dr["password"].ToString();
                         entidad.id_rol = int.Parse(dr["id_rol"].ToString());
                         entidad.desc_rol = dr["desc_rol"].ToString();
+                        entidad.activo = bool.Parse(dr["activo"].ToString());
+                        entidad.s_activo = bool.Parse(dr["activo"].ToString()) ? "Activo" : "Inactivo";
                         Lista.Add(entidad);
                     }
                 }
@@ -56,7 +58,7 @@ namespace PerBioZ.Bioz
                 StringBuilder CadenaSql = new StringBuilder();
 
                 IfxCommand cmd = new IfxCommand(string.Empty, Conexion);
-                cmd.CommandText = "SELECT a.id_usuario, a.usuario, a.password, a.id_rol, b.desc_rol FROM informix.usuarios a left join informix.roles b on a.id_rol=b.id_rol WHERE a.id_usuario=?";
+                cmd.CommandText = "SELECT a.id_usuario, a.usuario, a.password, a.id_rol, b.desc_rol, a.activo FROM informix.usuarios a left join informix.roles b on a.id_rol=b.id_rol WHERE a.id_usuario=?";
                 cmd.Parameters.Add(new IfxParameter()).Value = id;
                 using (var dr = cmd.ExecuteReader())
                 {
@@ -68,6 +70,7 @@ namespace PerBioZ.Bioz
                         entidad.password = dr["password"].ToString();
                         entidad.id_rol = int.Parse(dr["id_rol"].ToString());
                         entidad.desc_rol = dr["desc_rol"].ToString();
+                        entidad.s_activo = bool.Parse(dr["activo"].ToString()) ? "Activo" : "Inactivo";
                     }
                 }
             }
@@ -88,14 +91,15 @@ namespace PerBioZ.Bioz
             try
             {
                 AbrirConexion();
-                var sql = "execute procedure dml_usuarios (?,NULL,?,?,?);";
+                var sql = "execute procedure dml_usuarios (?,NULL,?,?,?,?);";
                 using (var cmd = new IfxCommand(sql, Conexion))
                 {
                     cmd.Connection = Conexion;
                     cmd.Parameters.Add(new IfxParameter()).Value = "INSERT";
                     cmd.Parameters.Add(new IfxParameter()).Value = entidad.usuario;
                     cmd.Parameters.Add(new IfxParameter()).Value = entidad.password;
-                    cmd.Parameters.Add(new IfxParameter()).Value = entidad.id_rol;                    
+                    cmd.Parameters.Add(new IfxParameter()).Value = entidad.id_rol;
+                    cmd.Parameters.Add(new IfxParameter()).Value = entidad.activo;
                     cmd.ExecuteNonQuery();
                 }
                 respuesta = true;
@@ -127,7 +131,7 @@ namespace PerBioZ.Bioz
             try
             {
                 AbrirConexion();
-                var sql = "execute procedure dml_usuarios (?,?,?,?,?);";
+                var sql = "execute procedure dml_usuarios (?,?,?,?,?,?);";
                 using (var cmd = new IfxCommand(sql, Conexion))
                 {
                     cmd.Connection = Conexion;
@@ -136,6 +140,7 @@ namespace PerBioZ.Bioz
                     cmd.Parameters.Add(new IfxParameter()).Value = entidad.usuario;
                     cmd.Parameters.Add(new IfxParameter()).Value = entidad.password;
                     cmd.Parameters.Add(new IfxParameter()).Value = entidad.id_rol;
+                    cmd.Parameters.Add(new IfxParameter()).Value = entidad.activo;
                     cmd.ExecuteNonQuery();
                 }
                 respuesta = true;
