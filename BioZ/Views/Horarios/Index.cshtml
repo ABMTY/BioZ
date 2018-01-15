@@ -1,0 +1,244 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="box" id="secc_lista">
+            <div class="box-header with-border">
+                <h1 class="box-title 0">
+                    Lista de Horarios
+                    <button class="btn btn-success" onclick="Agregar()"><i class="fa fa-plus-circle"></i> Agregar</button>
+                </h1>
+                @*<div class="box-tools pull-right">
+                    </div>*@
+            </div>
+            <!-- /.box-header -->
+            <!-- centro -->
+            <div class="panel-body table-responsive">
+                <div class="card-box">
+                    <table id="Lista_Horarios" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th width="50px"></th>
+                                <th width="50px"></th>
+                                <th>&nbsp; &nbsp; &nbsp;No.</th>
+                                <th>&nbsp; &nbsp; &nbsp;Nombre</th>
+                                <th>&nbsp; &nbsp; &nbsp;Hora Entrada</th>
+                                <th>&nbsp; &nbsp; &nbsp;Hora Salida</th>
+                                <th>&nbsp; &nbsp; &nbsp;Horas de Trabajo</th>
+                                @*<th>&nbsp; &nbsp; &nbsp;Descanso</th>*@
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+            <!--Fin centro -->
+        </div><!-- /.box -->
+        <div class="box" id="secc_add" style="display:none;">
+            <div class="box-header with-border">
+                <h1 class="box-title 0">Horarios </h1>
+                <div class="box-tools pull-right">
+                </div>
+            </div>
+            <!-- /.box-header -->
+            <!-- centro -->
+            <div class="panel-body">
+                <div class="card-box">
+                    <form>
+                        <div class="row">
+                            <div class="form-horizontal">
+                                <div class="col-lg-12">
+                                    <input type="text" id="id" value="" hidden />
+                                    <div class="form-group col-md-12">
+                                        <label class="control-label" for="">Nombre *</label>
+                                        <div>
+                                            <input type="text" id="txt_Horario" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-12">
+                                        <label class="control-label" for="">Hora de Entrada *</label>
+                                        <div>
+                                            <input type="text" id="txt_HoraEntrada" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-12">
+                                        <label class="control-label" for="">Hora de Salida *</label>
+                                        <div>
+                                            <input type="text" id="txt_HoraSalida" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="pull-left">
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-primary waves-effect waves-light validate" data-dismiss="modal" onclick="Guardar()">Guardar</button>
+                                    <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="Cancelar()">Cancelar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <!--Fin centro -->
+        </div>
+        <!-- Modal Eliminar -->
+        <div class="modal fade" id="Form_DeleteTipo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="mensaje_modal">Eliminar Horario</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body ">
+                        <form role="form" data-toggle="validator">
+                            <h4 id="lbl_msjborrar"></h4>
+                            <span id="txt_idborrar" style="display:none;"></span>
+                        </form>
+
+                    </div>
+                    @*<div class="pull-left">*@
+                    <div class="modal-footer">
+                        <button class="btn btn-primary" onclick="Eliminar(); return false;"><i class="fa fa-check" aria-hidden="true"></i> SÍ</button>
+                        <button class="btn btn-danger" onclick="Cancelar()" ; return false;" data-dismiss="modal"><i class="fa fa-times" aria-hidden="true"></i> NO</button>
+                    </div>
+                    @*</div>*@
+                </div>
+            </div>
+        </div>
+    </div><!-- /.col -->
+</div><!-- /.row -->
+<script>
+
+    $(document).ready(function () {
+        $('#Lista_Horarios').DataTable();
+        Cargar_Horarios();
+    });
+
+    function Agregar() {
+        $("#secc_lista").hide();
+        $("#secc_add").show();
+        Limpiar();
+    }
+    function Cancelar() {
+        $("#secc_lista").show();
+        $("#secc_add").hide();
+    }
+    function Limpiar() {
+        $("#id").val("");
+        $("#txt_Horario").val("");
+        $("#txt_HoraEntrada").val("");
+        $("#txt_HoraSalida").val("");
+    }
+
+    function Cargar_Horarios() {
+        $('#Lista_Horarios').DataTable({
+            destroy: true,
+            searching: true,
+            "ajax": {
+                "url": "/Horarios/GetHorarios/",
+                "type": "GET"
+            },
+            "columns": [
+                { "defaultContent": "<i>..</i>" },
+                { "defaultContent": "<i>..</i>" },
+                { "data": "id_horario" },
+                { "data": "desc_horario" },
+                { "data": "hora_entrada" },
+                { "data": "hora_salida" },
+                { "data": "total_horas" }
+            ],
+            "columnDefs": [{
+                "targets": 0, "data": "id_horario", "render": function (data, type, full, meta) {
+                    return "<button type='button' title='Editar' id='btn_mas" + data + "' class='btn btn-warning' onclick='Editar(" + data + ")'  ><i class='fa fa-edit'></i></button> "
+                }
+            },
+                {
+                    "targets": 1, "data": "id_horario", "render": function (data, type, full, meta) {
+                        return "<button type='button' title='Eliminar' id='btn_borrar" + data + "' class='btn btn-danger' onclick='Confirma_Eliminar(" + data + ")'><i class='fa fa-trash'></i></button> "
+                    }
+                }]
+        });
+    }
+
+    function Editar(id_horario) {
+        $("#FormEditar").show();
+        $.ajax({
+            url: "/Horarios/GetHorario/",
+            async: true,
+            dataType: "json",
+            data: '{ id:' + id_horario + '}',
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                Limpiar();
+                $("#secc_lista").hide();
+                $("#secc_add").show();
+                console.log(data);
+                $("#id").val(id_horario);
+                $("#txt_Horario").val(data.data.desc_horario);
+                $("#txt_HoraEntrada").val(data.data.hora_entrada);
+                $("#txt_HoraSalida").val(data.data.hora_salida);
+            },
+            error: function (request, status, error) {
+                console.log("error" + error);
+            }
+        });
+    }
+    function Guardar() {
+        Horario = {
+            "id_horario": $("#id").val() == "" ? 0 : $("#id").val(),
+            "desc_horario": $("#txt_Horario").val(),
+            "hora_entrada": $("#txt_HoraEntrada").val(),
+            "hora_salida": $("#txt_HoraSalida").val()
+        };
+        $.ajax(
+        {
+            url: "/Horarios/Guardar/",
+            async: true,
+            dataType: "json",
+            data: JSON.stringify(Horario),
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                swal({ title: "Horarios", text: "Guardada Correctamente", type: "success" }, function () { Cargar_Horarios(); Cancelar(); });
+            },
+            error: function (request, status, error) {
+                swal("Error al Guardar el Horario");
+                console.log("error" + error);
+            }
+        });
+    }
+
+
+    function Confirma_Eliminar(id_horario) {
+        $('#Form_DeleteTipo').modal('show');
+        $("#lbl_msjborrar").html("Se va a eliminar el Horario No. " + id_horario + ". <br/>¿Desea Continuar?");
+        $("#txt_idborrar").text(id_horario);
+    }
+    function Eliminar() {
+        id_horario = $("#txt_idborrar").text();
+        $.ajax({
+            url: "/Horarios/Eliminar/",
+            async: true,
+            dataType: "json",
+            data: '{id:' + id_horario + '}',
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                $('#Form_DeleteTipo').modal('hide');
+                swal({ title: "Horarios", text: "Se elimino Correctamente", type: "success" }, function () { Cargar_Horarios(); });
+            },
+            error: function (request, status, error) {
+                console.log("error" + error);
+            }
+        });
+    }
+</script>
+
+
+
