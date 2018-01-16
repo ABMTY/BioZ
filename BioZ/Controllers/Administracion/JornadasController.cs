@@ -23,18 +23,16 @@ namespace BioZ.Controllers.Administracion
 
             try
             {
-                var r = entidad.id_jornada > 0 ?
-                   control.Actualizar(entidad) :
-                   control.Insertar(entidad);
+                var r = false;
 
                 if (entidad.id_jornada > 0)
                 {
-                    control.Actualizar(entidad);
+                    r = control.Actualizar(entidad);
                     ctrlTurnoJornada.Eliminar(entidad.id_jornada);
 
                     foreach (EntTurnoJornada item in entidad.turnoJornadas)
                     {
-                        ctrlTurnoJornada.Insertar(new EntTurnoJornada
+                       r = ctrlTurnoJornada.Insertar(new EntTurnoJornada
                         {
                             id_jornada = entidad.id_jornada,
                             id_turno = item.id_turno

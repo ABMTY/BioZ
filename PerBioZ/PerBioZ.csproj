@@ -52,6 +52,7 @@
     <Compile Include="Bioz\PerEmpleados.cs" />
     <Compile Include="Bioz\PerEmpresa.cs" />
     <Compile Include="Bioz\PerHorario.cs" />
+    <Compile Include="Bioz\PerJornadaEmpleado.cs" />
     <Compile Include="Bioz\PerJornadas.cs" />
     <Compile Include="Bioz\PerRoles.cs" />
     <Compile Include="Bioz\PerRolesVista.cs" />

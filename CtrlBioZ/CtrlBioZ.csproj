@@ -45,6 +45,7 @@
     <Compile Include="Bioz\CtrlEmpleados.cs" />
     <Compile Include="Bioz\CtrlEmpresa.cs" />
     <Compile Include="Bioz\CtrlHorarios.cs" />
+    <Compile Include="Bioz\CtrlJornadaEmpleado.cs" />
     <Compile Include="Bioz\CtrlJornadas.cs" />
     <Compile Include="Bioz\CtrlRoles.cs" />
     <Compile Include="Bioz\CtrlRolesVista.cs" />
