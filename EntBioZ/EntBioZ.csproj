@@ -60,6 +60,7 @@
     <Compile Include="Modelo\BioZ\EntEnrolamiento.cs" />
     <Compile Include="Modelo\BioZ\EntHorario.cs" />
     <Compile Include="Modelo\BioZ\EntJornada.cs" />
+    <Compile Include="Modelo\BioZ\EntJornadaEmpleado.cs" />
     <Compile Include="Modelo\BioZ\EntSucursal.cs" />
     <Compile Include="Modelo\BioZ\EntTurno.cs" />
     <Compile Include="Modelo\BioZ\EntTurnoJornada.cs" />

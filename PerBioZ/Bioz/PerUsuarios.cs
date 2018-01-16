@@ -77,7 +77,7 @@ namespace PerBioZ.Bioz
             }
             catch (Exception exc)
             {
-                throw exc;
+                throw exc;  
             }
             finally
             {

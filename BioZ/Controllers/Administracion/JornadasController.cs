@@ -11,8 +11,8 @@ namespace BioZ.Controllers.Administracion
     public class JornadasController : Controller
     {
         CtrlJornadas control = new CtrlJornadas();
-        CtrlTurnoJornada ctrlTurnoJornada = new CtrlTurnoJornada();
-        CtrlJornadas ctrlJornadas = new CtrlJornadas();
+        CtrlTurno ctrTurno = new CtrlTurno();
+        CtrlTurnoJornada ctrlTurnoJornada = new CtrlTurnoJornada();        
         // GET: Jornadas
         public ActionResult Index()
         {
@@ -104,5 +104,39 @@ namespace BioZ.Controllers.Administracion
                 return View("Error", new HandleErrorInfo(ex, "Jornadas", "Eliminar"));
             }
         }
+        public ActionResult GetJornadasTurnos(int id)
+        {
+            var Turnos = ctrTurno.ObtenerTodos();
+            var Jornada = control.Obtener(id);
+
+
+            bool bandera = false;
+
+            foreach (var itemTurno in Turnos)
+            {
+                foreach (var itemJornadaTurno in Jornada.turnoJornadas)
+                {
+
+                    if (itemJornadaTurno.id_turno == itemTurno.id_turno)
+                    {
+                        itemTurno.selected = "checked='checked'" + "&" + itemTurno.id_turno;
+                        bandera = true;
+                    }
+                }
+
+                if (bandera == false)
+                {
+                    itemTurno.selected = " &" + itemTurno.id_turno.ToString();
+                }
+                bandera = false;
+            }
+
+            var serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
+            serializer.MaxJsonLength = 500000000;
+            var json = Json(new { data = Turnos }, JsonRequestBehavior.AllowGet);
+            json.MaxJsonLength = 500000000;
+            return json;
+        }
+
     }
 }
