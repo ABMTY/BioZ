@@ -24,10 +24,8 @@
                                 <th width="50px"></th>
                                 <th width="50px"></th>
                                 <th>&nbsp; &nbsp; &nbsp;No.</th>
-                                <th>&nbsp; &nbsp; &nbsp;Nombre</th>
-                                <th>&nbsp; &nbsp; &nbsp;Hora Entrada</th>
-                                <th>&nbsp; &nbsp; &nbsp;Hora Salida</th>
-                                <th>&nbsp; &nbsp; &nbsp;Horas de Trabajo</th>
+                                <th>&nbsp; &nbsp; &nbsp;Turno</th>
+                                <th>&nbsp; &nbsp; &nbsp;Horario</th>                                
                                 @*<th>&nbsp; &nbsp; &nbsp;Descanso</th>*@
                             </tr>
                         </thead>
@@ -155,9 +153,7 @@
     function Limpiar() {
         $("#id").val("");      
         $("#ddl_Horarios").html("");
-        $("#txt_Turno").val("");
-        $("#txt_HoraEntrada").val("");
-        $("#txt_HoraSalida").val("");
+        $("#txt_Turno").val("");      
         $("#chk_domingo").prop('checked', false);
         $("#chk_lunes").prop('checked', false);
         $("#chk_martes").prop('checked', false);
@@ -205,9 +201,7 @@
                 { "defaultContent": "<i>..</i>" },
                 { "data": "id_turno" },
                 { "data": "desc_turno" },
-                { "data": "hora_entrada" },
-                { "data": "hora_salida" },
-                { "data": "total_horas" },
+                { "data": "desc_horario" }
             ],
             "columnDefs": [{
                 "targets": 0, "data": "id_turno", "render": function (data, type, full, meta) {
@@ -239,7 +233,7 @@
                 console.log(data);
                 $("#id").val(Id_Turno);                
                 $("#ddl_Horarios option[value='" + data.data.id_horario + "']").prop('selected', true);
-                $("#txt_turno").val(data.data.desc_turno);
+                $("#txt_Turno").val(data.data.desc_turno);
                 $("#txt_HoraEntrada").val(data.data.hora_entrada);
                 $("#txt_HoraSalida").val(data.data.hora_salida);
                 $("#chk_domingo").prop('checked', data.data.domingo);
@@ -257,10 +251,9 @@
     }
     function Guardar() {
         Turno = {
-            "id_turno": $("#id").val() == "" ? 0 : $("#id").val(),
-            //"id_departamento": $("#ddl_Departamento").val(),
-            //"id_horario": $("#ddl_Horarios").val(),
-            "desc_turno": $("#txt_turno").val(),
+            "id_turno": $("#id").val() == "" ? 0 : $("#id").val(),            
+            "id_horario": $("#ddl_Horarios").val(),
+            "desc_turno": $("#txt_Turno").val(),
             "hora_entrada": $("#txt_HoraEntrada").val(),
             "hora_salida": $("#txt_HoraSalida").val(),
             "domingo": $("#chb_lunes").is(':checked'),
@@ -270,8 +263,7 @@
             "jueves": $("#chk_jueves").is(':checked'),
             "viernes": $("#chk_viernes").is(':checked'),
             "sabado": $("#chk_sabado").is(':checked')
-        };
-        console.log(turno),
+        };        
         $.ajax(
         {
             url: "/Turnos/Guardar/",
