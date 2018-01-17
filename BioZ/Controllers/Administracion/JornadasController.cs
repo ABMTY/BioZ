@@ -11,6 +11,8 @@ namespace BioZ.Controllers.Administracion
     public class JornadasController : Controller
     {
         CtrlJornadas control = new CtrlJornadas();
+        CtrlTurno ctrTurno = new CtrlTurno();
+        CtrlTurnoJornada ctrlTurnoJornada = new CtrlTurnoJornada();        
         // GET: Jornadas
         public ActionResult Index()
         {
@@ -18,23 +20,38 @@ namespace BioZ.Controllers.Administracion
         }
         public ActionResult Guardar(EntJornada entidad)
         {
-            //EntJornada entidad = new EntJornada();
-            //entidad.id_jornada = 1;
-            //entidad.desc_jornada = "Jornada Mty...";
-            //entidad.hora_entrada = "06:00";
-            //entidad.hora_salida = "17:00";
-            //entidad.domingo = false;
-            //entidad.lunes = true;
-            //entidad.martes = true;
-            //entidad.miercoles = true;
-            //entidad.jueves = true;
-            //entidad.viernes = true;
-            //entidad.sabado = true;
+
             try
             {
-                var r = entidad.id_jornada > 0 ?
-                   control.Actualizar(entidad) :
-                   control.Insertar(entidad);
+                var r = false;
+
+                if (entidad.id_jornada > 0)
+                {
+                    r = control.Actualizar(entidad);
+                    ctrlTurnoJornada.Eliminar(entidad.id_jornada);
+
+                    foreach (EntTurnoJornada item in entidad.turnoJornadas)
+                    {
+                       r = ctrlTurnoJornada.Insertar(new EntTurnoJornada
+                        {
+                            id_jornada = entidad.id_jornada,
+                            id_turno = item.id_turno
+                        });
+                    }
+                }
+                else
+                {
+                    control.Insertar(entidad);
+                    int id_jornada = control.ObtenerTodos().ToList().Max(p => p.id_jornada);
+                    foreach (EntTurnoJornada item in entidad.turnoJornadas)
+                    {
+                        ctrlTurnoJornada.Insertar(new EntTurnoJornada
+                        {
+                            id_jornada = entidad.id_jornada,
+                            id_turno = item.id_turno
+                        });
+                    }
+                }
 
                 if (!r)
                 {
@@ -85,5 +102,39 @@ namespace BioZ.Controllers.Administracion
                 return View("Error", new HandleErrorInfo(ex, "Jornadas", "Eliminar"));
             }
         }
+        public ActionResult GetJornadasTurnos(int id)
+        {
+            var Turnos = ctrTurno.ObtenerTodos();
+            var Jornada = control.Obtener(id);
+
+
+            bool bandera = false;
+
+            foreach (var itemTurno in Turnos)
+            {
+                foreach (var itemJornadaTurno in Jornada.turnoJornadas)
+                {
+
+                    if (itemJornadaTurno.id_turno == itemTurno.id_turno)
+                    {
+                        itemTurno.selected = "checked='checked'" + "&" + itemTurno.id_turno;
+                        bandera = true;
+                    }
+                }
+
+                if (bandera == false)
+                {
+                    itemTurno.selected = " &" + itemTurno.id_turno.ToString();
+                }
+                bandera = false;
+            }
+
+            var serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
+            serializer.MaxJsonLength = 500000000;
+            var json = Json(new { data = Turnos }, JsonRequestBehavior.AllowGet);
+            json.MaxJsonLength = 500000000;
+            return json;
+        }
+
     }
 }

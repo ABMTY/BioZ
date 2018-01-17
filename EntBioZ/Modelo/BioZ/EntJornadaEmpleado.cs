@@ -6,12 +6,10 @@ using System.Threading.Tasks;
 
 namespace EntBioZ.Modelo.BioZ
 {
-    
-    public class EntJornada
+    public class EntJornadaEmpleado
     {
+        public int id_jornada_empleado { get; set; }
         public int id_jornada { get; set; }
-        public string desc_jornada { get; set; }
-        public List<EntTurnoJornada> turnoJornadas { get; set; }
-
+        public int id_empleado { get; set; }
     }
 }

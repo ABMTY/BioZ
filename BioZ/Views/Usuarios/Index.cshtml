@@ -28,6 +28,7 @@
                                 <th>&nbsp; &nbsp; &nbsp;No.</th>
                                 <th>&nbsp; &nbsp; &nbsp;Usuario</th>
                                 <th>&nbsp; &nbsp; &nbsp;Rol</th>                                                             
+                                <th>&nbsp; &nbsp; &nbsp;Activo</th>
                             </tr>
                         </thead>
                     </table>
@@ -136,9 +137,9 @@
     function Limpiar() {
         $("#id").val("");
         $("#txt_Usuario").val("");
-        $("#txt_Contraseña").val("");
-        $("#chk_activo").val("");
-        $("#ddl_Roles").html("")
+        $("#txt_Contraseña").val("");        
+        $("#ddl_Roles").html("");
+        $("#chk_activo").prop('checked', false);
     }
 
     function Cargar_Usuarios() {
@@ -154,7 +155,8 @@
                 { "defaultContent": "<i>..</i>" },
                 { "data": "id_usuario" },
                 { "data": "usuario" },
-                { "data": "desc_rol" }               
+                { "data": "desc_rol" },
+                { "data": "s_activo" },
             ],
             "columnDefs": [{
                 "targets": 0, "data": "id_usuario", "render": function (data, type, full, meta) {
@@ -200,7 +202,7 @@
             data: '{ id:' + Id_Usuario + '}',
             type: "POST",
             contentType: "application/json; charset=utf-8",
-            success: function (data) {
+            success: function (data) {                
                 Limpiar();                
                 $("#secc_lista").hide();
                 $("#secc_add").show();
@@ -208,7 +210,7 @@
                 $("#id").val(Id_Usuario);                
                 $("#txt_Usuario").val(data.data.usuario);
                 $("#txt_Contraseña").val(data.data.password);
-                $("#chk_activo").val(data.data.activo);
+                $("#chk_activo").prop('checked', data.data.activo);
                 Cargar_Roles();
                 $("#ddl_Roles option[value='" + data.data.id_rol + "']").prop('selected', true);
             },
@@ -222,7 +224,7 @@
             "id_usuario": $("#id").val() == "" ? 0 : $("#id").val(),
             "usuario": $("#txt_Usuario").val(),
             "password": $("#txt_Contraseña").val(),
-            //"activo": $("#chk_activo").is(':checked'),            
+            "activo": $("#chk_activo").is(':checked'),            
             "id_rol": $("#ddl_Roles").val(),
         };        
         $.ajax(

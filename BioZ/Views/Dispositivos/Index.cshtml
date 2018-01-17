@@ -30,6 +30,7 @@
                                 <th>&nbsp; &nbsp; &nbsp;IP</th>
                                 <th>&nbsp; &nbsp; &nbsp;Puerto</th>
                                 <th>&nbsp; &nbsp; &nbsp;Sucursal</th>                                
+                                <th>&nbsp; &nbsp; &nbsp;Foto</th>  
                             </tr>
                         </thead>
                     </table>
@@ -58,13 +59,13 @@
                                             <input type="text" id="txt_Dispositivo" class="form-control">
                                         </div>
                                     </div>
-                                    <div class="form-group col-md-12">
+                                    @*<div class="form-group col-md-12">
                                         <label class="control-label" for="">Empresa *</label>
                                         <div>
                                             <select class="form-control selectpicker" id="ddl_Empresa" required data-live-search="true">                                               
                                             </select>
                                         </div>
-                                    </div>
+                                    </div>*@
                                     <div class="form-group col-md-12">
                                         <label class="control-label" for="">Sucursal *</label>
                                         <div>
@@ -72,14 +73,14 @@
                                             </select>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="col-lg-6">
                                     <div class="form-group col-md-12">
                                         <label class="control-label" for="">No. de serie *</label>
                                         <div>
                                             <input type="text" id="txt_Serie" class="form-control">
                                         </div>
                                     </div>
+                                </div>
+                                <div class="col-lg-6">                                  
                                     <div class="form-group col-md-12">
                                         <label class="control-label" for="">IP *</label>
                                         <div>
@@ -91,6 +92,13 @@
                                         <div>
                                             <input type="text" id="txt_Puerto" class="form-control">
                                         </div>
+                                    </div>
+                                    <div class="form-group col-md-12">
+                                        <label>Foto del dispositivo </label>
+                                        <input type="file" id="subirImagen" onchange="convertirImagen()" value="" />
+                                        <p id="imgBase64" style="display: none;"></p>
+                                        <img src="" alt="" id="imagen" width="30%;" height="30%;" /><br />
+                                        <img src="" alt="" id="imagenOriginal" width="30%;" height="30%;" />
                                     </div>
                                 </div>
                             </div>
@@ -148,7 +156,7 @@
         $("#secc_lista").hide();
         $("#secc_add").show();
         Limpiar();
-        Cargar_Empresas();
+        //Cargar_Empresas();
         Cargar_Sucursales();
     }
     function Cancelar() {
@@ -157,11 +165,15 @@
     }
     function Limpiar() {
         $("#id").val("");
-        $("#txt_Dispositivo").val(),
-        $("#txt_Ip").val(),
-        $("#txt_Puerto").val(),
-        $("#txt_Serie").val(),
-        $("#ddl_Sucursal").html()
+        $("#txt_Dispositivo").val(""),
+        $("#txt_Ip").val(""),
+        $("#txt_Puerto").val(""),
+        $("#txt_Serie").val(""),
+        $("#ddl_Sucursal").html("")
+        $("#imgBase64").text("");
+        $("#subirImagen").val("");
+        $("#imagen").attr('src', '');
+        $("#imagenOriginal").attr('src', '');
     }
 
     function Cargar_Dispositivos() {
@@ -180,7 +192,8 @@
                 { "data": "numero_serie" },
                 { "data": "ip_dispositivo" },
                 { "data": "puerto" },
-                { "data": "desc_sucursal" }                
+                { "data": "desc_sucursal" },
+                { "defaultContent": "" },
             ],
             "columnDefs": [{
                 "targets": 0, "data": "id_dispositivo", "render": function (data, type, full, meta) {
@@ -191,30 +204,42 @@
                     "targets": 1, "data": "id_dispositivo", "render": function (data, type, full, meta) {
                         return "<button type='button' title='Eliminar' id='btn_borrar" + data + "' class='btn btn-danger' onclick='Confirma_Eliminar(" + data + ")'><i class='fa fa-trash'></i></button> "
                     }
-                }]
+                },
+                {
+                    "targets": 8, "data": "imagen", "render": function (data, type, full, meta) {
+                        if (data != null) {
+                            var url = "data:image/png;base64," + data;
+                            return "<img src=" + url + " width='60px;' height='50px;' />"
+                        } else {
+                            return "<p></p>"
+                        }
+
+                    }
+                }
+            ]
         });
     }
-    function Cargar_Empresas() {
+    //function Cargar_Empresas() {
 
-        $("#ddl_Empresa").html("");
+    //    $("#ddl_Empresa").html("");
 
-        $.ajax({
-            url: "/Empresa/GetEmpresas/",
-            async: true,
-            dataType: "json",
-            type: "POST",
-            contentType: "application/json; charset=utf-8",
-            success: function (data) {
-                $.each(data.data, function (i, Item) {
-                    $("#ddl_Empresa").append("<option value='" + Item.id_empresa + "'>" + Item.razon_social + "</option>");
-                });
-                $('#ddl_Empresa').selectpicker('refresh');
-            },
-            error: function (request, status, error) {
-                console.log("error" + error);
-            }
-        });
-    }    
+    //    $.ajax({
+    //        url: "/Empresa/GetEmpresas/",
+    //        async: true,
+    //        dataType: "json",
+    //        type: "POST",
+    //        contentType: "application/json; charset=utf-8",
+    //        success: function (data) {
+    //            $.each(data.data, function (i, Item) {
+    //                $("#ddl_Empresa").append("<option value='" + Item.id_empresa + "'>" + Item.razon_social + "</option>");
+    //            });
+    //            $('#ddl_Empresa').selectpicker('refresh');
+    //        },
+    //        error: function (request, status, error) {
+    //            console.log("error" + error);
+    //        }
+    //    });
+    //}    
     function Cargar_Sucursales() {
         $("#ddl_Sucursal").html("");
         $.ajax({
@@ -258,8 +283,16 @@
                 $("#txt_Serie").val(data.data.numero_serie);
                 Cargar_Sucursales();
                 $("#ddl_Sucursal option[value='" + data.data.id_sucursal + "']").prop('selected', true);
-                Cargar_Empresas();
-                $("#ddl_Empresa option[value='" + data.data.id_empresa + "']").prop('selected', true);
+                $("#ddl_Sucursal").selectpicker('refresh');
+                //Cargar_Empresas();
+                //$("#ddl_Empresa option[value='" + data.data.id_empresa + "']").prop('selected', true);                
+                $("#txt_Serie").val(data.data.numero_serie);
+                debugger;
+                $("#imgBase64").text(data.data.imagen)
+                if (data.data.imagen != "") {
+                    $('#imagen').css({ 'width': '0%', 'height': '0%' });                    
+                    $('#imagenOriginal').attr('src', 'data:image/png;base64,' + data.data.imagen);                    
+                }
             },
             error: function (request, status, error) {
                 console.log("error" + error);
@@ -274,6 +307,7 @@
             "puerto": $("#txt_Puerto").val(),
             "numero_serie": $("#txt_Serie").val(),
             "id_sucursal": $("#ddl_Sucursal").val(),
+            "imagen": $("#imgBase64").text(),
         };
         console.log(Dispositivo),
         $.ajax(
@@ -317,6 +351,26 @@
                 console.log("error" + error);
             }
         });
+    }
+
+    //Convertir imagen a base64
+    function convertirImagen() {
+        var archivoImagen = document.getElementById("subirImagen").files;
+        if (archivoImagen.length > 0) {
+            var archivoCargar = archivoImagen[0];
+            var archivoLeer = new FileReader();
+
+            archivoLeer.onload = function (eventoCargarArchivo) {
+                var srcData = eventoCargarArchivo.target.result; //Imagen base64
+                //alert(srcData);
+                var Logo = srcData.split(',')[1];
+                //alert(Logo)
+                document.getElementById("imagen").src = srcData;
+                document.getElementById("imgBase64").textContent = Logo;
+
+            }
+            archivoLeer.readAsDataURL(archivoCargar);
+        }
     }
 </script>
 

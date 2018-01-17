@@ -810,6 +810,10 @@
     <Content Include="Content\plugins\slimScroll\jquery.slimscroll.min.js" />
     <Content Include="Content\plugins\sparkline\jquery.sparkline.js" />
     <Content Include="Content\plugins\sparkline\jquery.sparkline.min.js" />
+    <Content Include="Content\plugins\timepicker\bootstrap-timepicker.css" />
+    <Content Include="Content\plugins\timepicker\bootstrap-timepicker.js" />
+    <Content Include="Content\plugins\timepicker\bootstrap-timepicker.min.css" />
+    <Content Include="Content\plugins\timepicker\bootstrap-timepicker.min.js" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -842,6 +846,7 @@
     <Content Include="Content\DataTables\css\common.scss" />
     <Content Include="Content\DataTables\css\mixins.scss" />
     <Content Include="Content\DataTables\css\semanticui.scss" />
+    <Content Include="Content\plugins\timepicker\glyphicons.less" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />

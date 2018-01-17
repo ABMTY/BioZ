@@ -36,9 +36,9 @@ namespace CtrlBioZ.Bioz
         {
             return PerTurno.Update(Entidad);
         }
-        public bool Eliminar(int Id_Vistas)
+        public bool Eliminar(int Id_Turno)
         {
-            return PerTurno.Eliminar(Id_Vistas);
+            return PerTurno.Eliminar(Id_Turno);
         }
     }
 }

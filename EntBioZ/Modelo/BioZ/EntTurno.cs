@@ -19,5 +19,6 @@ namespace EntBioZ.Modelo.BioZ
         public bool sabado { get; set; }
         public int id_horario { get; set; }
         public string desc_horario { get; set; }
+        public string selected { get; set; }
     }
 }

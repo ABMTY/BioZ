@@ -1,4 +1,4 @@
-﻿using EntBioZ.Modelo.Seguridad;
+﻿using EntBioZ.Modelo.BioZ;
 using IBM.Data.Informix;
 using PerBioZ.General;
 using System;
@@ -9,31 +9,26 @@ using System.Threading.Tasks;
 
 namespace PerBioZ.Bioz
 {
-    public class PerUsuarios : Persistencia
+    public class PerJornadaEmpleado : Persistencia
     {
-
-        public List<EntUsuario> ObtenerTodos()
+        public List<EntJornadaEmpleado> ObtenerTodos()
         {
-            List<EntUsuario> Lista = new List<EntUsuario>();
-            EntUsuario entidad = null;
+            List<EntJornadaEmpleado> Lista = new List<EntJornadaEmpleado>();
+            EntJornadaEmpleado entidad = null;
             try
             {
                 AbrirConexion();
                 StringBuilder CadenaSql = new StringBuilder();
-                var sql = "SELECT a.id_usuario, a.usuario, a.password, a.id_rol, b.desc_rol, a.activo FROM informix.usuarios a left join informix.roles b on a.id_rol=b.id_rol";
+                var sql = "SELECT id_jornada_empleado, id_jornada, id_empleado FROM informix.jornada_empleado";
                 IfxCommand cmd = new IfxCommand(sql, Conexion);
                 using (var dr = cmd.ExecuteReader())
                 {
                     while (dr.Read())
                     {
-                        entidad = new EntUsuario();
-                        entidad.id_usuario = int.Parse(dr["id_usuario"].ToString());
-                        entidad.usuario = dr["usuario"].ToString();
-                        entidad.password = dr["password"].ToString();
-                        entidad.id_rol = int.Parse(dr["id_rol"].ToString());
-                        entidad.desc_rol = dr["desc_rol"].ToString();
-                        entidad.activo = bool.Parse(dr["activo"].ToString());
-                        entidad.s_activo = bool.Parse(dr["activo"].ToString()) ? "Activo" : "Inactivo";
+                        entidad = new EntJornadaEmpleado();
+                        entidad.id_jornada_empleado = int.Parse(dr["id_jornada_empleado"].ToString());
+                        entidad.id_jornada = int.Parse(dr["id_jornada"].ToString());
+                        entidad.id_empleado = int.Parse(dr["id_empleado"].ToString());
                         Lista.Add(entidad);
                     }
                 }
@@ -49,35 +44,31 @@ namespace PerBioZ.Bioz
             return Lista;
 
         }
-        public EntUsuario Obtener(int id)
+        public EntJornadaEmpleado Obtener(int id)
         {
-            EntUsuario entidad = null;
+            EntJornadaEmpleado entidad = null;
             try
             {
                 AbrirConexion();
                 StringBuilder CadenaSql = new StringBuilder();
 
                 IfxCommand cmd = new IfxCommand(string.Empty, Conexion);
-                cmd.CommandText = "SELECT a.id_usuario, a.usuario, a.password, a.id_rol, b.desc_rol, a.activo FROM informix.usuarios a left join informix.roles b on a.id_rol=b.id_rol WHERE a.id_usuario=?";
+                cmd.CommandText = "SELECT id_jornada_empleado, id_jornada, id_empleado FROM informix.jornada_empleado WHERE id_jornada_empleado=?";
                 cmd.Parameters.Add(new IfxParameter()).Value = id;
                 using (var dr = cmd.ExecuteReader())
                 {
                     if (dr.Read())
                     {
-                        entidad = new EntUsuario();
-                        entidad.id_usuario = int.Parse(dr["id_usuario"].ToString());
-                        entidad.usuario = dr["usuario"].ToString();
-                        entidad.password = dr["password"].ToString();
-                        entidad.id_rol = int.Parse(dr["id_rol"].ToString());
-                        entidad.desc_rol = dr["desc_rol"].ToString();
-                        entidad.activo = bool.Parse(dr["activo"].ToString());
-                        entidad.s_activo = bool.Parse(dr["activo"].ToString()) ? "Activo" : "Inactivo";
+                        entidad = new EntJornadaEmpleado();
+                        entidad.id_jornada_empleado = int.Parse(dr["id_jornada_empleado"].ToString());
+                        entidad.id_jornada = int.Parse(dr["id_jornada"].ToString());
+                        entidad.id_empleado = int.Parse(dr["id_empleado"].ToString());
                     }
                 }
             }
             catch (Exception exc)
             {
-                throw exc;  
+                throw exc;
             }
             finally
             {
@@ -86,21 +77,19 @@ namespace PerBioZ.Bioz
             return entidad;
 
         }
-        public bool Insert(EntUsuario entidad)
+        public bool Insert(EntJornadaEmpleado entidad)
         {
             bool respuesta = false;
             try
             {
                 AbrirConexion();
-                var sql = "execute procedure dml_usuarios (?,NULL,?,?,?,?);";
+                var sql = "execute procedure dml_jornada_empleado (?,NULL,?,?);";
                 using (var cmd = new IfxCommand(sql, Conexion))
                 {
                     cmd.Connection = Conexion;
                     cmd.Parameters.Add(new IfxParameter()).Value = "INSERT";
-                    cmd.Parameters.Add(new IfxParameter()).Value = entidad.usuario;
-                    cmd.Parameters.Add(new IfxParameter()).Value = entidad.password;
-                    cmd.Parameters.Add(new IfxParameter()).Value = entidad.id_rol;
-                    cmd.Parameters.Add(new IfxParameter()).Value = entidad.activo;
+                    cmd.Parameters.Add(new IfxParameter()).Value = entidad.id_jornada;
+                    cmd.Parameters.Add(new IfxParameter()).Value = entidad.id_empleado;
                     cmd.ExecuteNonQuery();
                 }
                 respuesta = true;
@@ -110,13 +99,13 @@ namespace PerBioZ.Bioz
             catch (InvalidCastException ex)
             {
                 ApplicationException excepcion = new ApplicationException("Se genero un error con el siguiente mensaje: " + ex.Message, ex);
-                excepcion.Source = "Insert Usuarios";
+                excepcion.Source = "Insert Jornada Empleado";
                 throw excepcion;
             }
             catch (Exception ex)
             {
                 ApplicationException excepcion = new ApplicationException("Se genero un error de aplicación con el siguiente mensaje: " + ex.Message, ex);
-                excepcion.Source = "Insert Usuarios";
+                excepcion.Source = "Insert Jornada Empleado";
                 throw excepcion;
             }
             finally
@@ -126,22 +115,20 @@ namespace PerBioZ.Bioz
             return respuesta;
 
         }
-        public bool Update(EntUsuario entidad)
+        public bool Update(EntJornadaEmpleado entidad)
         {
             bool respuesta = false;
             try
             {
                 AbrirConexion();
-                var sql = "execute procedure dml_usuarios (?,?,?,?,?,?);";
+                var sql = "execute procedure dml_jornada_empleado (?,?,?,?);";
                 using (var cmd = new IfxCommand(sql, Conexion))
                 {
                     cmd.Connection = Conexion;
                     cmd.Parameters.Add(new IfxParameter()).Value = "UPDATE";
-                    cmd.Parameters.Add(new IfxParameter()).Value = entidad.id_usuario;
-                    cmd.Parameters.Add(new IfxParameter()).Value = entidad.usuario;
-                    cmd.Parameters.Add(new IfxParameter()).Value = entidad.password;
-                    cmd.Parameters.Add(new IfxParameter()).Value = entidad.id_rol;
-                    cmd.Parameters.Add(new IfxParameter()).Value = entidad.activo;
+                    cmd.Parameters.Add(new IfxParameter()).Value = entidad.id_jornada_empleado;
+                    cmd.Parameters.Add(new IfxParameter()).Value = entidad.id_jornada;
+                    cmd.Parameters.Add(new IfxParameter()).Value = entidad.id_empleado;
                     cmd.ExecuteNonQuery();
                 }
                 respuesta = true;
@@ -151,13 +138,13 @@ namespace PerBioZ.Bioz
             catch (InvalidCastException ex)
             {
                 ApplicationException excepcion = new ApplicationException("Se genero un error con el siguiente mensaje: " + ex.Message, ex);
-                excepcion.Source = "Update Usuarios";
+                excepcion.Source = "Update Jornada Empleado";
                 throw excepcion;
             }
             catch (Exception ex)
             {
                 ApplicationException excepcion = new ApplicationException("Se genero un error de aplicación con el siguiente mensaje: " + ex.Message, ex);
-                excepcion.Source = "Update Usuarios";
+                excepcion.Source = "Update Jornada Empleado";
                 throw excepcion;
             }
             finally
@@ -173,7 +160,7 @@ namespace PerBioZ.Bioz
             try
             {
                 AbrirConexion();
-                var sql = "execute procedure dml_usuarios (?,?,NULL,NULL,NULL);";
+                var sql = "execute procedure dml_jornada_empleado (?,NULL,?,NULL);";
                 using (var cmd = new IfxCommand(sql, Conexion))
                 {
                     cmd.Connection = Conexion;

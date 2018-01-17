@@ -144,7 +144,7 @@
     function Agregar() {
         $("#secc_lista").hide();
         $("#secc_add").show();       
-        Limpiar();
+        Limpiar();        
         Cargar_Vistas();
     }
     function Cancelar() {
@@ -209,7 +209,7 @@
         });
     }
 
-    function Editar(Id_Rol) {
+    function Editar(Id_Rol) {        
         $("#FormEditar").show();
         $.ajax({
             url: "/Roles/GetRol/",
@@ -276,7 +276,7 @@
 
         var table = document.getElementById("Lista_Vistas");
         for (var i = 1, row; row = table.rows[i]; i++) {
-            idvista = $('tr:nth-child(' + i + ') td:nth-child(3)').html();            
+            idvista = $('#Lista_Vistas tr:nth-child(' + i + ') td:nth-child(3)').html();                      
             if ($("#chk_seleccionado" + idvista).is(':checked')) {
                 items.push({ id_vista: idvista });
             }
