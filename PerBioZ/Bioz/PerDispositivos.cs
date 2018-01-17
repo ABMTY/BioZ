@@ -76,7 +76,7 @@ namespace PerBioZ.Bioz
                         entidad.id_sucursal = int.Parse(dr["id_sucursal"].ToString());
                         entidad.desc_sucursal = dr["desc_sucursal"].ToString();
                         entidad.id_empresa = int.Parse(dr["id_empresa"].ToString());
-                        entidad.id_empresa = int.Parse(dr["imagen"].ToString());
+                        entidad.imagen = dr["imagen"].ToString();
                     }
                 }
             }
