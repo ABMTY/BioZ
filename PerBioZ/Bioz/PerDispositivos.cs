@@ -19,7 +19,7 @@ namespace PerBioZ.Bioz
             {
                 AbrirConexion();
                 StringBuilder CadenaSql = new StringBuilder();
-                var sql = "SELECT a.id_dispositivo, a.nombre_dispositivo,a.numero_serie,a.ip_dispositivo,a.puerto,a.id_sucursal,b.desc_sucursal FROM informix.dispositivos ";
+                var sql = "SELECT a.id_dispositivo, a.nombre_dispositivo,a.numero_serie,a.ip_dispositivo,a.puerto,a.id_sucursal,b.desc_sucursal,a.imagen FROM informix.dispositivos ";
                     sql+= "a left join informix.sucursales b on a.id_sucursal=b.id_sucursal";
                 IfxCommand cmd = new IfxCommand(sql, Conexion);
                 using (var dr = cmd.ExecuteReader())
@@ -34,6 +34,7 @@ namespace PerBioZ.Bioz
                         entidad.puerto = dr["puerto"].ToString();
                         entidad.id_sucursal = int.Parse(dr["id_sucursal"].ToString());
                         entidad.desc_sucursal = dr["desc_sucursal"].ToString();
+                        entidad.imagen = dr["imagen"].ToString();
                         Lista.Add(entidad);
                     }
                 }
@@ -58,7 +59,7 @@ namespace PerBioZ.Bioz
                 StringBuilder CadenaSql = new StringBuilder();
 
                 IfxCommand cmd = new IfxCommand(string.Empty, Conexion);
-                var sql = "SELECT a.id_dispositivo, a.nombre_dispositivo,a.numero_serie,a.ip_dispositivo,a.puerto,a.id_sucursal,b.desc_sucursal,b.id_empresa FROM ";
+                var sql = "SELECT a.id_dispositivo, a.nombre_dispositivo,a.numero_serie,a.ip_dispositivo,a.puerto,a.id_sucursal,b.desc_sucursal,b.id_empresa, a.imagen FROM ";
                     sql += "informix.dispositivos a left join informix.sucursales b on a.id_sucursal=b.id_sucursal WHERE a.id_dispositivo=?";
                 cmd.CommandText = sql;
                 cmd.Parameters.Add(new IfxParameter()).Value = id;
@@ -75,6 +76,7 @@ namespace PerBioZ.Bioz
                         entidad.id_sucursal = int.Parse(dr["id_sucursal"].ToString());
                         entidad.desc_sucursal = dr["desc_sucursal"].ToString();
                         entidad.id_empresa = int.Parse(dr["id_empresa"].ToString());
+                        entidad.id_empresa = int.Parse(dr["imagen"].ToString());
                     }
                 }
             }
@@ -94,8 +96,12 @@ namespace PerBioZ.Bioz
             bool respuesta = false;
             try
             {
+                var sql = string.Empty;
                 AbrirConexion();
-                var sql = "execute procedure dml_dispositivo (?,NULL,?,?,?,?,?);";
+                if (entidad.imagen!=null)
+                    sql = "execute procedure dml_dispositivo (?,NULL,?,?,?,?,?,?);";
+                else
+                    sql = "execute procedure dml_dispositivo (?,NULL,?,?,?,?,?,NULL);";
                 using (var cmd = new IfxCommand(sql, Conexion))
                 {
                     cmd.Connection = Conexion;
@@ -104,7 +110,9 @@ namespace PerBioZ.Bioz
                     cmd.Parameters.Add(new IfxParameter()).Value = entidad.numero_serie;
                     cmd.Parameters.Add(new IfxParameter()).Value = entidad.ip_dispositivo;
                     cmd.Parameters.Add(new IfxParameter()).Value = entidad.puerto;
-                    cmd.Parameters.Add(new IfxParameter()).Value = entidad.id_sucursal;
+                    cmd.Parameters.Add(new IfxParameter()).Value = entidad.id_sucursal;                    
+                    if (entidad.imagen != null)
+                        cmd.Parameters.Add(new IfxParameter()).Value = entidad.imagen;
                     cmd.ExecuteNonQuery();
                 }
                 respuesta = true;
@@ -135,8 +143,13 @@ namespace PerBioZ.Bioz
             bool respuesta = false;
             try
             {
+                var sql = string.Empty;
                 AbrirConexion();
-                var sql = "execute procedure dml_dispositivo (?,?,?,?,?,?,?);";
+                if (entidad.imagen!=null)
+                    sql = "execute procedure dml_dispositivo (?,?,?,?,?,?,?,?);";
+                else
+                    sql = "execute procedure dml_dispositivo (?,?,?,?,?,?,?,NULL);";
+
                 using (var cmd = new IfxCommand(sql, Conexion))
                 {
                     cmd.Connection = Conexion;
@@ -147,6 +160,8 @@ namespace PerBioZ.Bioz
                     cmd.Parameters.Add(new IfxParameter()).Value = entidad.ip_dispositivo;
                     cmd.Parameters.Add(new IfxParameter()).Value = entidad.puerto;
                     cmd.Parameters.Add(new IfxParameter()).Value = entidad.id_sucursal;
+                    if (entidad.imagen != null)
+                        cmd.Parameters.Add(new IfxParameter()).Value = entidad.imagen;
                     cmd.ExecuteNonQuery();
                 }
                 respuesta = true;
