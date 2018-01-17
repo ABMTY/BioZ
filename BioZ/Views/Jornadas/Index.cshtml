@@ -26,7 +26,7 @@
                                 <th width="50px"></th>
                                 <th width="50px"></th>
                                 <th width="50px">&nbsp; &nbsp; &nbsp;No.</th>
-                                <th>&nbsp; &nbsp; &nbsp;Empleado</th>
+                                <th>&nbsp; &nbsp; &nbsp;Jornada</th>
                             </tr>
                         </thead>
                     </table>
@@ -50,21 +50,12 @@
                                 <div class="col-lg-12">
                                     <input type="text" id="id" value="" hidden />
                                     <div class="form-group col-md-12">
-                                        <label class="control-label" for="">Rol*</label>
-                                        <div>
-                                            <label id="lbl_empleado"></label>
-                                            @*<input type="text" id="txt_rol" class="form-control">*@
+                                        <label class="control-label" for="">Jornada *</label>
+                                        <div>                                           
+                                            <input type="text" id="txt_jornada" class="form-control">
                                         </div>
                                     </div>
-                                </div>
-                                @*<div class="col-lg-6">
-                                        <div class="form-group col-md-12">
-                                            <label class=" control-label" for="">Descripción</label>
-                                            <div>
-                                                <input type="text" id="txt_descripcion" class="form-control">
-                                            </div>
-                                        </div>
-                                    </div>*@
+                                </div>                            
                             </div>
                             <div class="form-horizontal">
                                 <div class="col-lg-12">
@@ -79,7 +70,7 @@
                                                         <th width="50px">&nbsp; &nbsp; &nbsp;</th>
                                                         <th width="50px">&nbsp; &nbsp; &nbsp; <input id="seleccionarTodos" type="checkbox" /></th>
                                                         <th width="50px">&nbsp; &nbsp; &nbsp;No.</th>
-                                                        <th>&nbsp; &nbsp; &nbsp;Vista</th>
+                                                        <th>&nbsp; &nbsp; &nbsp;Turno</th>
                                                     </tr>
                                                 </thead>
                                             </table>
@@ -104,7 +95,7 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title" id="mensaje_modal">Eliminar Rol</h4>
+                        <h4 class="modal-title" id="mensaje_modal">Eliminar Jornada</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -134,28 +125,26 @@
             $('td input:checkbox', table).attr('checked', e.target.checked);
         });
 
-
-
         $('#Lista_Jornadas').DataTable();
         Cargar_Jornadas();
-
-
     });
 
     function Agregar() {
         $("#secc_lista").hide();
         $("#secc_add").show();
         Limpiar();
+        //$("#Lista_Jornadas").html("");
         Cargar_Turnos();
     }
     function Cancelar() {
         $("#secc_lista").show();
         $("#secc_add").hide();
+        Cargar_Jornadas();
     }
     function Limpiar() {
         $("#id").val("");
-        $("#txt_rol").val("");
-        $("#txt_descripcion").val("");
+        $("#txt_jornada").val("");
+      
     }
 
     function Cargar_Jornadas() {
@@ -169,16 +158,16 @@
             "columns": [
                 { "defaultContent": "<i>..</i>" },
                 { "defaultContent": "<i>..</i>" },
-                { "data": "id_rol" },
-                { "data": "desc_rol" }
+                { "data": "id_jornada" },
+                { "data": "desc_jornada" }
             ],
             "columnDefs": [{
-                "targets": 0, "data": "id_rol", "render": function (data, type, full, meta) {
+                "targets": 0, "data": "id_jornada", "render": function (data, type, full, meta) {
                     return "<button type='button' title='Editar' id='btn_mas" + data + "' class='btn btn-warning' onclick='Editar(" + data + ")'  ><i class='fa fa-edit'></i></button> "
                 }
             },
                 {
-                    "targets": 1, "data": "id_rol", "render": function (data, type, full, meta) {
+                    "targets": 1, "data": "id_jornada", "render": function (data, type, full, meta) {
                         return "<button type='button' title='Eliminar' id='btn_borrar" + data + "' class='btn btn-danger' onclick='Confirma_Eliminar(" + data + ")'><i class='fa fa-trash'></i></button> "
                     }
                 }]
@@ -196,12 +185,12 @@
             "columns": [
                 { "defaultContent": "<i></i>" },
                 { "defaultContent": "<i>..</i>" },
-                { "data": "id_vista" },
-                { "data": "ventana" },
+                { "data": "id_turno" },
+                { "data": "desc_turno" },
             ],
             "columnDefs": [
                 {
-                    "targets": 1, "data": "id_vista", "render": function (data, type, full, meta) {
+                    "targets": 1, "data": "id_turno", "render": function (data, type, full, meta) {
                         return "<div class='checkbox checkbox-success checkbox-circle'>" +
                         "<input  type='checkbox'  id='chk_seleccionado" + data + "' value='' ><label></label></div>"
                     }
@@ -210,13 +199,14 @@
         });
     }
 
-    function Editar(Id_Rol) {
-        $("#FormEditar").show();
+    function Editar(Id_jornada) {
+        //$("#Lista_Jornadas").html("");
+        //$("#FormEditar").show();
         $.ajax({
-            url: "/Jornadas/GetRol/",
+            url: "/Jornadas/GetJornada/",
             async: true,
             dataType: "json",
-            data: '{ id:' + Id_Rol + '}',
+            data: '{ id:' + Id_jornada + '}',
             type: "POST",
             contentType: "application/json; charset=utf-8",
             success: function (data) {
@@ -224,9 +214,9 @@
                 $("#secc_lista").hide();
                 $("#secc_add").show();
                 console.log(data);
-                $("#id").val(Id_Rol);
-                $("#txt_rol").val(data.data.desc_rol);
-                Cargar_JornadasTurnos(Id_Rol);
+                $("#id").val(Id_jornada);
+                $("#txt_jornada").val(data.data.desc_jornada);
+                Cargar_JornadasTurnos(Id_jornada);
             },
             error: function (request, status, error) {
                 console.log("error" + error);
@@ -234,12 +224,12 @@
         });
     }
 
-    function Cargar_JornadasTurnos(Id_Rol) {
+    function Cargar_JornadasTurnos(Id_jornada) {
         $('#Lista_Turnos').DataTable({
             destroy: true,
             searching: true,
             "ajax": {
-                "url": "/Jornadas/GetJornadasTurnos/?id="+Id_Rol,
+                "url": "/Jornadas/GetJornadasTurnos/?id="+Id_jornada,
                 "dataType": "json",
                 "type": "GET",
                 "contentType": "application/json; charset=utf-8"
@@ -254,8 +244,8 @@
             "columns": [
                 { "defaultContent": "<i></i>" },
                 { "defaultContent": "<i>..</i>" },
-                { "data": "id_vista" },
-                { "data": "ventana" }
+                { "data": "id_turno" },
+                { "data": "desc_turno" }
             ],
             "columnDefs": [
                 {
@@ -272,21 +262,20 @@
     }
 
     function Guardar() {
-
+        debugger;
         var items = [];
-
-        var table = document.getElementById("Lista_Turnos");
-        for (var i = 1, row; row = table.rows[i]; i++) {
-            idvista = $('tr:nth-child(' + i + ') td:nth-child(3)').html();
-            if ($("#chk_seleccionado" + idvista).is(':checked')) {
-                items.push({ id_vista: idvista });
+        var Lista_Turnos = document.getElementById("Lista_Turnos");      
+        for (var i = 1, row; row = Lista_Turnos.rows[i]; i++) {
+            idturno = $('#Lista_Turnos tr:nth-child(' + i + ') td:nth-child(3)').html();                        
+            if ($("#chk_seleccionado" + idturno).is(':checked')) {
+                items.push({ id_turno: idturno });
             }
         }
 
-        Rol = {
-            "Id_Rol": $("#id").val() == "" ? 0 : $("#id").val(),
-            "desc_rol": $("#txt_rol").val(),
-            "rolTurnos": items
+        Jornada = {
+            "id_jornada": $("#id").val() == "" ? 0 : $("#id").val(),
+            "desc_jornada": $("#txt_jornada").val(),
+            "turnoJornadas": items
         };
 
         $.ajax(
@@ -294,14 +283,14 @@
             url: "/Jornadas/Guardar/",
             async: true,
             dataType: "json",
-            data: JSON.stringify(Rol),
+            data: JSON.stringify(Jornada),
             type: "POST",
             contentType: "application/json; charset=utf-8",
             success: function (data) {
                 swal({ title: "Jornadas", text: "Guardada Correctamente", type: "success" }, function () { Cargar_Jornadas(); Cancelar(); });
             },
             error: function (request, status, error) {
-                swal("Error al Guardar la Rol");
+                swal("Error al Guardar la Jornada");
                 console.log("error" + error);
             }
         }
@@ -310,18 +299,18 @@
     }
 
 
-    function Confirma_Eliminar(Id_Rol) {
+    function Confirma_Eliminar(Id_jornada) {
         $('#Form_DeleteTipo').modal('show');
-        $("#lbl_msjborrar").html("Se va a eliminar la Rol No. " + Id_Rol + ". <br/>¿Desea Continuar?");
-        $("#txt_idborrar").text(Id_Rol);
+        $("#lbl_msjborrar").html("Se va a eliminar la Jornada No. " + Id_jornada + ". <br/>¿Desea Continuar?");
+        $("#txt_idborrar").text(Id_jornada);
     }
     function Eliminar() {
-        Id_Rol = $("#txt_idborrar").text();
+        Id_jornada = $("#txt_idborrar").text();
         $.ajax({
-            url: "/Jornadas/EliminarRol/",
+            url: "/Jornadas/Eliminar/",
             async: true,
             dataType: "json",
-            data: '{id:' + Id_Rol + '}',
+            data: '{id:' + Id_jornada + '}',
             type: "POST",
             contentType: "application/json; charset=utf-8",
             success: function (data) {

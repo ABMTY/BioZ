@@ -3,7 +3,7 @@
     ViewBag.Title = "Index";
 }
 
-
+<link href="~/Content/plugins/timepicker/bootstrap-timepicker.min.css" rel="stylesheet" />
 <div class="row">
     <div class="col-md-12">
         <div class="box" id="secc_lista">
@@ -60,15 +60,40 @@
                                     </div>
                                     <div class="form-group col-md-12">
                                         <label class="control-label" for="">Hora de Entrada *</label>
-                                        <div>
-                                            <input type="text" id="txt_HoraEntrada" class="form-control">
+                                        <div class="bootstrap-timepicker">
+                                            <div >
+                                                
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control timepicker" id="txt_HoraEntrada">
+                                                    <div class="input-group-addon">
+                                                        <i class="fa fa-clock-o"></i>
+                                                    </div>
+                                                </div>
+                                                <!-- /.input group -->
+                                            </div>
+                                            <!-- /.form group -->
                                         </div>
+                                        @*<div>
+                                            <input type="text" id="txt_HoraEntrada" class="form-control">
+                                        </div>*@
                                     </div>
                                     <div class="form-group col-md-12">
                                         <label class="control-label" for="">Hora de Salida *</label>
-                                        <div>
-                                            <input type="text" id="txt_HoraSalida" class="form-control">
+                                        <div class="bootstrap-timepicker">
+                                            <div>                                                
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control timepicker" id="txt_HoraSalida">
+                                                    <div class="input-group-addon">
+                                                        <i class="fa fa-clock-o"></i>
+                                                    </div>
+                                                </div>
+                                                <!-- /.input group -->
+                                            </div>
+                                            <!-- /.form group -->
                                         </div>
+                                        @*<div>
+                                            <input type="text" id="txt_HoraSalida" class="form-control">
+                                        </div>*@
                                     </div>
                                 </div>
                             </div>
@@ -112,11 +137,17 @@
         </div>
     </div><!-- /.col -->
 </div><!-- /.row -->
+
+<script src="~/Content/plugins/timepicker/bootstrap-timepicker.min.js"></script>
 <script>
 
     $(document).ready(function () {
         $('#Lista_Horarios').DataTable();
         Cargar_Horarios();
+        //Timepicker
+        $('.timepicker').timepicker({
+            showInputs: false
+        })
     });
 
     function Agregar() {
@@ -190,6 +221,7 @@
         });
     }
     function Guardar() {
+        
         Horario = {
             "id_horario": $("#id").val() == "" ? 0 : $("#id").val(),
             "desc_horario": $("#txt_Horario").val(),
