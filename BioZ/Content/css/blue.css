@@ -1,3 +1,10 @@
+/*Preview de Imagen tomada con la webcam*/
+#preview {
+    width:150px;
+    height:150px;
+    overflow:hidden;
+}
+
 /* iCheck plugin Square skin, blue
 ----------------------------------- */
 .icheckbox_square-blue,

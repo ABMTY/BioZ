@@ -33,6 +33,7 @@
                     <tbody></tbody>
                 </table>
             </div>
+            <!-- Formulario de Registro de Empleado-->
             <div class="panel-body" id="secc_form">
                     <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
                         <input type="hidden" id="id_empleado" value="" />
@@ -63,21 +64,43 @@
                         <select name="sucursal" id="sucursal" class="form-control selectpicker" data-live-search="true">
                         </select>
                     </div>
-                    <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                        <label>Foto del Empleado: </label>
-                        <input type="file" id="subirImagen" onchange="convertirImagen()" value="" />
-                        <p id="imgBase64" style="display: none;"></p>
-                        <img src="" alt="" id="imagen" width="30%;" height="30%;" /><br />
+                    <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12" id="imgEditar" style="display: none;">
+                        <label>Foto del Empleado: </label><br />
+                        <p id="base64" style="display: none;"></p>
                         <img src="" alt="" id="imagenOriginal" width="30%;" height="30%;" />
                     </div>
-                    <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <button class="btn btn-primary" type="submit" onclick="guardarEditar()" id="btnGuardar">
-                            <i class="fa fa-save"></i> Guardar
-                        </button>
-                        <button class="btn btn-danger" onclick="cancelarForm()" type="button">
-                            <i class="fa fa-arrow-circle-left"></i> Cancelar
-                        </button>
+                    <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                        <button class="btn btn-primary" onclick="webCam()"><i class="fa fa-camera"></i> Tomar Foto</button>
                     </div>
+                   
+            </div>
+            <!-- Capturar Foto con WebCam-->
+            <div class="panel-body" id="secc_webCam">
+                <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                    <video id="video"></video>
+                        <canvas id="canvas" style="display:  none;"></canvas>
+                        <button class="btn btn-primary" id="startbutton">Capturar</button>
+                </div>
+                <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12" id="divPreview" style="display: none;">
+                    <label for="">Imagen a recortar</label>
+                    <img src="" id="photo" alt="photo">
+                    <canvas id="preview"></canvas>
+                    <p id="base64" style="display: none;"></p>
+                    <button class="btn btn-primary" id="guardar">Guardar Foto</button>
+                </div>
+                <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12" id="imgPreview" style="display: none;">
+                    <img src="" id="b" alt="" width="30%px" height="30%">
+                </div>
+            </div>
+            <div class="panel-body">
+                <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12" id="botones" style="display: none;">
+                    <button class="btn btn-primary" type="submit" onclick="guardarEditar()" id="btnGuardar">
+                        <i class="fa fa-save"></i> Guardar
+                    </button>
+                    <button class="btn btn-danger" onclick="cancelarForm()" type="button">
+                        <i class="fa fa-arrow-circle-left"></i> Cancelar
+                    </button>
+                </div>
             </div>
             <!--Fin centro -->
         </div><!-- /.box -->
@@ -85,4 +108,5 @@
 </div><!-- /.row -->
 <!--Fin-Contenido-->
 <script src="~/Content/funcionesJs/empleado.js"></script>
+
 

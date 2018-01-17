@@ -238,6 +238,7 @@
     <Content Include="Content\css\bootstrap-select.min.css" />
     <Content Include="Content\css\bootstrap.min.css" />
     <Content Include="Content\css\font-awesome.css" />
+    <Content Include="Content\css\Jcrop.css" />
     <Content Include="Content\css\_all-skins.css" />
     <Content Include="Content\css\_all-skins.min.css" />
     <Content Include="Content\DataTables\css\autoFill.bootstrap.css" />
@@ -402,6 +403,7 @@
     <Content Include="Content\funcionesJs\empresa.js" />
     <Content Include="Content\funcionesJs\sucursal.js" />
     <Content Include="Content\js\bootstrap-select.min.js" />
+    <Content Include="Content\js\Jcrop.js" />
     <Content Include="Content\plugins\bootstrap-datepicker\dist\css\bootstrap-datepicker.css" />
     <Content Include="Content\plugins\bootstrap-datepicker\dist\css\bootstrap-datepicker.min.css" />
     <Content Include="Content\plugins\bootstrap-datepicker\dist\css\bootstrap-datepicker.standalone.css" />

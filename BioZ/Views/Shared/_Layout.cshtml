@@ -25,6 +25,8 @@
     <link rel="stylesheet" href="~/Content/css/_all-skins.min.css">
     <link rel="apple-touch-icon" href="~/Content/img/apple-touch-icon.png">
     <link rel="shortcut icon" href="~/Content/img/favicon.ico">
+    <!-- Jcrop -->
+    <link rel="stylesheet" href="~/Content/css/Jcrop.css"/>
     <!-- Select-Picker -->
     @Styles.Render("~/Content/css/bootstrap-select.min.css")
     @Styles.Render("~/Content/plugins/bootstrap-sweetalert/sweet-alert.css")
@@ -233,7 +235,8 @@
                 <p>&copy; @DateTime.Now.Year - Mi aplicación ASP.NET</p>
             </footer>
         </div>*@
-
+    <!-- Jcrop -->
+    @Scripts.Render("~/Content/js/Jcrop.js")
    <!-- Select-Picker -->
    @Scripts.Render("~/Content/js/bootstrap-select.min.js")
     @Scripts.Render("~/Content/plugins/bootstrap-sweetalert/sweet-alert.js")
