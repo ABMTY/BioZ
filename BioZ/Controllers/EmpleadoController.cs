@@ -4,6 +4,8 @@ using EntBioZ.Modelo.BioZ;
 using EntBioZ.Modelo.Info;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -135,6 +137,66 @@ namespace BioZ.Controllers
             else
                 return Json("Sin conexión", JsonRequestBehavior.AllowGet);
             return Json("Realizado", JsonRequestBehavior.AllowGet);
+        }
+
+
+        //public ActionResult RegistrarHuella(string Id_Empledo)
+        //{
+
+
+        //    string fileLocation = @"/App_Finger/RegistroHuella.exe";
+        //    ProcessStartInfo oStartInfo = new ProcessStartInfo();
+        //    oStartInfo.FileName = fileLocation;
+        //    oStartInfo.Arguments = Id_Empledo;
+        //    oStartInfo.UseShellExecute = false;
+        //    oStartInfo.CreateNoWindow = true;
+        //    oStartInfo.WindowStyle = ProcessWindowStyle.Normal;
+        //    oStartInfo.CreateNoWindow = false;
+        //    var process = new Process { StartInfo = oStartInfo, EnableRaisingEvents = true };
+        //    //process.Start();
+
+
+        //    //System.Diagnostics.ProcessStartInfo startInfo;
+
+        //    //Process p = new Process();
+
+        //    ////startInfo = new System.Diagnostics.ProcessStartInfo(@".TEST.EXE", "new");
+        //    //startInfo = new System.Diagnostics.ProcessStartInfo(@"/App_Finger/RegistroHuella.exe");
+        //    //startInfo.Arguments = Id_Empledo;
+        //    ////p.StartInfo = startInfo;
+        //    //Process.Start(startInfo);
+
+        //    //System.Diagnostics.ProcessStartInfo startInfo = new System.Diagnostics.ProcessStartInfo(@"/App_Finger//RegistroHuella.exe", Id_Empledo);
+
+
+
+        //    //var empleado = control.Obtener(id);
+        //    //var serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
+        //    //serializer.MaxJsonLength = 500000000;
+        //    var json = Json(new { data = process }, JsonRequestBehavior.AllowGet);
+        //    //json.MaxJsonLength = 500000000;
+        //    return json;
+        //}
+
+        
+        
+        public ActionResult RegistrarHuella(string Id_Empleado)
+        {
+            ProcessStartInfo psi = new ProcessStartInfo();
+            psi.UseShellExecute = true;
+            psi.LoadUserProfile = true;
+            psi.WorkingDirectory = System.Web.HttpContext.Current.Server.MapPath("../");
+            psi.FileName = System.Web.HttpContext.Current.Server.MapPath("../App_Finger/BioZFinger.exe");
+            psi.Arguments = Id_Empleado;
+            Process.Start(psi);
+            //LLega hasta awui desde el DataTabe
+            //return View();
+            var serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
+            serializer.MaxJsonLength = 500000000;
+            var json = Json(new { data = "" }, JsonRequestBehavior.AllowGet);
+            json.MaxJsonLength = 500000000;
+            return json;
+            //return RedirectToAction("Index");
         }
     }
 }

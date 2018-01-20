@@ -27,8 +27,8 @@ function listar() {
         "columnDefs": [{
             "targets": 0, "data": "id_empleado", "render": function (data, type, full, meta) {
                 return "<button type='button' title='Editar' id='btn_mas" + data + "' class='btn btn-warning' onclick='verDetalle(" + data + ")'  ><i class='fa fa-edit'></i></button>"
-            }
-        },
+            },
+        },        
         {
             "targets": 6, "data": "imagen", "render": function (data, type, full, meta) {
                 if (data != null) {
@@ -38,6 +38,11 @@ function listar() {
                     return "<p></p>"
                 }
 
+            }
+        },
+        {
+            "targets": 7, "data": "id_empleado", "render": function (data, type, full, meta) {
+                return "<button type='button' class='btn btn-primary' id='btn_mas" + data + "' name='button' onclick='location.href='@Url.Action('RegistrarHuella', 'Empleado',new { Id_Empleado = '" + data + "' })''><i class='fa fa-hand-pointer-o'></i></button>"
             }
         }]
     });

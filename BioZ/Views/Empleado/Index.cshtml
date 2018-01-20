@@ -29,6 +29,7 @@
                         <th>Sucursal</th>
                         <th>Número de Enrolamiento</th>
                         <th>Foto</th>
+                        <th>Huella</th>
                     </thead>
                     <tbody></tbody>
                 </table>
@@ -72,7 +73,14 @@
                     <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
                         <button class="btn btn-primary" onclick="webCam()"><i class="fa fa-camera"></i> Tomar Foto</button>
                     </div>
-                   
+                    <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                        <button type="submit" class="btn btn-primary" name="button" onclick="location.href='@Url.Action("RegistrarHuella", "Empleado",new { Id_Empleado = "LuisAngel" })'"><i class="fa fa-hand-pointer-o"></i> Registrar Huella</button>                        
+                        <button type="submit" class="btn btn-primary" name="button" onclick="AgregarHuella()"><i class="fa fa-hand-pointer-o"></i> Registrar Huella No Levanta App Huella</button>                        
+                    </div>
+                @*<button class="btn btn-primary" type="submit" onclick="AgregarHuella('250')" id="btnAgregarHuella">
+                    <i class="fa fa-save"></i> Agregar Huella                    
+                </button>
+                <a href="~/App_Finger/RegistroHuella.exe">Huella</a>*@
             </div>
             <!-- Capturar Foto con WebCam-->
             <div class="panel-body" id="secc_webCam">
@@ -91,6 +99,9 @@
                 <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12" id="imgPreview" style="display: none;">
                     <img src="" id="b" alt="" width="30%px" height="30%">
                 </div>
+
+
+               
             </div>
             <div class="panel-body">
                 <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12" id="botones" style="display: none;">
@@ -109,4 +120,35 @@
 <!--Fin-Contenido-->
 <script src="~/Content/funcionesJs/empleado.js"></script>
 
+<script>
+    function AgregarHuella() {
+        debugger;
+        Id_Empleado = $("#id_empleado").val();
+        $.ajax({
+            url: "/Empleado/RegistrarHuella/",
+            async: true,
+            dataType: "json",
+            data: '{ Id_Empleado:' + Id_Empleado + '}',
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                debugger;
+                window.location.href(data);
+                if (data.success) {
+                //window.open(data.data.FileName +"?"+ data.data.Arguments, EventTarget = "_blank");
+                }
 
+                //Limpiar();
+                //$("#secc_lista").hide();
+                //$("#secc_add").show();
+                //console.log(data);
+                //$("#id").val(Id_jornada);
+                //$("#txt_jornada").val(data.data.desc_jornada);
+                //Cargar_JornadasTurnos(Id_jornada);
+            },
+            error: function (request, status, error) {
+                console.log("error" + error);
+            }
+        });
+ }
+</script>
