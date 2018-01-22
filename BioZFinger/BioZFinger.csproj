@@ -127,6 +127,20 @@
   <ItemGroup>
     <Content Include="icono.ico" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CtrlBioZ\CtrlBioZ.csproj">
+      <Project>{E87942DE-B5C1-4ED6-BAAA-26256E095319}</Project>
+      <Name>CtrlBioZ</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EntBioZ\EntBioZ.csproj">
+      <Project>{0400cd81-0a92-40b2-85aa-005ea67e7110}</Project>
+      <Name>EntBioZ</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PerBioZ\PerBioZ.csproj">
+      <Project>{1b2d3582-4f1e-4e3e-b68c-994417cc0bd0}</Project>
+      <Name>PerBioZ</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
