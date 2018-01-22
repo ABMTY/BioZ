@@ -179,7 +179,26 @@ namespace BioZ.Controllers
             psi.UseShellExecute = true;
             psi.LoadUserProfile = true;
             psi.WorkingDirectory = System.Web.HttpContext.Current.Server.MapPath("../");
-            psi.FileName = System.Web.HttpContext.Current.Server.MapPath("../App_Finger/BioZFinger.exe");
+            psi.FileName = System.Web.HttpContext.Current.Server.MapPath("../App_Finger/Registro/RegistroFinger.exe");
+            psi.Arguments = Id_Empleado;
+            Process.Start(psi);
+            //LLega hasta awui desde el DataTabe
+            //return View();
+            var serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
+            serializer.MaxJsonLength = 500000000;
+            var json = Json(new { data = "" }, JsonRequestBehavior.AllowGet);
+            json.MaxJsonLength = 500000000;
+            return json;
+            //return RedirectToAction("Index");
+        }
+
+        public ActionResult ValidarHuella(string Id_Empleado)
+        {
+            ProcessStartInfo psi = new ProcessStartInfo();
+            psi.UseShellExecute = true;
+            psi.LoadUserProfile = true;
+            psi.WorkingDirectory = System.Web.HttpContext.Current.Server.MapPath("../");
+            psi.FileName = System.Web.HttpContext.Current.Server.MapPath("../App_Finger/Asistencia/AsistenciaFinger.exe");
             psi.Arguments = Id_Empleado;
             Process.Start(psi);
             //LLega hasta awui desde el DataTabe

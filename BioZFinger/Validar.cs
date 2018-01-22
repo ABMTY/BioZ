@@ -25,6 +25,7 @@ namespace Enrollment {
         public delegate void OnTemplateEventHandler(DPFP.Template template);
         public event OnTemplateEventHandler OnTemplate;
         private DPFP.Processing.Enrollment Enroller;
+        public string Id_Empleado;
 
         // Variables requeridas por los dlls de video, para la foto.
         private FilterInfoCollection ListaDispositivos;
@@ -381,8 +382,8 @@ namespace Enrollment {
         protected void Process(DPFP.Sample Sample) {
             // Este método es el proceso de verificación, para revisar que la huella escaneada exista en la base de datos.
             string startupPath = Application.StartupPath;
-            string RegistroHuellaExe = Application.StartupPath + "\\RegistroHuella.exe";
-            string URLFilePath = Application.StartupPath + "\\urlExiste.dat";
+            //string RegistroHuellaExe = Application.StartupPath + "\\RegistroHuella.exe";
+            //string URLFilePath = Application.StartupPath + "\\urlExiste.dat";
 
             ProcesarMuestra(Sample);
 
@@ -401,7 +402,7 @@ namespace Enrollment {
             //    return;
             //}
             bool encontrado = false;
-
+            string Nombre = string.Empty;
             // En cambio, si existen huellas, vamos a iterar sobre ellas
             foreach (EmpleadoHuella h in ListaHuellas)
             {
@@ -427,7 +428,7 @@ namespace Enrollment {
                     {
                         // Creamos una instancia de usuario, que va a equivaler al usuario cuya huella coincidio de la base
                         EntEmpleado u = ListaEmpleados.Where(x => x.id_empleado == h.id_empleado).SingleOrDefault();
-
+                        //Nombre = u.nombre_completo;
                         // Formulamos la URL a devolver, así como todos sus parametros
                         //string urlFile = File.ReadAllText(URLFilePath);
                         //string fechaFormatoMySQL = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
@@ -437,16 +438,31 @@ namespace Enrollment {
                         // Y ejecutamos el navegador.
                         try
                         {
+
+                            
+                            // Convert base 64 string to byte[]
+                            byte[] imageBytes = Convert.FromBase64String(u.imagen);
+                            // Convert byte[] to Image
+                            using (var ms = new MemoryStream(imageBytes, 0, imageBytes.Length))
+                            {
+                                pcbCamara.Image = Image.FromStream(ms, true);
+                                //label1.Text = Nombre;
+                            }
+
+                            
                             //System.Diagnostics.Process.Start(url);                            
-                            MessageBox.Show("Empleado Existente");
-                            AgregarRegistroLog(h.id_empleado, DateTime.Now, ImageToBase64(pcbCamara.Image, System.Drawing.Imaging.ImageFormat.Bmp));
+                            //MessageBox.Show("Empleado Existente");
+                            //AgregarRegistroLog(h.id_empleado, DateTime.Now, ImageToBase64(pcbCamara.Image, System.Drawing.Imaging.ImageFormat.Bmp));                            
+                            //pcbCamara.Image = pcbCamara.Image;
                         }
                         catch (Exception ex)
                         {
                         }
                         encontrado = true;
+                        break;
+
                         // Por ultimo se cierra el programa.
-                        this.Invoke(new MethodInvoker(delegate { this.Close(); }));
+                        //this.Invoke(new MethodInvoker(delegate {  }));
                     }
                     else
                     {
@@ -455,20 +471,24 @@ namespace Enrollment {
                 }
             }
 
-            // Si no encontro la huella, lanzar el formulario de Registro
-            //if (encontrado == false)
-            //{
-            //    try
-            //    {
-            //        System.Diagnostics.Process.Start(RegistroHuellaExe);
-            //        Application.Exit();
-            //    }
-            //    catch (Exception ex)
-            //    {
-            //        //MessageBox.Show("No se encuentra RegistrosHuella.exe!", "Falta Ejecutable", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            //        this.Invoke(new MethodInvoker(delegate { this.Close(); }));
-            //    }
-            //}
+            //Si no encontro la huella, lanzar el formulario de Registro
+            if (encontrado == false)
+            {
+                try
+                {
+                    //string dir = Path.GetDirectoryName(Application.ExecutablePath);
+                    //string filename = Path.Combine(dir,"notfinger.jpg");
+                    //label1.Text = Nombre;
+                    pcbCamara.Image = Image.FromFile("I:\\Proyectos ABMYT\\BioZ\\BioZFinger\\notfinger.jpg");
+                    //System.Diagnostics.Process.Start(RegistroHuellaExe);
+                    //Application.Exit();
+                }
+                catch (Exception ex)
+                {
+                    //MessageBox.Show("No se encuentra RegistrosHuella!", "Falta Ejecutable", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    //this.Invoke(new MethodInvoker(delegate { this.Close(); }));
+                }
+            }
         }
 
         private void CaptureForm_Load(object sender, EventArgs e) {

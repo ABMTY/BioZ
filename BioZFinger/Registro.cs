@@ -267,31 +267,31 @@ namespace Enrollment {
 
  
 
-            // Cargamos los dispositivos de video
-            ListaDispositivos = new FilterInfoCollection(FilterCategory.VideoInputDevice);
+            //// Cargamos los dispositivos de video
+            //ListaDispositivos = new FilterInfoCollection(FilterCategory.VideoInputDevice);
 
-            // Y por cada dispositivo detectado, lo agregamos a un combobox (ahora ya no es visible para el usuario)
-            foreach (FilterInfo Dispositivo in ListaDispositivos)
-            {
-                cmbDispositivos.Items.Add(Dispositivo.Name);
-            }
-            // Seleccionamos el primer dispositivo
-            cmbDispositivos.SelectedIndex = 0;
-            // Inicializamos el dispositivo
-            FrameFinal = new VideoCaptureDevice();
+            //// Y por cada dispositivo detectado, lo agregamos a un combobox (ahora ya no es visible para el usuario)
+            //foreach (FilterInfo Dispositivo in ListaDispositivos)
+            //{
+            //    cmbDispositivos.Items.Add(Dispositivo.Name);
+            //}
+            //// Seleccionamos el primer dispositivo
+            //cmbDispositivos.SelectedIndex = 0;
+            //// Inicializamos el dispositivo
+            //FrameFinal = new VideoCaptureDevice();
 
-            // Y creamos el handler para comenzar a hacer el stream de video
-            try
-            {
-                FrameFinal = new VideoCaptureDevice(ListaDispositivos[cmbDispositivos.SelectedIndex].MonikerString);
-                FrameFinal.NewFrame += FrameFinal_NewFrame;
+            //// Y creamos el handler para comenzar a hacer el stream de video
+            //try
+            //{
+            //    FrameFinal = new VideoCaptureDevice(ListaDispositivos[cmbDispositivos.SelectedIndex].MonikerString);
+            //    FrameFinal.NewFrame += FrameFinal_NewFrame;
 
-                FrameFinal.Start();
-            }
-            catch (Exception ex)
-            {
-                //MessageBox.Show("Error " + ex.Message);
-            }
+            //    FrameFinal.Start();
+            //}
+            //catch (Exception ex)
+            //{
+            //    //MessageBox.Show("Error " + ex.Message);
+            //}
 
             // Se inicializa el programa
             Init();

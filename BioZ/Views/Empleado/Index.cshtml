@@ -15,6 +15,9 @@
                     </button>
                 </h1>
                 <div class="box-tools pull-right">
+                    <button class="btn btn-info" onclick="ValidarHuella('0')" id="btnAsistencia">
+                        <i class="fa fa-check-square"></i> Asistencia
+                    </button>
                 </div>
             </div>
             <!-- /.box-header -->
@@ -122,7 +125,11 @@
       return  window.location.href = "@Url.Action("RegistrarHuella", "Empleado")?Id_Empleado=" + $("#id_empleado").val();
     }
 
-    function AgregarHuellaIdEmpleado(Id_Empleado) {        
+    function AgregarHuellaIdEmpleado(Id_Empleado) {
         window.location.href = "@Url.Action("RegistrarHuella", "Empleado")?Id_Empleado=" + Id_Empleado;
+    }
+
+    function ValidarHuella(Id_Empleado) {
+        window.location.href = "@Url.Action("ValidarHuella", "Empleado")?Id_Empleado=" + Id_Empleado;
     }
 </script>

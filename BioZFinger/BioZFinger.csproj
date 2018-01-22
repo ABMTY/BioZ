@@ -8,7 +8,7 @@
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>BioZFinger</RootNamespace>
-    <AssemblyName>BioZFinger</AssemblyName>
+    <AssemblyName>AsistenciaFinger</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -33,7 +33,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\BioZ\App_Finger\</OutputPath>
+    <OutputPath>..\BioZ\App_Finger\Asistencia\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -141,6 +141,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="icono.ico" />
+    <Content Include="notfinger.jpg" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CtrlBioZ\CtrlBioZ.csproj">

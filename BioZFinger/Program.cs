@@ -15,16 +15,21 @@ namespace BioZFinger
         [STAThread]
         static void Main(string[] args)
         {
-            string strIdEmpleado = args[0].ToString();
+            string strIdEmpleado="";
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Registro Registro = new Registro();
-            Registro.Id_Empleado = strIdEmpleado;
+
+            //strIdEmpleado = args[0].ToString();
+            //Registro Registro = new Registro();
+            //Registro.Id_Empleado = strIdEmpleado;
+            //Application.Run(Registro);
+            //MessageBox.Show("Empleado No. "+strIdEmpleado +" se regristro exitosamente!");
+
             Validar Validar = new Validar();
-            Application.Run(Registro);
-            //MessageBox.Show(strIdEmpleado);
-            //Application.Run(Validar);
-            
+            Validar.Id_Empleado = strIdEmpleado;
+            Application.Run(Validar);
+
         }
     }
 }

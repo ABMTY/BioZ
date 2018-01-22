@@ -125,7 +125,7 @@
             this.panel1.Controls.Add(this.label3);
             this.panel1.Location = new System.Drawing.Point(-1, 6);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(270, 38);
+            this.panel1.Size = new System.Drawing.Size(514, 38);
             this.panel1.TabIndex = 90;
             // 
             // lblCloseButton
@@ -134,7 +134,7 @@
             this.lblCloseButton.Cursor = System.Windows.Forms.Cursors.Hand;
             this.lblCloseButton.Font = new System.Drawing.Font("Segoe UI Semilight", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblCloseButton.ForeColor = System.Drawing.Color.White;
-            this.lblCloseButton.Location = new System.Drawing.Point(239, 8);
+            this.lblCloseButton.Location = new System.Drawing.Point(483, 6);
             this.lblCloseButton.Name = "lblCloseButton";
             this.lblCloseButton.Size = new System.Drawing.Size(28, 25);
             this.lblCloseButton.TabIndex = 92;
@@ -155,29 +155,28 @@
             // label4
             // 
             this.label4.AutoSize = true;
+            this.label4.BackColor = System.Drawing.Color.White;
             this.label4.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(269, 52);
+            this.label4.Location = new System.Drawing.Point(269, 283);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(50, 21);
+            this.label4.Size = new System.Drawing.Size(107, 21);
             this.label4.TabIndex = 95;
-            this.label4.Text = "Video";
-            this.label4.Visible = false;
+            this.label4.Text = "Bienvenido!!!!";
             // 
             // pcbCamara
             // 
-            this.pcbCamara.Location = new System.Drawing.Point(269, 76);
+            this.pcbCamara.Location = new System.Drawing.Point(269, 50);
             this.pcbCamara.Name = "pcbCamara";
-            this.pcbCamara.Size = new System.Drawing.Size(232, 228);
+            this.pcbCamara.Size = new System.Drawing.Size(232, 227);
             this.pcbCamara.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pcbCamara.TabIndex = 94;
             this.pcbCamara.TabStop = false;
-            this.pcbCamara.Visible = false;
             // 
             // label2
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(507, 76);
+            this.label2.Location = new System.Drawing.Point(239, 378);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(243, 21);
             this.label2.TabIndex = 97;
@@ -188,7 +187,7 @@
             // 
             this.cmbDispositivos.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cmbDispositivos.FormattingEnabled = true;
-            this.cmbDispositivos.Location = new System.Drawing.Point(511, 102);
+            this.cmbDispositivos.Location = new System.Drawing.Point(243, 404);
             this.cmbDispositivos.Name = "cmbDispositivos";
             this.cmbDispositivos.Size = new System.Drawing.Size(219, 29);
             this.cmbDispositivos.TabIndex = 96;
@@ -199,7 +198,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
-            this.ClientSize = new System.Drawing.Size(267, 307);
+            this.ClientSize = new System.Drawing.Size(511, 311);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.cmbDispositivos);
             this.Controls.Add(this.label4);
