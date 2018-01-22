@@ -15,14 +15,16 @@ namespace BioZFinger
         [STAThread]
         static void Main(string[] args)
         {
-            string strIdEmpleado = "7";//args[0].ToString();
+            string strIdEmpleado = args[0].ToString();
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Registro Registro = new Registro();
-            Registro.Parametro = strIdEmpleado;
+            Registro.Id_Empleado = strIdEmpleado;
             Validar Validar = new Validar();
-            //Application.Run(Registro);
-            Application.Run(Validar);
+            Application.Run(Registro);
+            //MessageBox.Show(strIdEmpleado);
+            //Application.Run(Validar);
+            
         }
     }
 }
