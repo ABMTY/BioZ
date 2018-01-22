@@ -42,7 +42,7 @@ function listar() {
         },
         {
             "targets": 7, "data": "id_empleado", "render": function (data, type, full, meta) {
-                return "<button type='button' class='btn btn-primary' id='btn_mas" + data + "' name='button' onclick='location.href='@Url.Action('RegistrarHuella', 'Empleado',new { Id_Empleado = '" + data + "' })''><i class='fa fa-hand-pointer-o'></i></button>"
+                return "<button type='button' class='btn btn-primary' id='btn_mas" + data + "' name='button' onclick='AgregarHuellaIdEmpleado(" + data + ")'><i class='fa fa-hand-pointer-o'></i></button>"
             }
         }]
     });
