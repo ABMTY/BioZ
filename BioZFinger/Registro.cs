@@ -19,7 +19,7 @@ namespace Enrollment {
     */
     public partial class Registro : Form, DPFP.Capture.EventHandler {
 
-       public string Parametro;
+       public string Id_Empleado;
         // Variables Globales, requeridas por el SDK
         public delegate void OnTemplateEventHandler(DPFP.Template template);
         public event OnTemplateEventHandler OnTemplate;
@@ -342,12 +342,12 @@ namespace Enrollment {
                 BinaryReader br = new BinaryReader(fingerprintData);
                 Byte[] bytes = br.ReadBytes((Int32)fingerprintData.Length);
 
-                EmpleadoHuella finger = new EmpleadoHuella();
-                finger.id_empleado = 7;
-                finger.b64huella = bytes;
+                //EmpleadoHuella finger = new EmpleadoHuella();
+                //finger.id_empleado = 7;
+                //finger.b64huella = bytes;
                 control.Insertar(new EmpleadoHuella
                 {
-                    id_empleado = 7,
+                    id_empleado = int.Parse(Id_Empleado),
                     b64huella = bytes
                 });
             }
