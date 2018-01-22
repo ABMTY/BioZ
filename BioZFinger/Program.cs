@@ -20,8 +20,9 @@ namespace BioZFinger
             Application.SetCompatibleTextRenderingDefault(false);
             Registro Registro = new Registro();
             Registro.Parametro = strIdEmpleado;
-            Application.Run(Registro);
-            //Application.Run(new VerificationForm());
+            Validar Validar = new Validar();
+            //Application.Run(Registro);
+            Application.Run(Validar);
         }
     }
 }

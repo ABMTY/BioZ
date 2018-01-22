@@ -136,7 +136,7 @@
             this.lblCloseButton.ForeColor = System.Drawing.Color.White;
             this.lblCloseButton.Location = new System.Drawing.Point(239, 8);
             this.lblCloseButton.Name = "lblCloseButton";
-            this.lblCloseButton.Size = new System.Drawing.Size(32, 25);
+            this.lblCloseButton.Size = new System.Drawing.Size(28, 25);
             this.lblCloseButton.TabIndex = 92;
             this.lblCloseButton.Text = "✕";
             this.lblCloseButton.Click += new System.EventHandler(this.lblCloseButton_Click);
@@ -194,7 +194,7 @@
             this.cmbDispositivos.TabIndex = 96;
             this.cmbDispositivos.Visible = false;
             // 
-            // VerificationForm
+            // Validar
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -217,12 +217,13 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "VerificationForm";
+            this.Name = "Validar";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Sistema de Control de Visitas v0.1";
             this.TopMost = true;
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Validar_FormClosed);
             this.Load += new System.EventHandler(this.Validar_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.Picture)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pcbCamara)).EndInit();

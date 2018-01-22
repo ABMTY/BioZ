@@ -11,6 +11,8 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Windows.Forms;
 using System.Linq;
+using CtrlBioZ.Bioz;
+using EntBioZ.Modelo.BioZ;
 
 namespace Enrollment {
     /*
@@ -30,7 +32,8 @@ namespace Enrollment {
 
         // Variable Global donde se almacena la huella escaneada. "Template" es una clase del SDK
         Template plantilla;
-
+        CtrlEmpleadoHuella control = new CtrlEmpleadoHuella();
+        CtrlEmpleados ctrl_empleado = new CtrlEmpleados();
         // Permitir arrastrar la ventana desde cualquier parte del formulario donde se haga Click.
         private const int WM_NCHITTEST = 0x84;
         private const int HTCLIENT = 0x1;
@@ -92,25 +95,22 @@ namespace Enrollment {
         }
 
         // Clase utilizada para almacenar la informacion del Usuario, tabla "usuarios"
-        public class Usuario {
-            public int idUsuario;
-            public string Nombre;
-            public string Cedula;
-            public string Direccion;
-            public string Telefono;
-            public string Celular;
-            public string ARL;
-            public string Serial;
-            public DateTime Fecha;
-            public Byte[] Huella;
-            public string Foto;
-        }
 
         // Todas los Usuarios del sistema se cargan en esta lista
-        List<Usuario> ListaUsuarios = new List<Usuario>();
+        List<EntEmpleado> ListaEmpleados = new List<EntEmpleado>();
 
         // Este método carga todos los Usuarios de la base de datos
-        private void ObtenerUsuarios() {
+        private void ObtenerEmpleados() {
+
+            try
+            {
+                ListaEmpleados = ctrl_empleado.ObtenerTodos();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
             //string connString = File.ReadAllText(Application.StartupPath + "\\connectionString.dat");
             //MySqlConnection conn = new MySqlConnection(connString);
             //MySqlCommand command = conn.CreateCommand();
@@ -157,16 +157,24 @@ namespace Enrollment {
         }
 
         // Clase utilizada para almacenar la información de la huella, tabla "huellas"
-        public class Huellas {
-            public int idUsuario;
-            public Byte[] Huella;
-        }
+
 
         // Todas las huellas del sistema se encargan en esta lista, para compararlas con la del usuario que pone su dedo.
-        List<Huellas> ListaHuellas = new List<Huellas>();
+        List<EmpleadoHuella> ListaHuellas = new List<EmpleadoHuella>();
 
         // Este método carga la lista ListaHuellas con todas las huellas de la base de datos
         private void ObtenerHuellas() {
+
+            try
+            {                
+                ListaHuellas = control.ObtenerTodos();                
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
             //// Conexion con MySQL, la connection string la obtiene del archivo connectionString.dat del directorio raiz de la aplicación
             //string connString = File.ReadAllText(Application.StartupPath + "\\connectionString.dat");
             //MySqlConnection conn = new MySqlConnection(connString);
@@ -197,8 +205,8 @@ namespace Enrollment {
         // Inicializacion del SDK
         protected virtual void Init() {
             // Se obtienen los Templates (Huellas)
-            //ObtenerHuellas();
-            //ObtenerUsuarios();
+            ObtenerHuellas();
+            ObtenerEmpleados();
             // Se inicializa la Captura, para empezar a recibir huellas
             InicializarCaptura();
             Enroller = new DPFP.Processing.Enrollment();			// Evento de Registro del SDK
@@ -379,29 +387,35 @@ namespace Enrollment {
             ProcesarMuestra(Sample);
 
             // Si no hay huellas en la base de datos, automaticamente ejecutara el registro
-            if (ListaHuellas.Count == 0) {
-                try {
-                    System.Diagnostics.Process.Start(RegistroHuellaExe);
-                    Application.Exit();
-                } catch (Exception ex) {
-                    //MessageBox.Show("No se encuentra RegistrosHuella.exe!", "Falta Ejecutable", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-                return;
-            }
+            //if (ListaHuellas.Count == 0)
+            //{
+            //    try
+            //    {
+            //        System.Diagnostics.Process.Start(RegistroHuellaExe);
+            //        Application.Exit();
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        MessageBox.Show("No se encuentra RegistrosHuella.exe!", "Falta Ejecutable", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            //    }
+            //    return;
+            //}
             bool encontrado = false;
 
             // En cambio, si existen huellas, vamos a iterar sobre ellas
-            foreach (Huellas h in ListaHuellas) {
+            foreach (EmpleadoHuella h in ListaHuellas)
+            {
                 // Por cada huella... la almacenamos en un MemoryStream como arreglo de bytes.
-                MemoryStream fingerprintData = new MemoryStream(h.Huella);
+                MemoryStream fingerprintData = new MemoryStream(h.b64huella);
                 // Creamos una plantilla a partir de esos bytes...
                 DPFP.Template templateIterando = new DPFP.Template(fingerprintData);
 
                 // Extraemos las caracteristicas de la plantilla
                 DPFP.FeatureSet features = ExtractFeatures(Sample, DPFP.Processing.DataPurpose.Verification);
-                
+
                 // Verificamos que las caracteristicas sean buenas
-                if (features != null) {
+                if (features != null)
+                {
                     // Compare the feature set with our template
                     DPFP.Verification.Verification.Result result = new DPFP.Verification.Verification.Result();
                     Verificator.Verify(features, templateIterando, ref result);
@@ -409,41 +423,52 @@ namespace Enrollment {
                     // Y vemos si el resultado es valido o no, (verified)
                     // Si es verified, significa que el dedo escaneado ya existia en la base de datos.
 
-                    if (result.Verified) {
+                    if (result.Verified)
+                    {
                         // Creamos una instancia de usuario, que va a equivaler al usuario cuya huella coincidio de la base
-                        Usuario u = ListaUsuarios.Where(x => x.idUsuario == h.idUsuario).SingleOrDefault();
+                        EntEmpleado u = ListaEmpleados.Where(x => x.id_empleado == h.id_empleado).SingleOrDefault();
 
                         // Formulamos la URL a devolver, así como todos sus parametros
-                        string urlFile = File.ReadAllText(URLFilePath);
-                        string fechaFormatoMySQL = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-                        // Enviamos todos los valores por GET
-                        string url = String.Format("{0}?idUsuario={1}&Nombre={2}&Cedula={3}&Direccion={4}&Telefono={5}&Celular={6}&ARL={7}&Serial={8}&FechaLog={9}", urlFile, u.idUsuario, u.Nombre, u.Cedula, u.Direccion, u.Telefono, u.Celular, u.ARL, u.Serial, fechaFormatoMySQL);
+                        //string urlFile = File.ReadAllText(URLFilePath);
+                        //string fechaFormatoMySQL = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+                        //// Enviamos todos los valores por GET
+                        //string url = String.Format("{0}?idUsuario={1}&Nombre={2}&Cedula={3}&Direccion={4}&Telefono={5}&Celular={6}&ARL={7}&Serial={8}&FechaLog={9}", urlFile, u.idUsuario, u.Nombre, u.Cedula, u.Direccion, u.Telefono, u.Celular, u.ARL, u.Serial, fechaFormatoMySQL);
 
                         // Y ejecutamos el navegador.
-                        try {
-                            System.Diagnostics.Process.Start(url);
-                            AgregarRegistroLog(h.idUsuario, DateTime.Now, ImageToBase64(pcbCamara.Image, System.Drawing.Imaging.ImageFormat.Bmp));
-                        } catch (Exception ex) {
+                        try
+                        {
+                            //System.Diagnostics.Process.Start(url);                            
+                            MessageBox.Show("Empleado Existente");
+                            AgregarRegistroLog(h.id_empleado, DateTime.Now, ImageToBase64(pcbCamara.Image, System.Drawing.Imaging.ImageFormat.Bmp));
+                        }
+                        catch (Exception ex)
+                        {
                         }
                         encontrado = true;
                         // Por ultimo se cierra el programa.
                         this.Invoke(new MethodInvoker(delegate { this.Close(); }));
-                    } else {
+                    }
+                    else
+                    {
                         encontrado = false;
                     }
                 }
             }
 
             // Si no encontro la huella, lanzar el formulario de Registro
-            if (encontrado == false) {
-                try {
-                    System.Diagnostics.Process.Start(RegistroHuellaExe);
-                    Application.Exit();
-                } catch (Exception ex) {
-                    //MessageBox.Show("No se encuentra RegistrosHuella.exe!", "Falta Ejecutable", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    this.Invoke(new MethodInvoker(delegate { this.Close(); }));
-                }
-            }
+            //if (encontrado == false)
+            //{
+            //    try
+            //    {
+            //        System.Diagnostics.Process.Start(RegistroHuellaExe);
+            //        Application.Exit();
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        //MessageBox.Show("No se encuentra RegistrosHuella.exe!", "Falta Ejecutable", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            //        this.Invoke(new MethodInvoker(delegate { this.Close(); }));
+            //    }
+            //}
         }
 
         private void CaptureForm_Load(object sender, EventArgs e) {

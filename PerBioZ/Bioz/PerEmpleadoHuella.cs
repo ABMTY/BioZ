@@ -26,11 +26,11 @@ namespace PerBioZ.Bioz
                     while (dr.Read())
                     {
                         entidad = new EmpleadoHuella();
-                        entidad.id_huella = int.Parse(dr["id_empresa"].ToString());
-                        entidad.id_empleado = int.Parse(dr["id_empresa"].ToString());
-                        if (dr["huella"].ToString() != string.Empty)
+                        entidad.id_huella = int.Parse(dr["id_huella"].ToString());
+                        entidad.id_empleado = int.Parse(dr["id_empleado"].ToString());
+                        if (dr["b64huella"].ToString() != string.Empty)
                         {
-                            entidad.b64huella = (byte[])dr["b64huella"];
+                            entidad.b64huella = Convert.FromBase64String(dr["b64huella"].ToString());
                         }
                         Lista.Add(entidad);
                     }
