@@ -41,13 +41,6 @@ namespace BioZ.Controllers
         }
         public ActionResult Guardar(EntEmpleado entidad)
         {
-            //EntEmpleado entidad = new EntEmpleado();
-            //entidad.nombre = "Pedro";
-            //entidad.ap_paterno = "Suarez";
-            //entidad.ap_materno = "de la Cruz";
-            //entidad.id_departamento = 1;
-            //entidad.id_sucursal = 1;
-            //entidad.enrollnumber =  11;
             var r = false;
             try
             {
@@ -56,11 +49,11 @@ namespace BioZ.Controllers
                 else
                 {
                     r = control.Insertar(entidad);
-                    GuardarDispositivo(new UserInfo
-                    {
-                        EnrollNumber = entidad.enrollnumber.ToString(),
-                        Name = entidad.nombre
-                    });
+                    //GuardarDispositivo(new UserInfo
+                    //{
+                    //    EnrollNumber = entidad.enrollnumber.ToString(),
+                    //    Name = entidad.nombre
+                    //});
                 }
 
                 if (!r)
@@ -79,9 +72,9 @@ namespace BioZ.Controllers
         {
             if (Connect())
             {
-                if (!objZkeeper.SSR_SetUserInfo(1, Entidad.EnrollNumber, Entidad.Name, string.Empty, 0, true))
+                if (objZkeeper.SSR_SetUserInfo(1, Entidad.EnrollNumber, Entidad.Name, string.Empty, 0, true))
                 {
-                    return Json("Error al agregar el usua", JsonRequestBehavior.AllowGet);
+                    return Json("Error al agregar el empleado ", JsonRequestBehavior.AllowGet);
                 }
             }
             else

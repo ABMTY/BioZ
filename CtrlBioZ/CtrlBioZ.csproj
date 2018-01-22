@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="Bioz\CtrlDepartamentos.cs" />
     <Compile Include="Bioz\CtrlDispositivos.cs" />
+    <Compile Include="Bioz\CtrlEmpleadoHuella.cs" />
     <Compile Include="Bioz\CtrlEmpleados.cs" />
     <Compile Include="Bioz\CtrlEmpresa.cs" />
     <Compile Include="Bioz\CtrlHorarios.cs" />

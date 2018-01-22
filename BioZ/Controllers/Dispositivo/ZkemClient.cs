@@ -1315,7 +1315,7 @@ namespace BioZ.Controllers.Dispositivo
 
         public bool SSR_SetUserTmpExt(int dwMachineNumber, int IsDeleted, string dwEnrollNumber, int dwFingerIndex, ref byte TmpData)
         {
-            throw new NotImplementedException();
+            return objCZKEM.SSR_SetUserTmpExt(dwMachineNumber, IsDeleted, dwEnrollNumber,dwFingerIndex,TmpData); 
         }
 
         public bool SSR_SetUserTmpStr(int dwMachineNumber, string dwEnrollNumber, int dwFingerIndex, string TmpData)

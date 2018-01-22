@@ -15,7 +15,7 @@ namespace BioZFinger
         [STAThread]
         static void Main(string[] args)
         {
-            string strIdEmpleado = args[0].ToString();
+            string strIdEmpleado = "7";//args[0].ToString();
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Registro Registro = new Registro();

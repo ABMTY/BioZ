@@ -65,6 +65,7 @@
     <Compile Include="Modelo\BioZ\EntTurno.cs" />
     <Compile Include="Modelo\BioZ\EntTurnoJornada.cs" />
     <Compile Include="Modelo\BioZ\fechaHoraBioZ.cs" />
+    <Compile Include="Modelo\BioZ\EmpleadoHuella.cs" />
     <Compile Include="Modelo\Info\DeviceTimeInfo.cs" />
     <Compile Include="Modelo\Info\FingerUser.cs" />
     <Compile Include="Modelo\Info\MachineInfo.cs" />
