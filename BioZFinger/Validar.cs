@@ -1,4 +1,4 @@
-﻿using AForge.Video.DirectShow;
+﻿
 using DPFP;
 //using MySql.Data.MySqlClient;
 using System;
@@ -13,24 +13,22 @@ using System.Windows.Forms;
 using System.Linq;
 using CtrlBioZ.Bioz;
 using EntBioZ.Modelo.BioZ;
+using BioZFinger.Utilities;
 
-namespace Enrollment {
+namespace BioZFinger
+{
     /*
         NOTA: Formulario de Escaneo de Huella Digital Inicial
               Dependiendo de si existe o no la huella en la base de datos
               se redirige el Usuario a CaptureForm donde se registra.
     */
-    public partial class Validar : Form, DPFP.Capture.EventHandler {
+    public partial class Validar : Form, DPFP.Capture.EventHandler
+    {
         // Variables Globales, requeridas por el SDK
         public delegate void OnTemplateEventHandler(DPFP.Template template);
         public event OnTemplateEventHandler OnTemplate;
         private DPFP.Processing.Enrollment Enroller;
-        public string Id_Empleado;
-
-        // Variables requeridas por los dlls de video, para la foto.
-        private FilterInfoCollection ListaDispositivos;
-        private VideoCaptureDevice FrameFinal;
-
+        public string Id_Empleado, Nombre_Empleado;
         // Variable Global donde se almacena la huella escaneada. "Template" es una clase del SDK
         Template plantilla;
         CtrlEmpleadoHuella control = new CtrlEmpleadoHuella();
@@ -39,6 +37,8 @@ namespace Enrollment {
         private const int WM_NCHITTEST = 0x84;
         private const int HTCLIENT = 0x1;
         private const int HTCAPTION = 0x2;
+        // Todas los Usuarios del sistema se cargan en esta lista
+        List<EntEmpleado> ListaEmpleados = new List<EntEmpleado>();
 
         ///
         /// Handling the window messages
@@ -97,8 +97,7 @@ namespace Enrollment {
 
         // Clase utilizada para almacenar la informacion del Usuario, tabla "usuarios"
 
-        // Todas los Usuarios del sistema se cargan en esta lista
-        List<EntEmpleado> ListaEmpleados = new List<EntEmpleado>();
+        
 
         // Este método carga todos los Usuarios de la base de datos
         private void ObtenerEmpleados() {
@@ -112,49 +111,7 @@ namespace Enrollment {
 
                 throw;
             }
-            //string connString = File.ReadAllText(Application.StartupPath + "\\connectionString.dat");
-            //MySqlConnection conn = new MySqlConnection(connString);
-            //MySqlCommand command = conn.CreateCommand();
-
-            //try {
-            //    conn.Open();
-            //} catch (Exception ex) {
-            //    //MessageBox.Show(ex.Message);
-            //}
-
-            ////MemoryStream fingerprintData = new MemoryStream();
-            ////template.Serialize(fingerprintData);
-            ////fingerprintData.Position = 0;
-            ////BinaryReader br = new BinaryReader(fingerprintData);
-            ////Byte[] bytes = br.ReadBytes((Int32)fingerprintData.Length);
-
-            //MySqlDataReader reader;
-            //command.CommandText = "SELECT * FROM Usuarios";
-            //reader = command.ExecuteReader();
-
-            ////while (reader.Read()) {
-            ////    Usuario nuevoUsuario = new Usuario();
-            ////    nuevoUsuario.idUsuario = (int)reader["idUsuario"];
-            ////    nuevoUsuario.Nombre = reader["Nombre"].ToString();
-            ////    nuevoUsuario.Fecha = (DateTime)reader["Fecha"];
-            ////    nuevoUsuario.Huella = (Byte[])reader["Huella"];
-            ////    nuevoUsuario.Foto = reader["Foto"].ToString();
-            ////    ListaUsuarios.Add(nuevoUsuario);
-            ////}
-            //while (reader.Read()) {
-            //    Usuario nuevoUsuario = new Usuario();
-            //    nuevoUsuario.idUsuario = (int)reader["idUsuario"];
-            //    nuevoUsuario.Nombre = reader["Nombre"].ToString();
-            //    nuevoUsuario.Cedula = reader["Cedula"].ToString();
-            //    nuevoUsuario.Direccion = reader["Direccion"].ToString();
-            //    nuevoUsuario.Telefono = reader["Telefono"].ToString();
-            //    nuevoUsuario.Celular = reader["Celular"].ToString();
-            //    nuevoUsuario.ARL = reader["ARL"].ToString();
-            //    nuevoUsuario.Serial = reader["Serial"].ToString();
-            //    nuevoUsuario.Fecha = (DateTime)reader["Fecha"];
-            //    nuevoUsuario.Foto = reader["Foto"].ToString();
-            //    ListaUsuarios.Add(nuevoUsuario);
-            //}
+            
         }
 
         // Clase utilizada para almacenar la información de la huella, tabla "huellas"
@@ -174,33 +131,7 @@ namespace Enrollment {
             {
 
                 throw;
-            }
-
-            //// Conexion con MySQL, la connection string la obtiene del archivo connectionString.dat del directorio raiz de la aplicación
-            //string connString = File.ReadAllText(Application.StartupPath + "\\connectionString.dat");
-            //MySqlConnection conn = new MySqlConnection(connString);
-            //MySqlCommand command = conn.CreateCommand();
-
-            //try {
-            //    // Se abre la conexión, el try catch evita que aparezcan mensajes de error. Por fines de estética.
-            //    conn.Open();
-            //} catch (Exception ex) {
-            //    //MessageBox.Show(ex.Message);
-            //}
-
-            //// La variable reader de tipo MySqlDataReader lee la informacion de la Query indicada, y nos permite iterar en cada uno de los registros
-            //MySqlDataReader reader;
-            //command.CommandText = "SELECT * FROM Huellas";
-            //reader = command.ExecuteReader();
-
-            //// Iteracion, por cada registro de Huella de la base de datos, crea un nuevo objeto tipo Huella (Mi clase)
-            //while (reader.Read()) {
-            //    Huellas nuevaHuella = new Huellas();
-            //    nuevaHuella.idUsuario = (int)reader["idUsuario"];
-            //    nuevaHuella.Huella = (Byte[])reader["Huella"];
-            //    // Y la agrega a la lista ListaHuellas
-            //    ListaHuellas.Add(nuevaHuella);
-            //}
+            }         
         }
 
         // Inicializacion del SDK
@@ -333,6 +264,7 @@ namespace Enrollment {
         protected void SetPrompt(string prompt) {
             Prompt.Invoke(new MethodInvoker(delegate { Prompt.Text = prompt; }));
         }
+
         protected void MakeReport(string message) {
             StatusText.Invoke(new MethodInvoker(delegate { StatusText.AppendText(message + "\r\n"); }));
         }
@@ -344,33 +276,7 @@ namespace Enrollment {
         // Aqui terminan --
 
         // Variable global del Capturador
-        private DPFP.Capture.Capture Capturer;
-
-        // Boton que cierra el programa.
-        private void CloseButton_Click(object sender, EventArgs e) {
-            this.Hide();
-        }
-
-        private void AgregarRegistroLog(int idUsuario, DateTime Fecha, string Foto) {
-            //// Conexion con MySQL, la connection string la obtiene del archivo connectionString.dat del directorio raiz de la aplicación
-            //string connString = File.ReadAllText(Application.StartupPath + "\\connectionString.dat");
-            //MySqlConnection conn = new MySqlConnection(connString);
-            //MySqlCommand command = conn.CreateCommand();
-
-            //try {
-            //    conn.Open();
-            //} catch (Exception ex) {
-            //    //MessageBox.Show(ex.Message);
-            //}
-
-            //// Genero mi Query de Insert para agregar el registro al log.
-            //command.CommandText = "INSERT INTO LOG(idUsuario, Fecha, Foto) VALUES(@idUsuario, @Fecha, @Foto)";
-            //command.Parameters.Add("@idUsuario", MySqlDbType.Int32).Value = idUsuario;
-            //command.Parameters.Add("@Fecha", MySqlDbType.DateTime).Value = DateTime.Now;
-            //command.Parameters.Add("@Foto", MySqlDbType.String).Value = Foto;
-
-            //command.ExecuteNonQuery();
-        }
+        private DPFP.Capture.Capture Capturer;       
 
         private void UpdateStatus() {
             // Show number of samples needed.
@@ -382,32 +288,14 @@ namespace Enrollment {
         protected void Process(DPFP.Sample Sample) {
             // Este método es el proceso de verificación, para revisar que la huella escaneada exista en la base de datos.
             string startupPath = Application.StartupPath;
-            //string RegistroHuellaExe = Application.StartupPath + "\\RegistroHuella.exe";
-            //string URLFilePath = Application.StartupPath + "\\urlExiste.dat";
-
             ProcesarMuestra(Sample);
-
-            // Si no hay huellas en la base de datos, automaticamente ejecutara el registro
-            //if (ListaHuellas.Count == 0)
-            //{
-            //    try
-            //    {
-            //        System.Diagnostics.Process.Start(RegistroHuellaExe);
-            //        Application.Exit();
-            //    }
-            //    catch (Exception ex)
-            //    {
-            //        MessageBox.Show("No se encuentra RegistrosHuella.exe!", "Falta Ejecutable", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            //    }
-            //    return;
-            //}
             bool encontrado = false;
             string Nombre = string.Empty;
             // En cambio, si existen huellas, vamos a iterar sobre ellas
-            foreach (EmpleadoHuella h in ListaHuellas)
+            foreach (EmpleadoHuella entEmpleadoHuella in ListaHuellas)
             {
                 // Por cada huella... la almacenamos en un MemoryStream como arreglo de bytes.
-                MemoryStream fingerprintData = new MemoryStream(h.b64huella);
+                MemoryStream fingerprintData = new MemoryStream(entEmpleadoHuella.b64huella);
                 // Creamos una plantilla a partir de esos bytes...
                 DPFP.Template templateIterando = new DPFP.Template(fingerprintData);
 
@@ -427,42 +315,25 @@ namespace Enrollment {
                     if (result.Verified)
                     {
                         // Creamos una instancia de usuario, que va a equivaler al usuario cuya huella coincidio de la base
-                        EntEmpleado u = ListaEmpleados.Where(x => x.id_empleado == h.id_empleado).SingleOrDefault();
-                        //Nombre = u.nombre_completo;
-                        // Formulamos la URL a devolver, así como todos sus parametros
-                        //string urlFile = File.ReadAllText(URLFilePath);
-                        //string fechaFormatoMySQL = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-                        //// Enviamos todos los valores por GET
-                        //string url = String.Format("{0}?idUsuario={1}&Nombre={2}&Cedula={3}&Direccion={4}&Telefono={5}&Celular={6}&ARL={7}&Serial={8}&FechaLog={9}", urlFile, u.idUsuario, u.Nombre, u.Cedula, u.Direccion, u.Telefono, u.Celular, u.ARL, u.Serial, fechaFormatoMySQL);
-
-                        // Y ejecutamos el navegador.
+                        EntEmpleado u = ListaEmpleados.Where(x => x.id_empleado == entEmpleadoHuella.id_empleado).SingleOrDefault();
+                        
                         try
                         {
-
-                            
+                            pcbCamara.Image = null;
                             // Convert base 64 string to byte[]
                             byte[] imageBytes = Convert.FromBase64String(u.imagen);
                             // Convert byte[] to Image
                             using (var ms = new MemoryStream(imageBytes, 0, imageBytes.Length))
                             {
-                                pcbCamara.Image = Image.FromStream(ms, true);
-                                //label1.Text = Nombre;
+                                pcbCamara.Image = Image.FromStream(ms, true);                                
                             }
-
-                            
-                            //System.Diagnostics.Process.Start(url);                            
-                            //MessageBox.Show("Empleado Existente");
-                            //AgregarRegistroLog(h.id_empleado, DateTime.Now, ImageToBase64(pcbCamara.Image, System.Drawing.Imaging.ImageFormat.Bmp));                            
-                            //pcbCamara.Image = pcbCamara.Image;
+                           
                         }
                         catch (Exception ex)
                         {
                         }
                         encontrado = true;
                         break;
-
-                        // Por ultimo se cierra el programa.
-                        //this.Invoke(new MethodInvoker(delegate {  }));
                     }
                     else
                     {
@@ -470,18 +341,15 @@ namespace Enrollment {
                     }
                 }
             }
-
             //Si no encontro la huella, lanzar el formulario de Registro
             if (encontrado == false)
             {
                 try
-                {
-                    //string dir = Path.GetDirectoryName(Application.ExecutablePath);
-                    //string filename = Path.Combine(dir,"notfinger.jpg");
-                    //label1.Text = Nombre;
-                    pcbCamara.Image = Image.FromFile("I:\\Proyectos ABMYT\\BioZ\\BioZFinger\\notfinger.jpg");
-                    //System.Diagnostics.Process.Start(RegistroHuellaExe);
-                    //Application.Exit();
+                {                  
+                    pcbCamara.Image = Properties.Resources.NoFinger;
+                    pcbCamara.Refresh();
+                    pcbCamara.Visible = true;
+                    
                 }
                 catch (Exception ex)
                 {
@@ -490,63 +358,45 @@ namespace Enrollment {
                 }
             }
         }
-
-        private void CaptureForm_Load(object sender, EventArgs e) {
-            Init();
-            Start();
-        }
-
-        private void CloseButton_Click_1(object sender, EventArgs e) {
-            this.Close();
-        }
-
+       
         void FrameFinal_NewFrame(object sender, AForge.Video.NewFrameEventArgs eventArgs) {
             // Evento llamado por el video de la camara, copiamos la imagen obtenida del stream
             // y la colocamos en el picturebox, simulando un video.
             pcbCamara.Image = (Bitmap)eventArgs.Frame.Clone();
         }
 
-        private void Validar_FormClosed(object sender, FormClosedEventArgs e) {
-            // FrameFinal.Stop() detiene el video de la camara, para dejar de consumir memoria
-            FrameFinal.Stop();
+        private void Validar_FormClosed(object sender, FormClosedEventArgs e)
+        {          
             // Cerramos la aplicacion
             Application.Exit();
         }
 
         private void lblCloseButton_Click(object sender, EventArgs e) {
-            // FrameFinal.Stop() detiene el video de la camara, para dejar de consumir memoria
-            FrameFinal.Stop();
-            // Cerramos la aplicacion
-            Application.Exit();
+            RinicializarLector();
+            this.Close();
         }
 
-        private void Validar_Load(object sender, EventArgs e) {
-            // Cargamos los dispositivos de video
-            ListaDispositivos = new FilterInfoCollection(FilterCategory.VideoInputDevice);
-
-            // Y por cada dispositivo detectado, lo agregamos a un combobox (ahora ya no es visible para el usuario)
-            foreach (FilterInfo Dispositivo in ListaDispositivos) {
-                cmbDispositivos.Items.Add(Dispositivo.Name);
-            }
-
-            // Seleccionamos el primer dispositivo
-            //cmbDispositivos.SelectedIndex = 0;
-            // Inicializamos el dispositivo
-            FrameFinal = new VideoCaptureDevice();
-
-            // Y creamos el handler para comenzar a hacer el stream de video
-            try {
-                FrameFinal = new VideoCaptureDevice(ListaDispositivos[cmbDispositivos.SelectedIndex].MonikerString);
-                FrameFinal.NewFrame += FrameFinal_NewFrame;
-
-                FrameFinal.Start();
-            } catch (Exception ex) {
-                //MessageBox.Show("Error " + ex.Message);
-            }
-
+        private void Validar_Load(object sender, EventArgs e) {            
             // Se inicializa el programa
             Init();
             Start();
+        }
+
+        private void lblPanelTitulo_MouseDown(object sender, MouseEventArgs e)
+        {
+            GeneralUtility.Form_MouseDown();
+            GeneralUtility.SendMessage(this.Handle, 0x112, 0xf012, 0);
+        }
+
+        private void Validar_MouseDown(object sender, MouseEventArgs e)
+        {
+            GeneralUtility.Form_MouseDown();
+            GeneralUtility.SendMessage(this.Handle, 0x112, 0xf012, 0);
+        }
+
+        public void RinicializarLector()
+        {            
+            Stop();            
         }
     }
 }
