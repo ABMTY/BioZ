@@ -15,6 +15,8 @@ namespace BioZ.Controllers
     public class EmpleadoController : Controller
     {
         CtrlEmpleados control = new CtrlEmpleados();
+        CtrlEmpleadoHuella CtrlHuellas = new CtrlEmpleadoHuella();
+        private int idwErrorCode;
         // GET: Empleado
         public ZkemClient objZkeeper;        
 
@@ -45,15 +47,19 @@ namespace BioZ.Controllers
             try
             {
                 if (entidad.id_empleado > 0)
-                { r = control.Actualizar(entidad); }
+                {
+                    r = control.Actualizar(entidad);
+                    entidad.empleadohuellas = control.Obtener(entidad.id_empleado).empleadohuellas;
+                    GuardarDispositivo(new UserInfo
+                    {
+                        EnrollNumber = entidad.enrollnumber.ToString(),
+                        Name = entidad.nombre,
+                        B64finger = Convert.ToBase64String(entidad.empleadohuellas[0].b64huella)
+                    });
+                }
                 else
                 {
-                    r = control.Insertar(entidad);
-                    //GuardarDispositivo(new UserInfo
-                    //{
-                    //    EnrollNumber = entidad.enrollnumber.ToString(),
-                    //    Name = entidad.nombre
-                    //});
+                    r = control.Insertar(entidad);                   
                 }
 
                 if (!r)
@@ -69,13 +75,19 @@ namespace BioZ.Controllers
             }
         }
         public ActionResult GuardarDispositivo(UserInfo Entidad)
-        {
+        {            
             if (Connect())
             {
-                if (objZkeeper.SSR_SetUserInfo(1, Entidad.EnrollNumber, Entidad.Name, string.Empty, 0, true))
+                if (objZkeeper.SSR_SetUserInfo(1, Entidad.EnrollNumber, Entidad.Name, "123456", 0, true))
                 {
-                    return Json("Error al agregar el empleado ", JsonRequestBehavior.AllowGet);
+                    if (!objZkeeper.SetUserTmpExStr(1, Entidad.EnrollNumber, 1, 6, Entidad.B64finger))
+                    {                        
+                        objZkeeper.GetLastError(ref idwErrorCode);
+                        return Json("Error al agregar la huella ErrorCode=" + idwErrorCode.ToString(), JsonRequestBehavior.AllowGet);
+                    }
                 }
+                else
+                    return Json("Error al agregar el empleado ", JsonRequestBehavior.AllowGet);                
             }
             else
                 return Json("Sin conexión", JsonRequestBehavior.AllowGet);

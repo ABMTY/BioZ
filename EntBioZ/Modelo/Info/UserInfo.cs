@@ -8,6 +8,7 @@ namespace EntBioZ.Modelo.Info
 {
     public class UserInfo
     {
+        public string B64finger { get; set; }
         public int MachineNumber { get; set; }
         public string EnrollNumber { get; set; }
         public string Name { get; set; }
