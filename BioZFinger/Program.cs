@@ -24,11 +24,18 @@ namespace BioZFinger
             //Registro Registro = new Registro();
             //Registro.Id_Empleado = strIdEmpleado;
             //Application.Run(Registro);
-            //MessageBox.Show("Empleado No. "+strIdEmpleado +" se regristro exitosamente!");
+            //MessageBox.Show("Empleado No. " + strIdEmpleado + " se regristro exitosamente!");
 
-            Validar Validar = new Validar();
-            Validar.Id_Empleado = strIdEmpleado;
-            Application.Run(Validar);
+
+            //Validar Validar = new Validar();
+            //Validar.Id_Empleado = strIdEmpleado;
+            //Application.Run(Validar);
+
+            //frmListaEmpleados frmListaEmpleados = new frmListaEmpleados();
+            //Application.Run(frmListaEmpleados);
+
+            frmAcceso frmAcceso = new frmAcceso();
+            Application.Run(frmAcceso);
 
         }
     }

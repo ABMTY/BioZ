@@ -47,6 +47,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Bioz\PerAsistencia.cs" />
+    <Compile Include="Bioz\PerCkeckinout.cs" />
     <Compile Include="Bioz\PerDepartamentos.cs" />
     <Compile Include="Bioz\PerDispositivos.cs" />
     <Compile Include="Bioz\PerEmpleadoHuella.cs" />

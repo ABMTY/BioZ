@@ -40,6 +40,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Bioz\CtrlAsistencia.cs" />
+    <Compile Include="Bioz\CtrlCheckinout.cs" />
     <Compile Include="Bioz\CtrlDepartamentos.cs" />
     <Compile Include="Bioz\CtrlDispositivos.cs" />
     <Compile Include="Bioz\CtrlEmpleadoHuella.cs" />
