@@ -1,4 +1,5 @@
-﻿namespace Enrollment {
+﻿namespace BioZFinger
+{
     partial class Validar {
         /// <summary>
         /// Required designer variable.
@@ -30,19 +31,19 @@
             this.StatusLine = new System.Windows.Forms.Label();
             this.StatusText = new System.Windows.Forms.TextBox();
             this.Prompt = new System.Windows.Forms.TextBox();
-            this.Picture = new System.Windows.Forms.PictureBox();
-            this.panel1 = new System.Windows.Forms.Panel();
+            this.lblPanelTitulo = new System.Windows.Forms.Panel();
             this.lblCloseButton = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.pcbCamara = new System.Windows.Forms.PictureBox();
+            this.lblNombre = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.cmbDispositivos = new System.Windows.Forms.ComboBox();
+            this.pcbCamara = new System.Windows.Forms.PictureBox();
+            this.Picture = new System.Windows.Forms.PictureBox();
             StatusLabel = new System.Windows.Forms.Label();
             PromptLabel = new System.Windows.Forms.Label();
-            ((System.ComponentModel.ISupportInitialize)(this.Picture)).BeginInit();
-            this.panel1.SuspendLayout();
+            this.lblPanelTitulo.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pcbCamara)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Picture)).BeginInit();
             this.SuspendLayout();
             // 
             // StatusLabel
@@ -106,27 +107,19 @@
             this.Prompt.TabIndex = 78;
             this.Prompt.Visible = false;
             // 
-            // Picture
+            // lblPanelTitulo
             // 
-            this.Picture.BackColor = System.Drawing.Color.White;
-            this.Picture.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.Picture.Location = new System.Drawing.Point(3, 47);
-            this.Picture.Name = "Picture";
-            this.Picture.Size = new System.Drawing.Size(260, 257);
-            this.Picture.TabIndex = 76;
-            this.Picture.TabStop = false;
-            // 
-            // panel1
-            // 
-            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.lblPanelTitulo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel1.BackColor = System.Drawing.Color.Black;
-            this.panel1.Controls.Add(this.lblCloseButton);
-            this.panel1.Controls.Add(this.label3);
-            this.panel1.Location = new System.Drawing.Point(-1, 6);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(514, 38);
-            this.panel1.TabIndex = 90;
+            this.lblPanelTitulo.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(141)))), ((int)(((byte)(188)))));
+            this.lblPanelTitulo.Controls.Add(this.lblCloseButton);
+            this.lblPanelTitulo.Controls.Add(this.label3);
+            this.lblPanelTitulo.Controls.Add(this.lblNombre);
+            this.lblPanelTitulo.Location = new System.Drawing.Point(-1, 6);
+            this.lblPanelTitulo.Name = "lblPanelTitulo";
+            this.lblPanelTitulo.Size = new System.Drawing.Size(514, 38);
+            this.lblPanelTitulo.TabIndex = 90;
+            this.lblPanelTitulo.MouseDown += new System.Windows.Forms.MouseEventHandler(this.lblPanelTitulo_MouseDown);
             // 
             // lblCloseButton
             // 
@@ -144,33 +137,26 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Segoe UI Semilight", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Font = new System.Drawing.Font("Segoe UI Semilight", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label3.ForeColor = System.Drawing.Color.White;
             this.label3.Location = new System.Drawing.Point(2, 6);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(236, 25);
+            this.label3.Size = new System.Drawing.Size(198, 21);
             this.label3.TabIndex = 91;
             this.label3.Text = "Por favor, escanee su huella";
             // 
-            // label4
+            // lblNombre
             // 
-            this.label4.AutoSize = true;
-            this.label4.BackColor = System.Drawing.Color.White;
-            this.label4.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(269, 283);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(107, 21);
-            this.label4.TabIndex = 95;
-            this.label4.Text = "Bienvenido!!!!";
-            // 
-            // pcbCamara
-            // 
-            this.pcbCamara.Location = new System.Drawing.Point(269, 50);
-            this.pcbCamara.Name = "pcbCamara";
-            this.pcbCamara.Size = new System.Drawing.Size(232, 227);
-            this.pcbCamara.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pcbCamara.TabIndex = 94;
-            this.pcbCamara.TabStop = false;
+            this.lblNombre.AutoSize = true;
+            this.lblNombre.BackColor = System.Drawing.Color.Transparent;
+            this.lblNombre.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblNombre.ForeColor = System.Drawing.Color.White;
+            this.lblNombre.Location = new System.Drawing.Point(206, 6);
+            this.lblNombre.Name = "lblNombre";
+            this.lblNombre.Size = new System.Drawing.Size(107, 20);
+            this.lblNombre.TabIndex = 95;
+            this.lblNombre.Text = "Bienvenido!!!!";
+            this.lblNombre.Visible = false;
             // 
             // label2
             // 
@@ -193,17 +179,36 @@
             this.cmbDispositivos.TabIndex = 96;
             this.cmbDispositivos.Visible = false;
             // 
+            // pcbCamara
+            // 
+            this.pcbCamara.Image = global::BioZFinger.Properties.Resources.NoFinger;
+            this.pcbCamara.Location = new System.Drawing.Point(269, 50);
+            this.pcbCamara.Name = "pcbCamara";
+            this.pcbCamara.Size = new System.Drawing.Size(232, 254);
+            this.pcbCamara.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pcbCamara.TabIndex = 94;
+            this.pcbCamara.TabStop = false;
+            // 
+            // Picture
+            // 
+            this.Picture.BackColor = System.Drawing.Color.White;
+            this.Picture.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Picture.Location = new System.Drawing.Point(3, 47);
+            this.Picture.Name = "Picture";
+            this.Picture.Size = new System.Drawing.Size(260, 257);
+            this.Picture.TabIndex = 76;
+            this.Picture.TabStop = false;
+            // 
             // Validar
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
-            this.ClientSize = new System.Drawing.Size(511, 311);
+            this.BackColor = System.Drawing.Color.White;
+            this.ClientSize = new System.Drawing.Size(511, 308);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.cmbDispositivos);
-            this.Controls.Add(this.label4);
             this.Controls.Add(this.pcbCamara);
-            this.Controls.Add(this.panel1);
+            this.Controls.Add(this.lblPanelTitulo);
             this.Controls.Add(this.CloseButton);
             this.Controls.Add(this.StatusLine);
             this.Controls.Add(this.StatusText);
@@ -220,12 +225,12 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Sistema de Control de Visitas v0.1";
             this.TopMost = true;
-            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Validar_FormClosed);
             this.Load += new System.EventHandler(this.Validar_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.Picture)).EndInit();
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
+            this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Validar_MouseDown);
+            this.lblPanelTitulo.ResumeLayout(false);
+            this.lblPanelTitulo.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pcbCamara)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Picture)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -238,10 +243,10 @@
         private System.Windows.Forms.TextBox StatusText;
         private System.Windows.Forms.TextBox Prompt;
         private System.Windows.Forms.PictureBox Picture;
-        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Panel lblPanelTitulo;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label lblCloseButton;
-        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label lblNombre;
         private System.Windows.Forms.PictureBox pcbCamara;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ComboBox cmbDispositivos;

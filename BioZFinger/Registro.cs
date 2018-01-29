@@ -1,8 +1,8 @@
-﻿using AForge.Video.DirectShow;
+﻿
+using BioZFinger.Utilities;
 using CtrlBioZ.Bioz;
 using DPFP;
 using EntBioZ.Modelo.BioZ;
-//using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -13,21 +13,18 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Enrollment {
+namespace BioZFinger {
     /*
         NOTA: Formulario de Registro de Huella Digital
     */
     public partial class Registro : Form, DPFP.Capture.EventHandler {
 
-       public string Id_Empleado;
+       public string Id_Empleado, Nombre_Empleado;
         // Variables Globales, requeridas por el SDK
         public delegate void OnTemplateEventHandler(DPFP.Template template);
         public event OnTemplateEventHandler OnTemplate;
         private DPFP.Processing.Enrollment Enroller;
-        CtrlEmpleadoHuella control = new CtrlEmpleadoHuella();
-        // Variables requeridas por los dlls de video, para la foto.
-        private FilterInfoCollection ListaDispositivos;
-        private VideoCaptureDevice FrameFinal;
+        CtrlEmpleadoHuella ctrlEmpleadoHuella = new CtrlEmpleadoHuella();       
 
         // Variable Global donde se almacena la huella escaneada. "Template" es una clase del SDK
         Template plantilla;
@@ -36,6 +33,8 @@ namespace Enrollment {
         private const int WM_NCHITTEST = 0x84;
         private const int HTCLIENT = 0x1;
         private const int HTCAPTION = 0x2;
+
+       
 
         ///
         /// Handling the window messages
@@ -68,7 +67,6 @@ namespace Enrollment {
         }
 
         protected virtual void Init() {
-
             InicializarCaptura();
             Enroller = new DPFP.Processing.Enrollment();			// Crea un registro
             UpdateStatus();
@@ -211,9 +209,8 @@ namespace Enrollment {
 
         // Boton que cierra el programa.
         private void CloseButton_Click(object sender, EventArgs e) {
-            this.Hide();
+            this.Close();
         }
-
         private void UpdateStatus() {
             // Show number of samples needed.
             SetStatus(String.Format("Fingerprint samples needed: {0}", Enroller.FeaturesNeeded));
@@ -264,74 +261,22 @@ namespace Enrollment {
         }
 
         private void Registro_Load(object sender, EventArgs e) {
-
- 
-
-            //// Cargamos los dispositivos de video
-            //ListaDispositivos = new FilterInfoCollection(FilterCategory.VideoInputDevice);
-
-            //// Y por cada dispositivo detectado, lo agregamos a un combobox (ahora ya no es visible para el usuario)
-            //foreach (FilterInfo Dispositivo in ListaDispositivos)
-            //{
-            //    cmbDispositivos.Items.Add(Dispositivo.Name);
-            //}
-            //// Seleccionamos el primer dispositivo
-            //cmbDispositivos.SelectedIndex = 0;
-            //// Inicializamos el dispositivo
-            //FrameFinal = new VideoCaptureDevice();
-
-            //// Y creamos el handler para comenzar a hacer el stream de video
-            //try
-            //{
-            //    FrameFinal = new VideoCaptureDevice(ListaDispositivos[cmbDispositivos.SelectedIndex].MonikerString);
-            //    FrameFinal.NewFrame += FrameFinal_NewFrame;
-
-            //    FrameFinal.Start();
-            //}
-            //catch (Exception ex)
-            //{
-            //    //MessageBox.Show("Error " + ex.Message);
-            //}
-
+            lblNombre.Text = Nombre_Empleado.ToString();
             // Se inicializa el programa
             Init();
 			Start();
         }
 
-        private void CloseButton_Click_1(object sender, EventArgs e) {
-            this.Close();
-        }
+        public void RinicializarLector()
+        {
+            OnTemplate(null);          
+            Stop();
+            success = true;
+        }          
 
-        private void btnInicializar_Click(object sender, EventArgs e) {
-            //try {
-            //    FrameFinal = new VideoCaptureDevice(ListaDispositivos[cmbDispositivos.SelectedIndex].MonikerString);
-            //    FrameFinal.NewFrame += FrameFinal_NewFrame;
-            //    FrameFinal.Start();
-            //} catch (Exception ex) {
-            //    //MessageBox.Show("Error " + ex.Message);
-            //}
-        }
-
-        void FrameFinal_NewFrame(object sender, AForge.Video.NewFrameEventArgs eventArgs) {
-            pcbCamara.Image = (Bitmap)eventArgs.Frame.Clone();
-        }
-
-        private void Registro_FormClosed_1(object sender, FormClosedEventArgs e) {
-            //try {
-            //    FrameFinal.Stop();
-            //} catch (Exception ex) {
-
-            //}
-            //Application.Exit();
-        }
-
-        private void SaveTemplateToDatabase(DPFP.Template template) {
+        private void SaveTemplateToDatabase(DPFP.Template template)
+        {
             // Este metodo guarda la plantilla ya generada satisfactoriamente a la base de datos
-            // en forma de bytes (Tipo de dato BLOB en MySQL)
-            string startupPath = Application.StartupPath;
-            string RegistroHuellaExe = Application.StartupPath + "\\RegistroHuella.exe";
-            string URLFilePath = Application.StartupPath + "\\urlRegistro.dat";
-
             try
             {
                 // Creamos un objeto de tipo MemoryStream para almacenar la informacion de la template
@@ -342,81 +287,21 @@ namespace Enrollment {
                 BinaryReader br = new BinaryReader(fingerprintData);
                 Byte[] bytes = br.ReadBytes((Int32)fingerprintData.Length);
 
-                //EmpleadoHuella finger = new EmpleadoHuella();
-                //finger.id_empleado = 7;
-                //finger.b64huella = bytes;
-                control.Insertar(new EmpleadoHuella
+                ctrlEmpleadoHuella.Insertar(new EmpleadoHuella
                 {
                     id_empleado = int.Parse(Id_Empleado),
                     b64huella = bytes
                 });
+
+                frmListaEmpleados listaEmpleado = new frmListaEmpleados();
+                listaEmpleado.MessageBoxShow("Se registro la huella exitosamente!","Guardar");
+
             }
             catch (Exception)
             {
 
                 throw;
             }
-
-            //try
-            //{
-                //    //// Leemos la cadena de conexion
-                //    //string connString = File.ReadAllText(Application.StartupPath + "\\connectionString.dat");
-                //    //MySqlConnection conn = new MySqlConnection(connString);
-                //    //MySqlCommand command = conn.CreateCommand();
-
-                //    try {
-                //        // Abrimos la conexion
-                //        conn.Open();
-                //    } catch (Exception ex) {
-                //        //MessageBox.Show(ex.Message);
-                //    }
-
-                //    // Creamos un objeto de tipo MemoryStream para almacenar la informacion de la template
-                //    MemoryStream fingerprintData = new MemoryStream();
-                //    template.Serialize(fingerprintData);
-                //    fingerprintData.Position = 0;
-                //    // Leemos todos sus bytes
-                //    BinaryReader br = new BinaryReader(fingerprintData);
-                //    Byte[] bytes = br.ReadBytes((Int32)fingerprintData.Length);
-
-                //    // Insertamos en la base de datos el nuevo usuario sin datos, sin nombre, sin nada
-                //    // ya que esto será guardado por ustedes, desde un portal web.
-                //    command.CommandText = "INSERT INTO usuarios(Nombre, Fecha, Foto) VALUES(@Nombre, @Fecha, @Foto)";
-                //    command.Parameters.Add("@Nombre", MySqlDbType.VarChar).Value = "";
-                //    command.Parameters.Add("@Fecha", MySqlDbType.DateTime).Value = DateTime.Now;
-                //    //command.Parameters.Add("@Huella", MySqlDbType.Blob).Value = bytes;
-                //    command.Parameters.Add("@Foto", MySqlDbType.LongText).Value = ImageToBase64(pcbCamara.Image, System.Drawing.Imaging.ImageFormat.Bmp);
-
-                //    command.ExecuteNonQuery();
-
-                //    // Obtenemos el idUsuario del ultimo usuario agregado.
-                //    long ultimoIdUsuario = command.LastInsertedId;
-
-                //    // Y agregamos la huella a la tabla Huellas, con el idUsuario haciendo referencia al agregado anteriormente.
-                //    command.CommandText = "INSERT INTO huellas(idUsuario, Huella) VALUES(@idUsuario, @Huella)";
-                //    command.Parameters.Add("@idUsuario", MySqlDbType.VarChar).Value = ultimoIdUsuario;
-                //    command.Parameters.Add("@Huella", MySqlDbType.Blob).Value = bytes;
-
-                //    command.ExecuteNonQuery();
-
-
-                //    // Formulamos la URL a ejecutar, pasandole a su vez parametros por GET
-                //    string urlFile = File.ReadAllText(URLFilePath);
-                //    string url = String.Format("{0}?idUsuario={1}&FechaRegistro={2}", urlFile, ultimoIdUsuario, DateTime.Now);
-
-                //    // Ejecutamos la URL para que se abra en el navegador predeterminado
-                //    try {
-                //        System.Diagnostics.Process.Start(url);
-                //    } catch (Exception ex) {
-
-                    //}
-                //    // Y finalmente cerramos el programa
-                //    this.Invoke(new MethodInvoker(delegate { this.Close(); }));
-                //    return;
-            //}
-            //catch (Exception ex)
-            //{
-            //}
         }
 
         // Métodos para convertir Imagen a Base64, y viceversa
@@ -444,9 +329,7 @@ namespace Enrollment {
         }
 
         private void btnuGuardar_Click(object sender, EventArgs e) {
-            try {
-                //// FrameFinal.Stop() detiene el video de la camara, para dejar de consumir memoria
-                //FrameFinal.Stop();
+            try {               
                 // Guardamos la plantilla en la base de datos
                 SaveTemplateToDatabase(plantilla);
                 // Cerramos la aplicacion
@@ -456,28 +339,29 @@ namespace Enrollment {
             }
         }
 
-        private void cmbDispositivos_KeyPress(object sender, KeyPressEventArgs e) {
-            e.Handled = true;
+        private void lblCloseButton_Click(object sender, EventArgs e) {            
+            RinicializarLector();           
+            this.Close();            
         }
 
-        private void lblCloseButton_Click(object sender, EventArgs e) {
-            //// FrameFinal.Stop() detiene el video de la camara, para dejar de consumir memoria
-            //FrameFinal.Stop();
-            // Cerramos la aplicacion
-            Application.Exit();
+        private void pnlTituloForm_MouseDown(object sender, MouseEventArgs e)
+        {
+            GeneralUtility.Form_MouseDown();
+            GeneralUtility.SendMessage(this.Handle, 0x112, 0xf012, 0);
+        }
+
+        private void Registro_MouseDown(object sender, MouseEventArgs e)
+        {
+            GeneralUtility.Form_MouseDown();
+            GeneralUtility.SendMessage(this.Handle, 0x112, 0xf012, 0);
         }
 
         private void btnRegistrar_Click(object sender, EventArgs e) {
             try {
-
-                //MessageBox.Show("Empleado No. " + Parametro + "Su huella se Registro correctamente");
-
-                //// FrameFinal.Stop() detiene el video de la camara, para dejar de consumir memoria
-                //FrameFinal.Stop();
                 // Guardamos la plantilla en la base de datos
-                SaveTemplateToDatabase(plantilla);
-                // Cerramos la aplicacion
-                Application.Exit();
+                SaveTemplateToDatabase(plantilla);               
+                this.Close();
+
             } catch (Exception ) { }
         }
     }
