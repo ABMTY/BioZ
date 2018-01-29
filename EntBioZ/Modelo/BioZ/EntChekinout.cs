@@ -19,6 +19,10 @@ namespace EntBioZ.Modelo.BioZ
         public string desc_departamento { get; set; }
         public string desc_sucursal { get; set; }
         public string nombre_dispositivo { get; set; }
+        public string hora_ini { get; set; }
+        public DateTime check_ini { get; set; }
+        public string hora_fin { get; set; }
+        public DateTime check_fin { get; set; }
 
     }
 }

@@ -15,6 +15,11 @@ namespace EntBioZ.Modelo.BioZ
         public DateTime checkinout { get; set; }
         public string device { get; set; }
         public string nombre_completo { get; set; }
-        public string desc_sucursal { get; set; }        
+        public string desc_sucursal { get; set; }
+        public string hora_ini { get; set; }
+        public DateTime check_ini { get; set; }
+        public string hora_fin { get; set; }
+        public DateTime check_fin { get; set; }
+
     }
 }

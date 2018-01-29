@@ -23,5 +23,12 @@ namespace BioZ.Controllers
             listaAsistencia = control.ObtenerTodos();            
             return Json(new { data = listaAsistencia }, JsonRequestBehavior.AllowGet);
         }
+        public ActionResult ObtenerPorEmpleado()
+        {
+            var listaAsistencia = new List<EntAsistencia>();
+
+            listaAsistencia = control.ObtenerAsistencia();
+            return Json(new { data = listaAsistencia }, JsonRequestBehavior.AllowGet);
+        }
     }
 }

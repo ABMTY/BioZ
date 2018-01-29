@@ -16,5 +16,9 @@ namespace CtrlBioZ.Bioz
         {
             return (List<EntChekinout>)new PerCkeckinout().ObtenerTodos();
         }
+        public List<EntChekinout> ObtenerAsistencia()
+        {
+            return (List<EntChekinout>)new PerCkeckinout().ObtenerAsistencia();
+        }
     }
 }

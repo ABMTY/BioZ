@@ -10,11 +10,15 @@ namespace CtrlBioZ.Bioz
 {
     public class CtrlAsistencia
     {
-        PerAsistencia PerDispositivo;
+        PerAsistencia persistencia;
 
         public List<EntAsistencia> ObtenerTodos()
         {
             return (List<EntAsistencia>)new PerAsistencia().ObtenerTodos();
+        }
+        public List<EntAsistencia> ObtenerAsistencia()
+        {
+            return (List<EntAsistencia>)new PerAsistencia().ObtenerAsistencia();
         }
     }
 }

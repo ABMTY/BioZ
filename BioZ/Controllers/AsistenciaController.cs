@@ -65,5 +65,13 @@ namespace BioZ.Controllers
             //}
             return Json(new { data = listaAsistencia }, JsonRequestBehavior.AllowGet);
         }
+        public ActionResult ObtenerPorEmpleado()
+        {
+            var listaAsistencia = new List<EntChekinout>();
+
+            listaAsistencia = control.ObtenerAsistencia();
+            
+            return Json(new { data = listaAsistencia }, JsonRequestBehavior.AllowGet);
+        }
     }
 }
