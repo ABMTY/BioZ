@@ -110,8 +110,8 @@
                             <i class="fa fa-angle-left pull-right"></i>
                         </a>
                         <ul class="treeview-menu">
-                            <li><a href="articulo.php"><i class="fa fa-circle-o"></i> @Html.ActionLink("Registro", "Empleados", "Empleados")</a></li>                            
-                            <li><a href="/Enrolamiento/"><i class="fa fa-circle-o"></i> Enrolamiento</a></li>                           
+                            <li><a href="/Empleado/"><i class="fa fa-circle-o"></i> Empleados</a></li>                            
+                            @*<li><a href="/Enrolamiento/"><i class="fa fa-circle-o"></i> Enrolamiento</a></li>*@                           
                         </ul>
                     </li>
 
@@ -122,7 +122,8 @@
                             <i class="fa fa-angle-left pull-right"></i>
                         </a>
                         <ul class="treeview-menu">
-                            <li><a href="ingreso.php"><i class="fa fa-circle-o"></i> @Html.ActionLink("Registro", "Registro", "Asistencia")</a></li>                                             
+                            <li><a href="/Asistencia/Registro/"><i class="fa fa-circle-o"></i> Oficinas</a></li>
+                            <li><a href="#"><i class="fa fa-circle-o"></i> Sucursales</a></li>
                         </ul>
                     </li>
                     <li class="treeview">
@@ -132,8 +133,8 @@
                             <i class="fa fa-angle-left pull-right"></i>
                         </a>
                         <ul class="treeview-menu">
-                            <li><a href="venta.php"><i class="fa fa-circle-o"></i> General</a></li>
-                            <li><a href="cliente.php"><i class="fa fa-circle-o"></i> Departamentales</a></li>                            
+                            <li><a href="#"><i class="fa fa-circle-o"></i> General</a></li>
+                            <li><a href="#"><i class="fa fa-circle-o"></i> Departamentales</a></li>                            
                         </ul>
                     </li>
                     <li class="treeview">
@@ -147,15 +148,14 @@
                             <li><a href="/Usuarios/"><i class="fa fa-circle-o"></i> Usuarios</a></li>         
                             <li><a href="/Empresa/"><i class="fa fa-circle-o"></i> Empresas</a></li>                            
                             <li><a href="/Sucursal/"><i class="fa fa-circle-o"></i> Sucursales</a></li>                            
-                            <li><a href="/Departamento/"><i class="fa fa-circle-o"></i> Departamentos</a></li>                            
-                            <li><a href="/Empleado/"><i class="fa fa-circle-o"></i> Empleados</a></li>
+                            <li><a href="/Departamento/"><i class="fa fa-circle-o"></i> Departamentos</a></li>
                             <li><a href="/Dispositivos/"><i class="fa fa-circle-o"></i> Dispositivos</a></li>
                             <li><a href="/Horarios/"><i class="fa fa-circle-o"></i>Horarios</a></li>
                             <li><a href="/Turnos/"><i class="fa fa-circle-o"></i>Turnos</a></li>
                             <li><a href="/Jornadas/"><i class="fa fa-circle-o"></i>Jornadas</a></li>
                         </ul>
                     </li>
-                    <li class="treeview">
+                    @*<li class="treeview">
                         <a href="#">
                             <i class="fa fa-bar-chart"></i> <span>Consulta Compras</span>
                             <i class="fa fa-angle-left pull-right"></i>
@@ -172,7 +172,7 @@
                         <ul class="treeview-menu">
                             <li><a href="consultaventas.php"><i class="fa fa-circle-o"></i> Consulta Ventas</a></li>
                         </ul>
-                    </li>
+                    </li>*@
                     <li>
                         <a href="#">
                             <i class="fa fa-plus-square"></i> <span>Ayuda</span>
@@ -251,6 +251,9 @@
     @Scripts.Render("~/Content/plugins/datatables/buttons.html5.min.js")
     @Scripts.Render("~/Content/plugins/datatables/dataTables.responsive.min.js")
     @Scripts.Render("~/Content/plugins/datatables/responsive.bootstrap.min.js")
+    @Scripts.Render("~/Content/plugins/DataTables/jszip.min.js")
+    @Scripts.Render("~/Content/plugins/DataTables/pdfmake.min.js")
+    @Scripts.Render("~/Content/plugins/DataTables/vfs_fonts.js")
     <!-- Datatable init js -->
     @Scripts.Render("~/Content/pages/datatables.init.js")
         @*@Scripts.Render("~/bundles/jquery")

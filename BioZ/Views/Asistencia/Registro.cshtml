@@ -7,7 +7,7 @@
     <div class="col-md-12">
         <div class="box" id="secc_lista">
             <div class="box-header with-border">
-                <h1 class="box-title 0">Lista de Asistencia </h1>
+                <h1 class="box-title 0">Lista de Asistencia de Empleados de Oficina</h1>
  
             </div>
             <!-- /.box-header -->
@@ -44,6 +44,22 @@
         $('#Lista_Asistencias').DataTable({
             destroy: true,
             searching: true,
+            dom: "Bfrtip",
+            buttons: [
+                {
+                    extend: 'excelHtml5',
+                    title: 'Lista de Asistencia',
+                    customize: function (xlsx) {
+                        var sheet = xlsx.xl.worksheets['sheet1.xml'];
+
+                        $('row c[r^="C"]', sheet).attr('s', '2');
+                    }
+                },
+            {
+                extend: 'pdfHtml5',
+                title: 'Lista de Asistencia'
+            }
+            ],
             "ajax": {
                 "url": "/Asistencia/ObtenerAsistencia/",
                 "type": "GET"
