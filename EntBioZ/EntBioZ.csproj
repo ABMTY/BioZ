@@ -52,6 +52,7 @@
     <Compile Include="Generales\Entidad.cs" />
     <Compile Include="Generales\responseBioZ.cs" />
     <Compile Include="Modelo\BioZ\dispositivoBioZ.cs" />
+    <Compile Include="Modelo\BioZ\EntAsistencia.cs" />
     <Compile Include="Modelo\BioZ\EntChekinout.cs" />
     <Compile Include="Modelo\BioZ\EntDepartamento.cs" />
     <Compile Include="Modelo\BioZ\EntDispositivo.cs" />

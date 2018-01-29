@@ -6,19 +6,15 @@ using System.Threading.Tasks;
 
 namespace EntBioZ.Modelo.BioZ
 {
-    public class EntChekinout
+    public class EntAsistencia
     {
-        public int id { get; set; }
-        public int enrollnumber { get; set; }
+        public int id_asistencia { get; set; }
+        public int id_empleado { get; set; }
         public string date { get; set; }
         public string hour { get; set; }
         public DateTime checkinout { get; set; }
         public string device { get; set; }
-        public int id_dispositivo { get; set; }
         public string nombre_completo { get; set; }
-        public string desc_departamento { get; set; }
-        public string desc_sucursal { get; set; }
-        public string nombre_dispositivo { get; set; }
-
+        public string desc_sucursal { get; set; }        
     }
 }

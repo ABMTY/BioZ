@@ -1,5 +1,7 @@
 ﻿using BioZ.Controllers.Dispositivo;
+using CtrlBioZ.Bioz;
 using EntBioZ.Modelo;
+using EntBioZ.Modelo.BioZ;
 using EntBioZ.Modelo.Info;
 using System;
 using System.Collections.Generic;
@@ -14,6 +16,7 @@ namespace BioZ.Controllers
     {
         DeviceManipulator manipulator = new DeviceManipulator();
         public ZkemClient objZkeeper;
+        CtrlCheckinout control = new CtrlCheckinout();
 
         // GET: Asistencia
         private bool Connect()
@@ -37,26 +40,30 @@ namespace BioZ.Controllers
 
         public ActionResult ObtenerAsistencia()
         {
-            var listaRegistros = new List<MachineInfo>();
+            var listaAsistencia = new List<EntChekinout>();
+
+            listaAsistencia = control.ObtenerTodos();
+
+            //var listaRegistros = new List<MachineInfo>();
             
 
-            if (Connect())
-            {
-                ICollection<MachineInfo> lstMachineInfo = manipulator.GetLogData(objZkeeper, 1);
+            //if (Connect())
+            //{
+            //    ICollection<MachineInfo> lstMachineInfo = manipulator.GetLogData(objZkeeper, 1);
                 
                 
-                foreach (var item in lstMachineInfo)
-                {
-                    MachineInfo ent = new MachineInfo();
-                    ent.MachineNumber = item.MachineNumber;
-                    ent.IndRegID = item.IndRegID;
-                    ent.DateTimeRecord = item.DateTimeRecord;     
+            //    foreach (var item in lstMachineInfo)
+            //    {
+            //        MachineInfo ent = new MachineInfo();
+            //        ent.MachineNumber = item.MachineNumber;
+            //        ent.IndRegID = item.IndRegID;
+            //        ent.DateTimeRecord = item.DateTimeRecord;     
                    
-                    listaRegistros.Add(ent);                    
-                }
-                listaRegistros = listaRegistros.OrderByDescending(p => p.DateTimeRecord).ToList();
-            }
-            return Json(new { data = listaRegistros }, JsonRequestBehavior.AllowGet);
+            //        listaRegistros.Add(ent);                    
+            //    }
+            //    listaRegistros = listaRegistros.OrderByDescending(p => p.DateTimeRecord).ToList();
+            //}
+            return Json(new { data = listaAsistencia }, JsonRequestBehavior.AllowGet);
         }
     }
 }
