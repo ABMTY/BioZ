@@ -7,8 +7,8 @@
     <div class="col-md-12">
         <div class="box" id="secc_lista">
             <div class="box-header with-border">
-                <h1 class="box-title 0">Lista de Asistencia de Empleados de Oficina</h1>
- 
+                <h1 class="box-title 0">Lista de Asistencia de Empleados de Sucursales</h1>
+
             </div>
             <!-- /.box-header -->
             <!-- centro -->
@@ -20,16 +20,14 @@
                                 <th>&nbsp; &nbsp; &nbsp;Empleado</th>
                                 <th>&nbsp; &nbsp; &nbsp;Fecha</th>
                                 <th>&nbsp; &nbsp; &nbsp;Hora</th>
-                                <th>&nbsp; &nbsp; &nbsp;Departamento</th>                                
-                                <th>&nbsp; &nbsp; &nbsp;Sucursal</th>                                
-                                <th>&nbsp; &nbsp; &nbsp;Dispositivo</th>
+                                <th>&nbsp; &nbsp; &nbsp;Sucursal</th>
                             </tr>
                         </thead>
                     </table>
                 </div>
             </div>
             <!--Fin centro -->
-        </div><!-- /.box -->        
+        </div><!-- /.box -->
     </div><!-- /.col -->
 </div><!-- /.row -->
 <script>
@@ -62,16 +60,14 @@
             }
             ],
             "ajax": {
-                "url": "/Asistencia/ObtenerAsistencia/",
+                "url": "/Checkinout/ObtenerAsistencia/",
                 "type": "GET"
             },
             "columns": [
                 { "data": "nombre_completo" },
                 { "data": "date" },
                 { "data": "hour" },
-                { "data": "desc_departamento" },
-                { "data": "desc_sucursal" },
-                { "data": "nombre_dispositivo" }
+                { "data": "desc_sucursal" }
             ]
         });
     }

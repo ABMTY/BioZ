@@ -910,12 +910,12 @@
     <Content Include="Views\Jornadas\Index.cshtml" />
     <Content Include="Views\Turnos\Index.cshtml" />
     <Content Include="Views\Horarios\Index.cshtml" />
+    <Content Include="Views\Checkinout\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="App_Finger\Asistencia\" />
     <Folder Include="App_Finger\Registro\" />
-    <Folder Include="Views\Checkinout\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
