@@ -18,8 +18,8 @@
                         <thead>
                             <tr>
                                 <th>&nbsp; &nbsp; &nbsp;Empleado</th>
-                                <th>&nbsp; &nbsp; &nbsp;Fecha</th>
-                                <th>&nbsp; &nbsp; &nbsp;Hora</th>
+                                <th>&nbsp; &nbsp; &nbsp;Hora de Entrada</th>
+                                <th>&nbsp; &nbsp; &nbsp;Hora de Salida</th>
                                 <th>&nbsp; &nbsp; &nbsp;Sucursal</th>
                             </tr>
                         </thead>
@@ -60,13 +60,13 @@
             }
             ],
             "ajax": {
-                "url": "/Checkinout/ObtenerAsistencia/",
+                "url": "/Checkinout/ObtenerPorEmpleado/",
                 "type": "GET"
             },
             "columns": [
                 { "data": "nombre_completo" },
-                { "data": "date" },
-                { "data": "hour" },
+                { "data": "hora_ini" },
+                { "data": "hora_fin" },
                 { "data": "desc_sucursal" }
             ]
         });

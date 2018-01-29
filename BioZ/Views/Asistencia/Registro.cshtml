@@ -18,8 +18,8 @@
                         <thead>
                             <tr>
                                 <th>&nbsp; &nbsp; &nbsp;Empleado</th>
-                                <th>&nbsp; &nbsp; &nbsp;Fecha</th>
-                                <th>&nbsp; &nbsp; &nbsp;Hora</th>
+                                <th>&nbsp; &nbsp; &nbsp;Hora de Entrada</th>
+                                <th>&nbsp; &nbsp; &nbsp;Hora de Salida</th>
                                 <th>&nbsp; &nbsp; &nbsp;Departamento</th>                                
                                 <th>&nbsp; &nbsp; &nbsp;Sucursal</th>                                
                                 <th>&nbsp; &nbsp; &nbsp;Dispositivo</th>
@@ -62,13 +62,13 @@
             }
             ],
             "ajax": {
-                "url": "/Asistencia/ObtenerAsistencia/",
+                "url": "/Asistencia/ObtenerPorEmpleado/",
                 "type": "GET"
             },
             "columns": [
                 { "data": "nombre_completo" },
-                { "data": "date" },
-                { "data": "hour" },
+                { "data": "hora_ini" },
+                { "data": "hora_fin" },
                 { "data": "desc_departamento" },
                 { "data": "desc_sucursal" },
                 { "data": "nombre_dispositivo" }
