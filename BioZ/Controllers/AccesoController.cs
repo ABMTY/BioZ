@@ -18,8 +18,8 @@ namespace BioZ.Controllers
             return View();
         }
 
-      
-        public ActionResult Validar(string Usuario, string Password)
+        [HttpPost]
+        public ActionResult Index(string Usuario, string Password)
         {
             List<EntUsuario> ListaUsuarios = new List<EntUsuario>();
             ListaUsuarios = ctrlUsuario.ObtenerTodos();
@@ -38,8 +38,7 @@ namespace BioZ.Controllers
             }
 
             if (AccesoAutorizado == true)
-            {
-                //string authId = Guid.NewGuid().ToString();
+            {               
                 Session["Id_Usuario"] = entUsuario.id_usuario;
                 Session["Usuario"] = entUsuario.usuario;
 
@@ -50,14 +49,14 @@ namespace BioZ.Controllers
                 return RedirectToAction("Index", "Home");
             }
             else
-            {              
-                ViewData["MensajeErrorAcceso"] = "Usuario y/o Contraseña es Incorrecta!";
-                return RedirectToAction("Index", "Acceso");
+            {
+                ViewBag.Message = string.Format("Usuario y/o Contraseña es Incorrecta!");
+                return View();                             
             }          
         }
 
 
-        //POST: /Account/LogOff       
+        
        
         public ActionResult CerrarSesion()
         {

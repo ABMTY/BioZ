@@ -6,10 +6,22 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8">
+
+ 
+
+    @*@{
+        if (TempData["msg"] != null)
+        {
+            @Html.Raw(TempData["msg"])
+        }
+    }*@
+
+    @*<meta charset="utf-8">*@    
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>BioZ | Acceso</title>
-    
+
+    <link href="~/Content/Acceso.css" rel="stylesheet" />
     <!-- jQuery 2.1.4 -->
     <script src="~/Content/js/jquery-3.1.1.min.js"></script>
     <!-- Bootstrap 3.3.5 -->
@@ -30,21 +42,23 @@
     <!-- Jcrop -->
     <link rel="stylesheet" href="~/Content/css/Jcrop.css" />
 </head>
-<body class="hold-transition login-page">
-    <div class="login-box">
-        <div class="login-logo">
-            <a><b>Bio</b>Z</a>
-        </div>
+<body class="hold-transition login-page" style="background-color:transparent;">
+@using (Html.BeginForm("Index", "Acceso", FormMethod.Post))
+{
+    <div class="login-box">        
         <!-- /.login-logo -->
-        <div class="login-box-body">
-            <p class="login-box-msg">Inicio de Sesión</p>
-            @*<form>*@
+        <div class="login-box-body">           
+            <div class="login-logo">
+                @*<a><b>Bio</b>Z</a>*@
+                <img src="~/Content/img/logo_oficial_bioz.png" class="user-image" alt="User Image">
+            </div>
+            <p class="login-box-msg">Inicio de Sesión</p>            
                 <div class="form-group has-feedback">
-                    <input type="text" class="form-control" id="txtUsuario" placeholder="Usuario">
+                    <input type="text" class="form-control" id="txtUsuario" placeholder="Usuario" name="Usuario">
                     <span class="fa fa-user form-control-feedback"></span>
                 </div>
                 <div class="form-group has-feedback">
-                    <input type="password" class="form-control" id="txtPassword" placeholder="Contraseña">
+                    <input type="password" class="form-control" id="txtPassword" placeholder="Contraseña" name="Password">
                     <span class="fa fa-lock form-control-feedback"></span>
                 </div>
                 <div class="row">
@@ -52,66 +66,34 @@
                     </div>
                     <!-- /.col -->
                     <div class="col-xs-4">
-                        <button type="submit" class="btn btn-primary btn-block btn-flat" id="btnAccesar" onclick="Acceso()">Accesar</button>                        
+                        <button type="submit" class="btn btn-primary btn-block btn-flat" id="btnAccesar">Accesar</button>                        
                     </div>
                     <!-- /.col -->
-                </div>
-            @*</form>*@              
-            <a class="text-center" id="mensaje"><input id="txtMensaje" type="text" style="border:none; width:250px;" readonly="readonly"/></a>
-            @*<a href="register.html" class="text-center">Abarrotes Monterrey S.A. de C.V.</a>*@
+                </div>            
+            <a class="text-center" id="mensaje"><input id="txtMensaje" type="text" style="border:none; width:250px;" readonly="readonly"/></a>            
         </div>
         <!-- /.login-box-body -->             
     </div>    
-    <!-- /.login-box -->   
-
-    <script>
-        //EJECUTAR EL ENTER
-        $(document).keypress(function (e) {
-            // look for window.event in case event isn't passed in
-            e = e || window.event;
-            if (e.keyCode == 13) {
-                document.getElementById('btnAccesar').click();
-                return false;
-            }
-            return true;
-        });
-
-        function Accesar() {
-            usuario=$("#txtUsuario").val();
-            password = $("#txtPassword").val();
-            id_usuario  = "1";
-            $.ajax({
-                url: "/Acceso/Validar/?Usuario=" + usuario + "&Password=" + password,
-                async: true,
-                dataType: "json",
-                data: '',
-                type: "POST",
-                contentType: "application/json; charset=utf-8",
-                success: function (data) {
-                    
-                    if (data.data == true) {
-                        window.location.href = "/Home?id_usuario=" + id_usuario;
-                    }
-                    else
-                    {
-                        $("#txtMensaje").val("Usuario y/o Contraseña Incorrecta!");                        
-                    }
-                },
-                error: function (request, status, error) {
-                    $("#txtMensaje").val("No hay conexión con la Base de Datos!");                    
-                    console.log("error" + error);
-                }
-            });
-        }
-
-        function Focus()
-        {
-        }
-
-        function Acceso() { 
-            return window.location.href = "@Url.Action("Validar", "Acceso")?Usuario=" + $("#txtUsuario").val() + "&Password=" + $("#txtPassword").val();
-        }
-
+    <!-- /.login-box -->
+}
+@if (ViewBag.Message != null)
+{
+    <script type="text/javascript">
+        window.onload = function () {
+            $("#txtMensaje").val("Usuario y/o Contraseña es Incorrecta!");
+            };
     </script>
+}
+<script>
+    //EJECUTAR EL ENTER
+    $(document).keypress(function (e) {        
+        e = e || window.event;
+        if (e.keyCode == 13) {
+            document.getElementById('btnAccesar').click();
+            return false;
+        }
+        return true;
+    });
+</script>
 </body>
 </html>
