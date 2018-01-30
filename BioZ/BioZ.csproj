@@ -411,6 +411,7 @@
     <Content Include="Content\img\imagen2.jpg" />
     <Content Include="Content\img\Imagen6.jpg" />
     <Content Include="Content\img\logo_oficial_bioz.png" />
+    <Content Include="Content\img\logo_oficial_bioz_b.png" />
     <Content Include="Content\Ionicons\ionicons.min.css" />
     <Content Include="Content\js\bootstrap-select.min.js" />
     <Content Include="Content\js\Jcrop.js" />
