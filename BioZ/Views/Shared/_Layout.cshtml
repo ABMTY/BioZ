@@ -44,7 +44,7 @@
     <div class="wrapper">
         <header class="main-header">
             <!-- Logo -->
-            <a href="index2.html" class="logo">
+            <a href="/Home/" class="logo">
                 <!-- mini logo for sidebar mini 50x50 pixels -->
                 <span class="logo-mini"><b>Bio</b>Z</span>
                 <!-- logo for regular state and mobile devices -->
@@ -64,7 +64,7 @@
                         <li class="dropdown user user-menu">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                 <img src="~/Content/dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
-                                <span class="hidden-xs">Juan Carlos Arcila</span>
+                                <span class="hidden-xs">@Session["Usuario"]</span>
                             </a>
                             <ul class="dropdown-menu">
                                 <!-- User image -->
@@ -75,12 +75,13 @@
                                         <small>www.youtube.com/jcarlosad7</small>
                                     </p>
                                 </li>
-
                                 <!-- Menu Footer-->
                                 <li class="user-footer">
-
                                     <div class="pull-right">
-                                        <a href="#" class="btn btn-default btn-flat">Cerrar</a>
+                                        @*<a onclick="CerrarSesion()" class="btn btn-default btn-flat">Cerrar</a>*@  
+                                        <a href="#" class="text-custom" data-target="#Modal_Exit" data-toggle="modal">
+                                            <i class="zmdi zmdi-power">Cerrar Sesion</i>
+                                        </a>                                      
                                     </div>
                                 </li>
                             </ul>
@@ -235,6 +236,42 @@
                 <p>&copy; @DateTime.Now.Year - Mi aplicación ASP.NET</p>
             </footer>
         </div>*@
+
+    <div class="modal fade" id="Modal_Exit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="mensaje_modal">Cerrar Sesion</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <h4>Se va a cerrar la session actual ¿Desea Continuar?</h4>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" onclick="CerrarSesion()" class="btn btn-default">SI</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">NO</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @{
+        try
+        {            
+            if (Session["Id_Usuario"].ToString() == "")
+            {
+                Response.Redirect("/Acceso/");
+            }
+        }
+        catch (Exception ex)
+        {
+            //Console.WriteLine(.ToString);
+            Response.Redirect("/Acceso/");
+        }
+    }
+
     <!-- Jcrop -->
     @Scripts.Render("~/Content/js/Jcrop.js")
    <!-- Select-Picker -->
@@ -256,5 +293,10 @@
         @*@Scripts.Render("~/bundles/jquery")
         @Scripts.Render("~/bundles/bootstrap")*@
         @RenderSection("scripts", required: false)
+    <script>
+        function CerrarSesion() {
+            return window.location.href = "@Url.Action("CerrarSesion", "Acceso")";
+        }
+    </script>
 </body>
 </html>

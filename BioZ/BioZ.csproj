@@ -195,6 +195,7 @@
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="Controllers\AccesoController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\Administracion\DispositivosController.cs" />
     <Compile Include="Controllers\Administracion\HorariosController.cs" />
@@ -399,10 +400,12 @@
     <Content Include="Content\DataTables\images\sort_desc.png" />
     <Content Include="Content\DataTables\images\sort_desc_disabled.png" />
     <Content Include="Content\DataTables\swf\flashExport.swf" />
+    <Content Include="Content\font-awesome\font-awesome.min.css" />
     <Content Include="Content\funcionesJs\departamento.js" />
     <Content Include="Content\funcionesJs\empleado.js" />
     <Content Include="Content\funcionesJs\empresa.js" />
     <Content Include="Content\funcionesJs\sucursal.js" />
+    <Content Include="Content\Ionicons\ionicons.min.css" />
     <Content Include="Content\js\bootstrap-select.min.js" />
     <Content Include="Content\js\Jcrop.js" />
     <Content Include="Content\plugins\bootstrap-datepicker\dist\css\bootstrap-datepicker.css" />
@@ -869,7 +872,9 @@
     <Content Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
-    <Content Include="Views\Web.config" />
+    <Content Include="Views\Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
@@ -909,6 +914,7 @@
     <Content Include="Views\Jornadas\Index.cshtml" />
     <Content Include="Views\Turnos\Index.cshtml" />
     <Content Include="Views\Horarios\Index.cshtml" />
+    <Content Include="Views\Acceso\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
