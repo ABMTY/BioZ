@@ -39,8 +39,11 @@
             this.btnValidarHuella = new System.Windows.Forms.Button();
             this.btnCapturarFoto = new System.Windows.Forms.Button();
             this.btnRefrescar = new System.Windows.Forms.Button();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.label1 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dgvEmpleados)).BeginInit();
             this.pnlTituloForm.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // dgvEmpleados
@@ -49,7 +52,7 @@
             this.dgvEmpleados.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvEmpleados.Location = new System.Drawing.Point(12, 67);
             this.dgvEmpleados.Name = "dgvEmpleados";
-            this.dgvEmpleados.Size = new System.Drawing.Size(1113, 462);
+            this.dgvEmpleados.Size = new System.Drawing.Size(1113, 440);
             this.dgvEmpleados.TabIndex = 0;
             this.dgvEmpleados.Click += new System.EventHandler(this.dgvEmpleados_Click);
             // 
@@ -70,7 +73,7 @@
             this.btnRegistrarHuella.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(141)))), ((int)(((byte)(188)))));
             this.btnRegistrarHuella.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnRegistrarHuella.ForeColor = System.Drawing.Color.White;
-            this.btnRegistrarHuella.Location = new System.Drawing.Point(12, 535);
+            this.btnRegistrarHuella.Location = new System.Drawing.Point(12, 523);
             this.btnRegistrarHuella.Name = "btnRegistrarHuella";
             this.btnRegistrarHuella.Size = new System.Drawing.Size(123, 33);
             this.btnRegistrarHuella.TabIndex = 9;
@@ -142,7 +145,7 @@
             this.btnValidarHuella.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(141)))), ((int)(((byte)(188)))));
             this.btnValidarHuella.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnValidarHuella.ForeColor = System.Drawing.Color.White;
-            this.btnValidarHuella.Location = new System.Drawing.Point(255, 535);
+            this.btnValidarHuella.Location = new System.Drawing.Point(255, 523);
             this.btnValidarHuella.Name = "btnValidarHuella";
             this.btnValidarHuella.Size = new System.Drawing.Size(117, 33);
             this.btnValidarHuella.TabIndex = 93;
@@ -155,7 +158,7 @@
             this.btnCapturarFoto.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(141)))), ((int)(((byte)(188)))));
             this.btnCapturarFoto.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnCapturarFoto.ForeColor = System.Drawing.Color.White;
-            this.btnCapturarFoto.Location = new System.Drawing.Point(137, 535);
+            this.btnCapturarFoto.Location = new System.Drawing.Point(137, 523);
             this.btnCapturarFoto.Name = "btnCapturarFoto";
             this.btnCapturarFoto.Size = new System.Drawing.Size(117, 33);
             this.btnCapturarFoto.TabIndex = 94;
@@ -168,13 +171,34 @@
             this.btnRefrescar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(141)))), ((int)(((byte)(188)))));
             this.btnRefrescar.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnRefrescar.ForeColor = System.Drawing.Color.White;
-            this.btnRefrescar.Location = new System.Drawing.Point(378, 535);
+            this.btnRefrescar.Location = new System.Drawing.Point(378, 523);
             this.btnRefrescar.Name = "btnRefrescar";
             this.btnRefrescar.Size = new System.Drawing.Size(117, 33);
             this.btnRefrescar.TabIndex = 95;
             this.btnRefrescar.Text = "Actualizar Lista";
             this.btnRefrescar.UseVisualStyleBackColor = false;
             this.btnRefrescar.Click += new System.EventHandler(this.btnRefrescar_Click);
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Image = global::BioZFinger.Properties.Resources.logo_oficial_bioz;
+            this.pictureBox1.Location = new System.Drawing.Point(982, 513);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(146, 57);
+            this.pictureBox1.TabIndex = 103;
+            this.pictureBox1.TabStop = false;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.BackColor = System.Drawing.Color.Transparent;
+            this.label1.Font = new System.Drawing.Font("Segoe UI Semilight", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(141)))), ((int)(((byte)(188)))));
+            this.label1.Location = new System.Drawing.Point(945, 564);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(181, 21);
+            this.label1.TabIndex = 96;
+            this.label1.Text = "Registro de Huella y Foto";
             // 
             // frmListaEmpleados
             // 
@@ -184,6 +208,8 @@
             this.AutoValidate = System.Windows.Forms.AutoValidate.EnablePreventFocusChange;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1135, 598);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.btnRefrescar);
             this.Controls.Add(this.btnCapturarFoto);
             this.Controls.Add(this.btnValidarHuella);
@@ -200,7 +226,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgvEmpleados)).EndInit();
             this.pnlTituloForm.ResumeLayout(false);
             this.pnlTituloForm.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -217,5 +245,7 @@
         private System.Windows.Forms.TextBox txtBuscarEmpleado;
         private System.Windows.Forms.Button btnCapturarFoto;
         private System.Windows.Forms.Button btnRefrescar;
+        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.Label label1;
     }
 }

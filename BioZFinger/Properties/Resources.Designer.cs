@@ -63,6 +63,16 @@ namespace BioZFinger.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap logo_oficial_bioz {
+            get {
+                object obj = ResourceManager.GetObject("logo_oficial_bioz", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap NoFinger {
             get {
                 object obj = ResourceManager.GetObject("NoFinger", resourceCulture);

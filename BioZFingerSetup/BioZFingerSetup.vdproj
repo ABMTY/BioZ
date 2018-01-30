@@ -466,6 +466,11 @@
             "AssemblyAsmDisplayName" = "8:CtrlBioZ, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
+                    "_236236B96A00089F5B189E5805D9C867"
+                    {
+                    "Name" = "8:CtrlBioZ.dll"
+                    "Attributes" = "3:512"
+                    }
                 }
             "SourcePath" = "8:CtrlBioZ.dll"
             "TargetName" = "8:"
@@ -523,6 +528,11 @@
             "AssemblyAsmDisplayName" = "8:EntBioZ, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
+                    "_431A2A1014E31AD68C9BE08E7B189827"
+                    {
+                    "Name" = "8:EntBioZ.dll"
+                    "Attributes" = "3:512"
+                    }
                 }
             "SourcePath" = "8:EntBioZ.dll"
             "TargetName" = "8:"
@@ -910,6 +920,11 @@
             "AssemblyAsmDisplayName" = "8:PerBioZ, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
+                    "_F1DF5C05D2CE5DC4C7A618770CD4B1CC"
+                    {
+                    "Name" = "8:PerBioZ.dll"
+                    "Attributes" = "3:512"
+                    }
                 }
             "SourcePath" = "8:PerBioZ.dll"
             "TargetName" = "8:"

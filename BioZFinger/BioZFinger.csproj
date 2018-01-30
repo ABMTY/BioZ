@@ -169,6 +169,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="logo_oficial_bioz.png" />
     <None Include="Denegado2.png" />
     <Content Include="icono.ico" />
     <None Include="NoFinger.png" />
