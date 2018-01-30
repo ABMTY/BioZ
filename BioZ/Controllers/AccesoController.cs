@@ -22,7 +22,9 @@ namespace BioZ.Controllers
         public ActionResult Validar(string Usuario, string Password)
         {
             List<EntUsuario> ListaUsuarios = new List<EntUsuario>();
-            EntUsuario entUsuario = new EntUsuario();           
+            ListaUsuarios = ctrlUsuario.ObtenerTodos();
+            EntUsuario entUsuario = new EntUsuario();  
+                     
             bool AccesoAutorizado = false;
 
             foreach (var entUser in ListaUsuarios)
