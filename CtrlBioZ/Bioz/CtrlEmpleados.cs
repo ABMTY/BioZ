@@ -22,9 +22,9 @@ namespace CtrlBioZ.Bioz
         {
             return (List<EntEmpleado>)new PerEmpleados().ObtenerTodos();
         }
-        public EntEmpleado Obtener(int Id_RolesVista)
+        public EntEmpleado Obtener(int Id_Empleado)
         {
-            return (EntEmpleado)new PerEmpleados().Obtener(Id_RolesVista);
+            return (EntEmpleado)new PerEmpleados().Obtener(Id_Empleado);
         }
 
 

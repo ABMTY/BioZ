@@ -83,6 +83,26 @@ namespace PerBioZ.Bioz
                         entidad.imagen = dr["imagen"].ToString();
                     }
                 }
+                #region GetEmpleadoHuellas
+                entidad.empleadohuellas = new List<EmpleadoHuella>();
+                cmd.CommandText = "SELECT id_huella, id_empleado, b64huella FROM informix.empleado_huella where id_empleado=?";
+                cmd.Parameters.Clear();
+                cmd.Parameters.Add(new IfxParameter()).Value = id;
+                using (var dr = cmd.ExecuteReader())
+                {
+                    if (dr.Read())
+                    {
+                        EmpleadoHuella huella = new EmpleadoHuella();
+                        huella.id_huella = int.Parse(dr["id_huella"].ToString());
+                        huella.id_empleado = int.Parse(dr["id_empleado"].ToString());
+                        if (dr["b64huella"].ToString() != string.Empty)
+                        {
+                            huella.b64huella = Convert.FromBase64String(dr["b64huella"].ToString());
+                        }
+                        entidad.empleadohuellas.Add(huella);
+                    }
+                }
+                #endregion
             }
             catch (Exception exc)
             {

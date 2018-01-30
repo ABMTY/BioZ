@@ -205,6 +205,7 @@
     <Compile Include="Controllers\Administracion\UsuariosController.cs" />
     <Compile Include="Controllers\Administracion\VistasController.cs" />
     <Compile Include="Controllers\AsistenciaController.cs" />
+    <Compile Include="Controllers\CheckinoutController.cs" />
     <Compile Include="Controllers\DepartamentoController.cs" />
     <Compile Include="Controllers\Dispositivo\DeviceManipulator.cs" />
     <Compile Include="Controllers\Dispositivo\UniversalStatic.cs" />
@@ -915,6 +916,7 @@
     <Content Include="Views\Turnos\Index.cshtml" />
     <Content Include="Views\Horarios\Index.cshtml" />
     <Content Include="Views\Acceso\Index.cshtml" />
+    <Content Include="Views\Checkinout\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
