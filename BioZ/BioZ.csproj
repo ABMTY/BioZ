@@ -407,6 +407,7 @@
     <Content Include="Content\funcionesJs\empleado.js" />
     <Content Include="Content\funcionesJs\empresa.js" />
     <Content Include="Content\funcionesJs\sucursal.js" />
+    <Content Include="Content\img\IconUser.png" />
     <Content Include="Content\img\imagen1.jpg" />
     <Content Include="Content\img\imagen2.jpg" />
     <Content Include="Content\img\Imagen6.jpg" />

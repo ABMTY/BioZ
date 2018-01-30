@@ -16,13 +16,11 @@ function listar() {
         },
         "columns": [
             { "defaultContent": "" },
-            { "data": "nombre" },
             { "data": "nombre_completo" },
             { "data": "desc_departamento" },
             { "data": "desc_sucursal" },
             { "data": "enrollnumber" },
             { "defaultContent": "" },
-
         ],
         "columnDefs": [{
             "targets": 0, "data": "id_empleado", "render": function (data, type, full, meta) {
@@ -30,12 +28,13 @@ function listar() {
             },
         },        
         {
-            "targets": 6, "data": "imagen", "render": function (data, type, full, meta) {
-                if (data != null) {
+            "targets": 5, "data": "imagen", "render": function (data, type, full, meta) {
+                if(data == "") {
+                    return "<img src='../Content/img/IconUser.png' width='60px;' height='50px;' />"
+                }
+                else if (data != null) {
                     var url = "data:image/png;base64," + data;
                     return "<img src=" + url + " width='60px;' height='50px;' />"
-                } else {
-                    return "<p></p>"
                 }
 
             }
