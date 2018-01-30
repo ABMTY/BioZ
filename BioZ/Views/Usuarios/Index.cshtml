@@ -22,13 +22,12 @@
                 <div class="card-box">
                     <table id="Lista_Usuarios" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0">
                         <thead>
-                            <tr>
-                                <th width="50px"></th>
-                                <th width="50px"></th>
-                                <th>&nbsp; &nbsp; &nbsp;No.</th>
-                                <th>&nbsp; &nbsp; &nbsp;Usuario</th>
-                                <th>&nbsp; &nbsp; &nbsp;Rol</th>                                                             
-                                <th>&nbsp; &nbsp; &nbsp;Activo</th>
+                            <tr>                                
+                                <th>Opciones</th>
+                                <th>No.</th>
+                                <th>Usuario</th>
+                                <th>Rol</th>                                                             
+                                <th>Activo</th>
                             </tr>
                         </thead>
                     </table>
@@ -150,22 +149,17 @@
                 "url": "/Usuarios/GetUsuarios/",
                 "type": "GET"
             },
-            "columns": [
-                { "defaultContent": "<i>..</i>" },
+            "columns": [                
                 { "defaultContent": "<i>..</i>" },
                 { "data": "id_usuario" },
                 { "data": "usuario" },
                 { "data": "desc_rol" },
                 { "data": "s_activo" },
             ],
-            "columnDefs": [{
-                "targets": 0, "data": "id_usuario", "render": function (data, type, full, meta) {
-                    return "<button type='button' title='Editar' id='btn_mas" + data + "' class='btn btn-warning' onclick='Editar(" + data + ")'  ><i class='fa fa-edit'></i></button> "
-                }
-            },
+            "columnDefs": [
                 {
-                    "targets": 1, "data": "id_usuario", "render": function (data, type, full, meta) {
-                        return "<button type='button' title='Eliminar' id='btn_borrar" + data + "' class='btn btn-danger' onclick='Confirma_Eliminar(" + data + ")'><i class='fa fa-trash'></i></button> "
+                    "targets": 0, "data": "id_usuario", "render": function (data, type, full, meta) {
+                        return "<button type='button' title='Editar' id='btn_mas" + data + "' class='btn btn-warning' onclick='Editar(" + data + ")'  ><i class='fa fa-edit'></i></button>  <button type='button' title='Eliminar' id='btn_borrar" + data + "' class='btn btn-danger' onclick='Confirma_Eliminar(" + data + ")'><i class='fa fa-trash'></i></button> "
                     }
                 }]
         });

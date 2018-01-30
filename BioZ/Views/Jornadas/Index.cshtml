@@ -22,11 +22,10 @@
                 <div class="card-box">
                     <table id="Lista_Jornadas" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0">
                         <thead>
-                            <tr>
-                                <th width="50px"></th>
-                                <th width="50px"></th>
-                                <th width="50px">&nbsp; &nbsp; &nbsp;No.</th>
-                                <th>&nbsp; &nbsp; &nbsp;Jornada</th>
+                            <tr>                                
+                                <th>Opciones</th>
+                                <th>No.</th>
+                                <th>Jornada</th>
                             </tr>
                         </thead>
                     </table>
@@ -155,20 +154,15 @@
                 "url": "/Jornadas/GetJornadas/",
                 "type": "GET"
             },
-            "columns": [
-                { "defaultContent": "<i>..</i>" },
+            "columns": [                
                 { "defaultContent": "<i>..</i>" },
                 { "data": "id_jornada" },
                 { "data": "desc_jornada" }
             ],
-            "columnDefs": [{
-                "targets": 0, "data": "id_jornada", "render": function (data, type, full, meta) {
-                    return "<button type='button' title='Editar' id='btn_mas" + data + "' class='btn btn-warning' onclick='Editar(" + data + ")'  ><i class='fa fa-edit'></i></button> "
-                }
-            },
+            "columnDefs": [
                 {
-                    "targets": 1, "data": "id_jornada", "render": function (data, type, full, meta) {
-                        return "<button type='button' title='Eliminar' id='btn_borrar" + data + "' class='btn btn-danger' onclick='Confirma_Eliminar(" + data + ")'><i class='fa fa-trash'></i></button> "
+                    "targets": 0, "data": "id_jornada", "render": function (data, type, full, meta) {
+                        return "<button type='button' title='Editar' id='btn_mas" + data + "' class='btn btn-warning' onclick='Editar(" + data + ")'  ><i class='fa fa-edit'></i></button>  <button type='button' title='Eliminar' id='btn_borrar" + data + "' class='btn btn-danger' onclick='Confirma_Eliminar(" + data + ")'><i class='fa fa-trash'></i></button> "
                     }
                 }]
         });
