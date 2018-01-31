@@ -48,18 +48,17 @@ namespace BioZ.Controllers
             {
                 if (entidad.id_empleado > 0)
                 {
-                    r = control.Actualizar(entidad);
-                    entidad.empleadohuellas = control.Obtener(entidad.id_empleado).empleadohuellas;
+                    r = control.Actualizar(entidad);                   
+                }
+                else
+                {
+                    r = control.Insertar(entidad);
                     GuardarDispositivo(new UserInfo
                     {
                         EnrollNumber = entidad.enrollnumber.ToString(),
                         Name = entidad.nombre,
                         //B64finger = Convert.ToBase64String(entidad.empleadohuellas[0].b64huella)
                     });
-                }
-                else
-                {
-                    r = control.Insertar(entidad);                   
                 }
 
                 if (!r)
