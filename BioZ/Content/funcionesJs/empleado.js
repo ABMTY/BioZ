@@ -109,8 +109,36 @@ function Agregar() {
     $("#btnAgregar").hide();
     document.getElementById("botones").style.display = "inline";
     limpiar();
+    ObtenerEnrollnumber();
     listarDepartamentos();
     listarSucursales();
+}
+
+//Obtener Enroller
+function ObtenerEnrollnumber() {
+    $.ajax({
+        url: "/Empleado/ObtenerEnrollnumber/",
+        async: true,
+        beforeSend: function () { },
+        dataType: "json",
+        data: '{ }',
+        type: "POST",
+        contentType: "application/json; charset=utf-8",
+        success: function (data) {
+            //alert(data.data)
+            $("#enrollnumber").val(data.data);
+        },
+        xhr: function () {
+            var xhr = $.ajaxSettings.xhr();
+            xhr.onprogress = function (evt) {
+                var porcentaje = Math.floor((evt.loaded / evt.total * 100));
+            };
+            return xhr;
+        },
+        error: function (request, status, error) {
+            console.log("Error => " + error);
+        }
+    })
 }
 
 //No envia los datos del formulario y carga la tabla
