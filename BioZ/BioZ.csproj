@@ -413,6 +413,7 @@
     <Content Include="Content\img\logo_oficial_bioz_b.png" />
     <Content Include="Content\js\bootstrap-select.min.js" />
     <Content Include="Content\js\Jcrop.js" />
+    <Content Include="Content\pages\datatables.init.js" />
     <Content Include="Content\plugins\bootstrap-datepicker\dist\css\bootstrap-datepicker.css" />
     <Content Include="Content\plugins\bootstrap-datepicker\dist\css\bootstrap-datepicker.min.css" />
     <Content Include="Content\plugins\bootstrap-datepicker\dist\css\bootstrap-datepicker.standalone.css" />
