@@ -54,7 +54,7 @@ namespace BioZ.Controllers
                     {
                         EnrollNumber = entidad.enrollnumber.ToString(),
                         Name = entidad.nombre,
-                        B64finger = Convert.ToBase64String(entidad.empleadohuellas[0].b64huella)
+                        //B64finger = Convert.ToBase64String(entidad.empleadohuellas[0].b64huella)
                     });
                 }
                 else
@@ -78,16 +78,15 @@ namespace BioZ.Controllers
         {            
             if (Connect())
             {
-                if (objZkeeper.SSR_SetUserInfo(1, Entidad.EnrollNumber, Entidad.Name, "123456", 0, true))
+                if (!objZkeeper.SSR_SetUserInfo(1, Entidad.EnrollNumber, Entidad.Name, "123456", 0, true))
                 {
-                    if (!objZkeeper.SetUserTmpExStr(1, Entidad.EnrollNumber, 1, 6, Entidad.B64finger))
-                    {                        
-                        objZkeeper.GetLastError(ref idwErrorCode);
-                        return Json("Error al agregar la huella ErrorCode=" + idwErrorCode.ToString(), JsonRequestBehavior.AllowGet);
-                    }
-                }
-                else
-                    return Json("Error al agregar el empleado ", JsonRequestBehavior.AllowGet);                
+                    return Json("Error al agregar el empleado ", JsonRequestBehavior.AllowGet);
+                    //if (!objZkeeper.SetUserTmpExStr(1, Entidad.EnrollNumber, 1, 6, Entidad.B64finger))
+                    //{                        
+                    //    objZkeeper.GetLastError(ref idwErrorCode);
+                    //    return Json("Error al agregar la huella ErrorCode=" + idwErrorCode.ToString(), JsonRequestBehavior.AllowGet);
+                    //}
+                }                                   
             }
             else
                 return Json("Sin conexión", JsonRequestBehavior.AllowGet);
@@ -221,6 +220,29 @@ namespace BioZ.Controllers
             json.MaxJsonLength = 500000000;
             return json;
             //return RedirectToAction("Index");
+        }
+
+        public ActionResult ObtenerEnrollnumber()
+        {
+            string dwEnrollNumber = string.Empty;
+            string name = string.Empty;
+            string password = string.Empty;
+            int privilege = 0;
+            bool enabled = false;
+            string tmpData = string.Empty;
+            int Enrollnumber = 0;
+            var Listusuarios = new List<UserInfo>();
+            if (Connect())
+            {
+                if (objZkeeper.ReadAllUserID(1))
+                {
+                    while (objZkeeper.SSR_GetAllUserInfo(1, out dwEnrollNumber, out name, out password, out privilege, out enabled))
+                    {
+                        Enrollnumber++;
+                    }
+                }
+            }
+            return Json(new { data = Enrollnumber+1 }, JsonRequestBehavior.AllowGet);
         }
     }
 }
