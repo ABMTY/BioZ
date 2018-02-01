@@ -41,6 +41,7 @@
     <link rel="shortcut icon" href="~/Content/img/favicon.ico">
     <!-- Jcrop -->
     <link rel="stylesheet" href="~/Content/css/Jcrop.css" />
+    @Styles.Render("~/Content/css/bootstrap-select.min.css")
 </head>
 <body class="hold-transition login-page" style="background-color:transparent;">
 @using (Html.BeginForm("Index", "Acceso", FormMethod.Post))
@@ -52,7 +53,12 @@
                 @*<a><b>Bio</b>Z</a>*@
                 <img src="~/Content/img/logo_oficial_bioz.png" class="user-image" alt="User Image">
             </div>
-            <p class="login-box-msg">Inicio de Sesión</p>            
+            <p class="login-box-msg">Inicio de Sesión</p> 
+                <div class="form-group has-feedback">
+                    <select class="form-control selectpicker" id="ddl_Empresa" data-live-search="true" required name="id_Empresa"></select>                    
+                    @*<select class="form-control" id="ddl_Empresa" name="id_Empresa"></select>*@ 
+                    <span class="fa fa-home form-control-feedback"></span>
+                </div>           
                 <div class="form-group has-feedback">
                     <input type="text" class="form-control" id="txtUsuario" placeholder="Usuario" name="Usuario">
                     <span class="fa fa-user form-control-feedback"></span>
@@ -76,6 +82,7 @@
     </div>    
     <!-- /.login-box -->
 }
+   
 @if (ViewBag.Message != null)
 {
     <script type="text/javascript">
@@ -83,8 +90,35 @@
             $("#txtMensaje").val("Usuario y/o Contraseña es Incorrecta!");
             };
     </script>
-}
+} 
+
 <script>
+
+    $(function () {
+        Cargar_Empresas();
+    });
+
+    function Cargar_Empresas() {
+        $("#ddl_Empresa").html("");
+        $.ajax({
+            url: "/Empresa/GetEmpresas/",
+            async: true,
+            dataType: "json",
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                $("#ddl_Empresa").append("<option value='0'>Seleccione la empresa</option>");
+                $.each(data.data, function (i, Item) {
+                    $("#ddl_Empresa").append("<option value='" + Item.id_empresa + "'>" + Item.razon_social + "</option>");
+                });
+                $('#ddl_Empresa').selectpicker('refresh');
+            },
+            error: function (request, status, error) {
+                console.log("error" + error);
+            }
+        });
+    }   
+    
     //EJECUTAR EL ENTER
     $(document).keypress(function (e) {        
         e = e || window.event;
@@ -95,5 +129,6 @@
         return true;
     });
 </script>
+@Scripts.Render("~/Content/js/bootstrap-select.min.js")
 </body>
 </html>

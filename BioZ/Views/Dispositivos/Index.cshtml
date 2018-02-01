@@ -276,12 +276,12 @@
                 $("#txt_Puerto").val(data.data.puerto);
                 $("#txt_Serie").val(data.data.numero_serie);
                 Cargar_Sucursales();
-                $("#ddl_Sucursal option[value='" + data.data.id_sucursal + "']").prop('selected', true);
+                $("#ddl_Sucursal").append("<option value=" + data.data.id_sucursal + ">" + data.data.desc_sucursal + "</option>");                
                 $("#ddl_Sucursal").selectpicker('refresh');
                 //Cargar_Empresas();
                 //$("#ddl_Empresa option[value='" + data.data.id_empresa + "']").prop('selected', true);                
                 $("#txt_Serie").val(data.data.numero_serie);
-                debugger;
+              
                 $("#imgBase64").text(data.data.imagen)
                 if (data.data.imagen != "") {
                     $('#imagen').css({ 'width': '0%', 'height': '0%' });                    
