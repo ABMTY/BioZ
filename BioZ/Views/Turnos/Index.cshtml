@@ -225,8 +225,9 @@
                 $("#secc_lista").hide();
                 $("#secc_add").show();
                 console.log(data);
-                $("#id").val(Id_Turno);                
-                $("#ddl_Horarios option[value='" + data.data.id_horario + "']").prop('selected', true);
+                $("#id").val(Id_Turno);
+                $("#ddl_Horarios").append("<option value=" + data.data.id_horario + ">" + data.data.desc_horario + "</option>");
+                $("#ddl_Horarios").selectpicker('refresh');
                 $("#txt_Turno").val(data.data.desc_turno);
                 $("#txt_HoraEntrada").val(data.data.hora_entrada);
                 $("#txt_HoraSalida").val(data.data.hora_salida);

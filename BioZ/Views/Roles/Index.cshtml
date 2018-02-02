@@ -74,11 +74,10 @@
                                             <div class="card-box">
                                                 <table id="Lista_Vistas" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0">
                                                     <thead>
-                                                        <tr>
-                                                            <th width="50px">&nbsp; &nbsp; &nbsp;</th>
-                                                            <th width="70px">&nbsp; &nbsp; &nbsp; <input id="seleccionarTodos"   type="checkbox"/></th>
-                                                            <th width="50px">&nbsp; &nbsp; &nbsp;No.</th>
-                                                            <th>&nbsp; &nbsp; &nbsp;Vista</th>                                                           
+                                                        <tr>                                                            
+                                                            <th>&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;<input id="seleccionarTodos"   type="checkbox"/></th>
+                                                            <th>No.</th>
+                                                            <th>Vista</th>                                                           
                                                         </tr>
                                                     </thead>
                                                 </table>
@@ -187,15 +186,14 @@
                 "url": "/Vistas/GetVistas/",
                 "type": "GET"
             },
-            "columns": [
-                { "defaultContent": "<i></i>" },
-                { "defaultContent": "<i>..</i>" },
+            "columns": [                
+                { "defaultContent": "<i>&nbsp; &nbsp; &nbsp; </i>" },
                 { "data": "id_vista" },
                 { "data": "ventana" },
             ],
             "columnDefs": [
                 {
-                    "targets": 1, "data": "id_vista", "render": function (data, type, full, meta) {
+                    "targets": 0, "data": "id_vista", "render": function (data, type, full, meta) {
                         return "<div class='checkbox checkbox-success checkbox-circle'>" +
                         "<input  type='checkbox'  id='chk_seleccionado" + data + "' value='' ><label></label></div>"
                     }
@@ -245,20 +243,19 @@
                    "searchable": false
                }
                     ],
-            "columns": [
-                { "defaultContent": "<i></i>" },
-                { "defaultContent": "<i>..</i>" },
+            "columns": [                
+                { "defaultContent": "<i>&nbsp; &nbsp; &nbsp; </i>" },
                 { "data": "id_vista" },
                 { "data": "ventana" }
             ],
             "columnDefs": [
                 {
-                    "targets": 1, "data": "selected", "render": function (data, type, full, meta) {
+                    "targets": 0, "data": "selected", "render": function (data, type, full, meta) {
                         var items = [];
                         items = data.split('&');
                         console.log(items[0]);
                         return "<div class='checkbox checkbox-success checkbox-circle'>" +
-                        "<input  type='checkbox' id='chk_seleccionado" + items[1] + "'  value='' " + items[0] + "  ><label></label></div>"
+                        "&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;<input  type='checkbox' id='chk_seleccionado" + items[1] + "'  value='' " + items[0] + "  ><label></label></div>"
                     }
                 }
             ]

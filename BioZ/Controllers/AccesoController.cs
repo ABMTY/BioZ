@@ -19,7 +19,7 @@ namespace BioZ.Controllers
         }
 
         [HttpPost]
-        public ActionResult Index(string Usuario, string Password)
+        public ActionResult Index(int id_Empresa, string Usuario, string Password)
         {
             List<EntUsuario> ListaUsuarios = new List<EntUsuario>();
             ListaUsuarios = ctrlUsuario.ObtenerTodos();
@@ -29,7 +29,7 @@ namespace BioZ.Controllers
 
             foreach (var entUser in ListaUsuarios)
             {
-                if (entUser.usuario == Usuario && entUser.password == Password)
+                if (entUser.usuario == Usuario && entUser.password == Password && entUser.id_empresa== id_Empresa)
                 {
                     AccesoAutorizado = true;
                     entUsuario = entUser;
@@ -41,6 +41,9 @@ namespace BioZ.Controllers
             {               
                 Session["Id_Usuario"] = entUsuario.id_usuario;
                 Session["Usuario"] = entUsuario.usuario;
+                Session["Nombre"] = entUsuario.nombre;
+                Session["Id_Empresa"] = entUsuario.id_empresa;
+                Session["RazonSocial"] = entUsuario.razon_social;
 
                 var cookie = new HttpCookie("Id_Usuario");
                 cookie.Value = entUsuario.id_usuario.ToString();
@@ -66,6 +69,9 @@ namespace BioZ.Controllers
             Response.AppendHeader("Cache-Control", "no-store");
             Session["Id_Usuario"] = "";
             Session["Usuario"] = "";
+            Session["Nombre"] = "";
+            Session["Id_Empresa"] = "";
+            Session["RazonSocial"] = "";
             Response.Cookies.Clear();
             Session.Clear();
             FormsAuthentication.SignOut();                 

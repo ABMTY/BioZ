@@ -25,7 +25,9 @@
                             <tr>                                
                                 <th>Opciones</th>
                                 <th>No.</th>
+                                <th>Nombre</th>
                                 <th>Usuario</th>
+                                <th>Empresa</th>
                                 <th>Rol</th>                                                             
                                 <th>Activo</th>
                             </tr>
@@ -51,6 +53,12 @@
                                 <div class="col-lg-6">
                                     <input type="text" id="id" value="" hidden />
                                     <div class="form-group col-md-12">
+                                        <label class="control-label" for="">Nombre *</label>
+                                        <div>
+                                            <input type="text" id="txt_Nombre" class="form-control" required>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-12">
                                         <label class="control-label" for="">Usuario *</label>
                                         <div>
                                             <input type="text" id="txt_Usuario" class="form-control" required>
@@ -64,6 +72,12 @@
                                     </div>
                                 </div>
                                 <div class="col-lg-6">
+                                    <div class="form-group col-md-12">
+                                        <label class="control-label" for="">Empresa *</label>
+                                        <div>
+                                            <select class="form-control selectpicker" id="ddl_Empresa" required data-live-search="true"></select>
+                                        </div>
+                                    </div>
                                     <div class="form-group col-md-12">
                                         <label class="control-label" for="">Rol *</label>
                                         <div>                                           
@@ -127,6 +141,7 @@
         $("#secc_lista").hide();
         $("#secc_add").show();
         Cargar_Roles();
+        Cargar_Empresas();
         Limpiar();
     }
     function Cancelar() {
@@ -135,9 +150,11 @@
     }
     function Limpiar() {
         $("#id").val("");
+        $("#txt_Nombre").val("");
         $("#txt_Usuario").val("");
         $("#txt_Contraseña").val("");        
         $("#ddl_Roles").html("");
+        $("#ddl_Empresa").html("");
         $("#chk_activo").prop('checked', false);
     }
 
@@ -152,7 +169,9 @@
             "columns": [                
                 { "defaultContent": "<i>..</i>" },
                 { "data": "id_usuario" },
+                { "data": "nombre" },
                 { "data": "usuario" },
+                { "data": "razon_social" },
                 { "data": "desc_rol" },
                 { "data": "s_activo" },
             ],
@@ -164,6 +183,29 @@
                 }]
         });
     }
+
+    function Cargar_Empresas() {
+
+        $("#ddl_Empresa").html("");
+
+        $.ajax({
+            url: "/Empresa/GetEmpresas/",
+            async: true,
+            dataType: "json",
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                $.each(data.data, function (i, Item) {
+                    $("#ddl_Empresa").append("<option value='" + Item.id_empresa + "'>" + Item.razon_social + "</option>");
+                });
+                $('#ddl_Empresa').selectpicker('refresh');
+            },
+            error: function (request, status, error) {
+                console.log("error" + error);
+            }
+        });
+    }    
+
     function Cargar_Roles() {
 
         $("#ddl_Roles").html("");
@@ -201,12 +243,17 @@
                 $("#secc_lista").hide();
                 $("#secc_add").show();
                 console.log(data);
-                $("#id").val(Id_Usuario);                
+                $("#id").val(Id_Usuario);
+                $("#txt_Nombre").val(data.data.nombre);
                 $("#txt_Usuario").val(data.data.usuario);
                 $("#txt_Contraseña").val(data.data.password);
-                $("#chk_activo").prop('checked', data.data.activo);
-                Cargar_Roles();
-                $("#ddl_Roles option[value='" + data.data.id_rol + "']").prop('selected', true);
+                $("#chk_activo").prop('checked', data.data.activo);                
+                Cargar_Roles();                
+                $("#ddl_Roles").append("<option value=" + data.data.id_rol + ">" + data.data.desc_rol + "</option>");
+                $("#ddl_Roles").selectpicker('refresh');
+                Cargar_Empresas();
+                $("#ddl_Empresa").append("<option value=" + data.data.id_empresa + ">" + data.data.razon_social + "</option>");
+                $("#ddl_Empresa").selectpicker('refresh');    
             },
             error: function (request, status, error) {
                 console.log("error" + error);
@@ -216,10 +263,12 @@
     function Guardar() {
         Usuario = {
             "id_usuario": $("#id").val() == "" ? 0 : $("#id").val(),
+            "nombre": $("#txt_Nombre").val(),
             "usuario": $("#txt_Usuario").val(),
             "password": $("#txt_Contraseña").val(),
             "activo": $("#chk_activo").is(':checked'),            
             "id_rol": $("#ddl_Roles").val(),
+            "id_empresa": $("#ddl_Empresa").val(),
         };        
         $.ajax(
         {
