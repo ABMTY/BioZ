@@ -100,6 +100,15 @@ namespace BioZ.Controllers
             json.MaxJsonLength = 500000000;
             return json;
         }
+        public ActionResult GetEmpleadosPorEmpresa(int id_empresa)
+        {
+            var empleados = control.ObtenerPorEmpresa(id_empresa);
+            var serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
+            serializer.MaxJsonLength = 500000000;
+            var json = Json(new { data = empleados }, JsonRequestBehavior.AllowGet);
+            json.MaxJsonLength = 500000000;
+            return json;
+        }
         public ActionResult GetEmpleado(int id)
         {
             var empleado = control.Obtener(id);

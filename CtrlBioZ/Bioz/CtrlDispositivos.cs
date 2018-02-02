@@ -22,6 +22,10 @@ namespace CtrlBioZ.Bioz
         {
             return (List<EntDispositivo>)new PerDispositivos().ObtenerTodos();
         }
+        public List<EntDispositivo> ObtenerPorEmpresa(int id_empresa)
+        {
+            return (List<EntDispositivo>)new PerDispositivos().ObtenerPorEmpresa(id_empresa);
+        }
         public EntDispositivo Obtener(int Id_Rol)
         {
             return (EntDispositivo)new PerDispositivos().Obtener(Id_Rol);

@@ -45,6 +45,15 @@ namespace BioZ.Controllers
             json.MaxJsonLength = 500000000;
             return json;
         }
+        public ActionResult GetSucursalesPorEmpresa(int id_empresa)
+        {
+            var Sucursales = control.ObtenerPorEmpresa(id_empresa);
+            var serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
+            serializer.MaxJsonLength = 500000000;
+            var json = Json(new { data = Sucursales }, JsonRequestBehavior.AllowGet);
+            json.MaxJsonLength = 500000000;
+            return json;
+        }
         public ActionResult GetSucursal(int id)
         {
             var Sucursal = control.Obtener(id);

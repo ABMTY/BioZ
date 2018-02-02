@@ -22,6 +22,10 @@ namespace CtrlBioZ.Bioz
         {
             return (List<EntSucursal>)new PerSucursales().ObtenerTodos();
         }
+        public List<EntSucursal> ObtenerPorEmpresa(int id_empresa)
+        {
+            return (List<EntSucursal>)new PerSucursales().ObtenerPorEmpresa(id_empresa);
+        }
         public EntSucursal Obtener(int Id_Rol)
         {
             return (EntSucursal)new PerSucursales().Obtener(Id_Rol);

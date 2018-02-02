@@ -45,6 +45,41 @@ namespace PerBioZ.Bioz
             return Lista;
 
         }
+        public List<EntSucursal> ObtenerPorEmpresa(int id_empresa)
+        {
+            List<EntSucursal> Lista = new List<EntSucursal>();
+            EntSucursal entidad = null;
+            try
+            {
+                AbrirConexion();
+                StringBuilder CadenaSql = new StringBuilder();
+                var sql = "SELECT a.id_sucursal, a.desc_sucursal,a.id_empresa, b.razon_social FROM informix.sucursales a left join informix.empresa b on a.id_empresa = b.id_empresa where a.id_empresa=?";
+                IfxCommand cmd = new IfxCommand(sql, Conexion);
+                cmd.Parameters.Add(new IfxParameter()).Value = id_empresa;
+                using (var dr = cmd.ExecuteReader())
+                {
+                    while (dr.Read())
+                    {
+                        entidad = new EntSucursal();
+                        entidad.id_sucursal = int.Parse(dr["id_sucursal"].ToString());
+                        entidad.desc_sucursal = dr["desc_sucursal"].ToString();
+                        entidad.id_empresa = int.Parse(dr["id_empresa"].ToString());
+                        entidad.razon_social = dr["razon_social"].ToString();
+                        Lista.Add(entidad);
+                    }
+                }
+            }
+            catch (Exception exc)
+            {
+                throw exc;
+            }
+            finally
+            {
+                CerrarConexion();
+            }
+            return Lista;
+
+        }
         public EntSucursal Obtener(int id)
         {
             EntSucursal entidad = null;

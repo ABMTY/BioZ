@@ -49,6 +49,47 @@ namespace PerBioZ.Bioz
             return Lista;
 
         }
+        public List<EntUsuario> ObtenerPorEmpresa(int id_empresa)
+        {
+            List<EntUsuario> Lista = new List<EntUsuario>();
+            EntUsuario entidad = null;
+            try
+            {
+                AbrirConexion();
+                StringBuilder CadenaSql = new StringBuilder();
+                var sql = "SELECT a.id_usuario, a.usuario, a.password, a.id_rol, b.desc_rol, a.activo FROM informix.usuarios a left join informix.roles b on a.id_rol=b.id_rol";
+                sql += "WHERE a.id_empresa=?";
+
+                IfxCommand cmd = new IfxCommand(sql, Conexion);
+                cmd.Parameters.Add(new IfxParameter()).Value = id_empresa;
+
+                using (var dr = cmd.ExecuteReader())
+                {
+                    while (dr.Read())
+                    {
+                        entidad = new EntUsuario();
+                        entidad.id_usuario = int.Parse(dr["id_usuario"].ToString());
+                        entidad.usuario = dr["usuario"].ToString();
+                        entidad.password = dr["password"].ToString();
+                        entidad.id_rol = int.Parse(dr["id_rol"].ToString());
+                        entidad.desc_rol = dr["desc_rol"].ToString();
+                        entidad.activo = bool.Parse(dr["activo"].ToString());
+                        entidad.s_activo = bool.Parse(dr["activo"].ToString()) ? "Activo" : "Inactivo";
+                        Lista.Add(entidad);
+                    }
+                }
+            }
+            catch (Exception exc)
+            {
+                throw exc;
+            }
+            finally
+            {
+                CerrarConexion();
+            }
+            return Lista;
+
+        }
         public EntUsuario Obtener(int id)
         {
             EntUsuario entidad = null;

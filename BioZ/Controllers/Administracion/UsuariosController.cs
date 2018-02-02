@@ -45,6 +45,15 @@ namespace BioZ.Controllers.Administracion
             json.MaxJsonLength = 500000000;
             return json;
         }
+        public ActionResult GetUsuariosPorEmpresa(int id_empresa)
+        {
+            var Usuarios = control.ObtenerPorEmpresa(id_empresa);
+            var serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
+            serializer.MaxJsonLength = 500000000;
+            var json = Json(new { data = Usuarios }, JsonRequestBehavior.AllowGet);
+            json.MaxJsonLength = 500000000;
+            return json;
+        }
         public ActionResult GetUsuario(int id)
         {
             var Usuario = control.Obtener(id);

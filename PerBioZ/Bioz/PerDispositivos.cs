@@ -20,8 +20,52 @@ namespace PerBioZ.Bioz
                 AbrirConexion();
                 StringBuilder CadenaSql = new StringBuilder();
                 var sql = "SELECT a.id_dispositivo, a.nombre_dispositivo,a.numero_serie,a.ip_dispositivo,a.puerto,a.id_sucursal,b.desc_sucursal,a.imagen FROM informix.dispositivos ";
-                    sql+= "a left join informix.sucursales b on a.id_sucursal=b.id_sucursal";
+                    sql+= "a inner join informix.sucursales b on a.id_sucursal=b.id_sucursal";   
                 IfxCommand cmd = new IfxCommand(sql, Conexion);
+   
+
+                using (var dr = cmd.ExecuteReader())
+                {
+                    while (dr.Read())
+                    {
+                        entidad = new EntDispositivo();
+                        entidad.id_dispositivo = int.Parse(dr["id_dispositivo"].ToString());
+                        entidad.nombre_dispositivo = dr["nombre_dispositivo"].ToString();
+                        entidad.ip_dispositivo = dr["ip_dispositivo"].ToString();
+                        entidad.numero_serie = dr["numero_serie"].ToString();
+                        entidad.puerto = dr["puerto"].ToString();
+                        entidad.id_sucursal = int.Parse(dr["id_sucursal"].ToString());
+                        entidad.desc_sucursal = dr["desc_sucursal"].ToString();
+                        entidad.imagen = dr["imagen"].ToString();
+                        Lista.Add(entidad);
+                    }
+                }
+            }
+            catch (Exception exc)
+            {
+                throw exc;
+            }
+            finally
+            {
+                CerrarConexion();
+            }
+            return Lista;
+
+        }
+        public List<EntDispositivo> ObtenerPorEmpresa(int id_empresa)
+        {
+            List<EntDispositivo> Lista = new List<EntDispositivo>();
+            EntDispositivo entidad = null;
+            try
+            {
+                AbrirConexion();
+                StringBuilder CadenaSql = new StringBuilder();
+                var sql = "SELECT a.id_dispositivo, a.nombre_dispositivo,a.numero_serie,a.ip_dispositivo,a.puerto,a.id_sucursal,b.desc_sucursal,a.imagen FROM informix.dispositivos ";
+                sql += "a inner join informix.sucursales b on a.id_sucursal=b.id_sucursal";
+                sql += " WHERE b.id_empresa=?";
+                IfxCommand cmd = new IfxCommand(sql, Conexion);
+                cmd.Parameters.Add(new IfxParameter()).Value = id_empresa;
+
                 using (var dr = cmd.ExecuteReader())
                 {
                     while (dr.Read())

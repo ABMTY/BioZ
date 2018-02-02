@@ -52,6 +52,50 @@ namespace PerBioZ.Bioz
             return Lista;
 
         }
+        public List<EntEmpleado> ObtenerPorEmpresa(int id_empresa)
+        {
+            List<EntEmpleado> Lista = new List<EntEmpleado>();
+            EntEmpleado entidad = null;
+            try
+            {
+                AbrirConexion();
+                StringBuilder CadenaSql = new StringBuilder();
+                var sql = "SELECT a.id_empleado,a.nombre,a.ap_paterno,a.ap_materno,a.id_departamento,a.id_sucursal,a.enrollnumber,a.imagen,b.desc_departamento,c.desc_sucursal ";
+                sql += "FROM informix.empleados a inner join informix.departamentos b on a.id_departamento=b.id_departamento inner join informix.sucursales c on a.id_sucursal=c.id_sucursal";
+                sql +=  " WHERE c.id_empresa =?";
+                IfxCommand cmd = new IfxCommand(sql, Conexion);
+                cmd.Parameters.Add(new IfxParameter()).Value = id_empresa;
+
+                using (var dr = cmd.ExecuteReader())
+                {
+                    while (dr.Read())
+                    {
+                        entidad = new EntEmpleado();
+                        entidad.id_empleado = int.Parse(dr["id_empleado"].ToString());
+                        entidad.nombre = dr["nombre"].ToString();
+                        entidad.ap_paterno = dr["ap_paterno"].ToString();
+                        entidad.ap_materno = dr["ap_materno"].ToString();
+                        entidad.id_departamento = int.Parse(dr["id_departamento"].ToString());
+                        entidad.desc_departamento = dr["desc_departamento"].ToString();
+                        entidad.id_sucursal = int.Parse(dr["id_sucursal"].ToString());
+                        entidad.desc_sucursal = dr["desc_sucursal"].ToString();
+                        entidad.enrollnumber = int.Parse(dr["enrollnumber"].ToString());
+                        entidad.imagen = dr["imagen"].ToString();
+                        Lista.Add(entidad);
+                    }
+                }
+            }
+            catch (Exception exc)
+            {
+                throw exc;
+            }
+            finally
+            {
+                CerrarConexion();
+            }
+            return Lista;
+
+        }
         public EntEmpleado Obtener(int id)
         {
             EntEmpleado entidad = null;
