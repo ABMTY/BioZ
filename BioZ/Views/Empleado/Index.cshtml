@@ -2,14 +2,14 @@
 @{
     ViewBag.Title = "Empleados";
 }
-
+<input type="hidden" id="Id_Empresa" value="@Session["Id_Empresa"]">
 <!--Contenido-->
 <div class="row">
     <div class="col-md-12">
         <div class="box">
             <div class="box-header with-border">
                 <h1 class="box-title">
-                    Empleados
+                  Empleados
                     <button class="btn btn-success" onclick="Agregar()" id="btnAgregar">
                         <i class="fa fa-plus-circle"></i> Agregar
                     </button>

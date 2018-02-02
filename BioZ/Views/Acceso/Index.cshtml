@@ -6,16 +6,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-
- 
-
-    @*@{
-        if (TempData["msg"] != null)
-        {
-            @Html.Raw(TempData["msg"])
-        }
-    }*@
-
     @*<meta charset="utf-8">*@    
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -130,6 +120,12 @@
         }
         return true;
     });
+
+
+    //$("#ddl_Empresa").change(function () {       
+    //    var color = $("#ddl_Empresa").val();
+    //});
+
 </script>
 @Scripts.Render("~/Content/js/bootstrap-select.min.js")
 </body>

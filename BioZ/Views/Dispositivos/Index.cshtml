@@ -180,7 +180,7 @@
             destroy: true,
             searching: true,
             "ajax": {
-                "url": "/Dispositivos/GetDspositivos/",
+                "url": "/Dispositivos/GetDspositivosPorEmpresa/?id_empresa="+@Session["Id_Empresa"],
                 "type": "GET"
             },
             "columns": [                
@@ -237,7 +237,7 @@
     function Cargar_Sucursales() {
         $("#ddl_Sucursal").html("");
         $.ajax({
-            url: "/Sucursal/GetSucursales/",
+            url: "/Sucursal/GetSucursalesPorEmpresa/?id_empresa=" + @Session["Id_Empresa"],
             async: true,
             beforeSend: function () { },
             dataType: "json",

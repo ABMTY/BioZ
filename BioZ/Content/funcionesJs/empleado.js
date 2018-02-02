@@ -2,7 +2,7 @@
     $("#secc_form").hide();
     $("#secc_webCam").hide();
     $('#tbllistado').DataTable();
-    listar();
+    listar();    
 });
 
 //Listar Empleado
@@ -11,7 +11,7 @@ function listar() {
         destroy: true,
         searching: true,
         "ajax": {
-            "url": "/Empleado/GetEmpleados/",
+            "url": "/Empleado/GetEmpleadosPorEmpresa/?id_empresa="+$("#Id_Empresa").val(),
             "type": "GET"
         },
         "columns": [
@@ -75,7 +75,7 @@ function listarDepartamentos() {
 //Listar Sucursales
 function listarSucursales() {
     $.ajax({
-        url: "/Sucursal/GetSucursales/",
+        url: "/Sucursal/GetSucursalesPorEmpresa/?id_empresa=" + $("#Id_Empresa").val(),
         async: true,
         beforeSend: function () { },
         dataType: "json",

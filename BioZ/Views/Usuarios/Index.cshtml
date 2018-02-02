@@ -72,12 +72,12 @@
                                     </div>
                                 </div>
                                 <div class="col-lg-6">
-                                    <div class="form-group col-md-12">
+                                    @*<div class="form-group col-md-12">
                                         <label class="control-label" for="">Empresa *</label>
                                         <div>
                                             <select class="form-control selectpicker" id="ddl_Empresa" required data-live-search="true"></select>
                                         </div>
-                                    </div>
+                                    </div>*@
                                     <div class="form-group col-md-12">
                                         <label class="control-label" for="">Rol *</label>
                                         <div>                                           
@@ -141,7 +141,7 @@
         $("#secc_lista").hide();
         $("#secc_add").show();
         Cargar_Roles();
-        Cargar_Empresas();
+        //Cargar_Empresas();
         Limpiar();
     }
     function Cancelar() {
@@ -154,7 +154,7 @@
         $("#txt_Usuario").val("");
         $("#txt_Contraseña").val("");        
         $("#ddl_Roles").html("");
-        $("#ddl_Empresa").html("");
+        //$("#ddl_Empresa").html("");
         $("#chk_activo").prop('checked', false);
     }
 
@@ -163,7 +163,7 @@
             destroy: true,
             searching: true,
             "ajax": {
-                "url": "/Usuarios/GetUsuarios/",
+                "url": "/Usuarios/GetUsuariosPorEmpresa/?id_empresa="+ @Session["Id_Empresa"],
                 "type": "GET"
             },
             "columns": [                
@@ -184,27 +184,27 @@
         });
     }
 
-    function Cargar_Empresas() {
+    //function Cargar_Empresas() {
 
-        $("#ddl_Empresa").html("");
+    //    $("#ddl_Empresa").html("");
 
-        $.ajax({
-            url: "/Empresa/GetEmpresas/",
-            async: true,
-            dataType: "json",
-            type: "POST",
-            contentType: "application/json; charset=utf-8",
-            success: function (data) {
-                $.each(data.data, function (i, Item) {
-                    $("#ddl_Empresa").append("<option value='" + Item.id_empresa + "'>" + Item.razon_social + "</option>");
-                });
-                $('#ddl_Empresa').selectpicker('refresh');
-            },
-            error: function (request, status, error) {
-                console.log("error" + error);
-            }
-        });
-    }    
+    //    $.ajax({
+    //        url: "/Empresa/GetEmpresas/",
+    //        async: true,
+    //        dataType: "json",
+    //        type: "POST",
+    //        contentType: "application/json; charset=utf-8",
+    //        success: function (data) {
+    //            $.each(data.data, function (i, Item) {
+    //                $("#ddl_Empresa").append("<option value='" + Item.id_empresa + "'>" + Item.razon_social + "</option>");
+    //            });
+    //            $('#ddl_Empresa').selectpicker('refresh');
+    //        },
+    //        error: function (request, status, error) {
+    //            console.log("error" + error);
+    //        }
+    //    });
+    //}    
 
     function Cargar_Roles() {
 
@@ -251,9 +251,9 @@
                 Cargar_Roles();                
                 $("#ddl_Roles").append("<option value=" + data.data.id_rol + ">" + data.data.desc_rol + "</option>");
                 $("#ddl_Roles").selectpicker('refresh');
-                Cargar_Empresas();
-                $("#ddl_Empresa").append("<option value=" + data.data.id_empresa + ">" + data.data.razon_social + "</option>");
-                $("#ddl_Empresa").selectpicker('refresh');    
+                //Cargar_Empresas();
+                //$("#ddl_Empresa").append("<option value=" + data.data.id_empresa + ">" + data.data.razon_social + "</option>");
+                //$("#ddl_Empresa").selectpicker('refresh');    
             },
             error: function (request, status, error) {
                 console.log("error" + error);
@@ -268,7 +268,7 @@
             "password": $("#txt_Contraseña").val(),
             "activo": $("#chk_activo").is(':checked'),            
             "id_rol": $("#ddl_Roles").val(),
-            "id_empresa": $("#ddl_Empresa").val(),
+            "id_empresa": @Session["Id_Empresa"],
         };        
         $.ajax(
         {
