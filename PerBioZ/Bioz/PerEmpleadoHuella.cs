@@ -19,7 +19,7 @@ namespace PerBioZ.Bioz
             {
                 AbrirConexion();
                 StringBuilder CadenaSql = new StringBuilder();
-                var sql = "SELECT id_huella, id_empleado, b64huella FROM informix.empleado_huella";
+                var sql = "SELECT id_huella, id_empleado, huella FROM informix.empleado_huella";
                 IfxCommand cmd = new IfxCommand(sql, Conexion);
                 using (var dr = cmd.ExecuteReader())
                 {
@@ -28,9 +28,9 @@ namespace PerBioZ.Bioz
                         entidad = new EmpleadoHuella();
                         entidad.id_huella = int.Parse(dr["id_huella"].ToString());
                         entidad.id_empleado = int.Parse(dr["id_empleado"].ToString());
-                        if (dr["b64huella"].ToString() != string.Empty)
+                        if (dr["huella"].ToString() != string.Empty)
                         {
-                            entidad.b64huella = Convert.FromBase64String(dr["b64huella"].ToString());
+                            entidad.huella = dr["huella"].ToString();
                         }
                         Lista.Add(entidad);
                     }
@@ -56,7 +56,7 @@ namespace PerBioZ.Bioz
                 StringBuilder CadenaSql = new StringBuilder();
 
                 IfxCommand cmd = new IfxCommand(string.Empty, Conexion);
-                cmd.CommandText = "SELECT id_huella, id_empleado, b64huella FROM informix.empleado_huella WHERE id_huella=?";
+                cmd.CommandText = "SELECT id_huella, id_empleado, huella FROM informix.empleado_huella WHERE id_huella=?";
                 cmd.Parameters.Add(new IfxParameter()).Value = id;
                 using (var dr = cmd.ExecuteReader())
                 {
@@ -65,9 +65,9 @@ namespace PerBioZ.Bioz
                         entidad = new EmpleadoHuella();
                         entidad.id_huella = int.Parse(dr["id_huella"].ToString());
                         entidad.id_empleado = int.Parse(dr["id_empleado"].ToString());                        
-                        if (dr["b64huella"].ToString() != string.Empty)
+                        if (dr["huella"].ToString() != string.Empty)
                         {
-                            entidad.b64huella = (byte[])dr["b64huella"];
+                            entidad.huella = dr["huella"].ToString();
                         }
                     }
                 }
@@ -90,14 +90,18 @@ namespace PerBioZ.Bioz
             {
                 var sql = string.Empty;
                 AbrirConexion();
-                sql = "execute procedure dml_empleado_huella (?,NULL,?,?);";
+                sql = "execute procedure dml_empleado_huella (?,NULL,?,?,?,?,?,?);"; 
                 using (var cmd = new IfxCommand(sql, Conexion))
                 {
                     cmd.Connection = Conexion;
                     cmd.Parameters.Add(new IfxParameter()).Value = "INSERT";
                     cmd.Parameters.Add(new IfxParameter()).Value = entidad.id_empleado;                                        
-                    if (entidad.b64huella != null)
-                        cmd.Parameters.Add(new IfxParameter()).Value = Convert.ToBase64String(entidad.b64huella);
+                    if (entidad.huella != null)
+                        cmd.Parameters.Add(new IfxParameter()).Value = entidad.huella;                    
+                    cmd.Parameters.Add(new IfxParameter()).Value = entidad.enrollnumber;
+                    cmd.Parameters.Add(new IfxParameter()).Value = entidad.fingerIndex;
+                    cmd.Parameters.Add(new IfxParameter()).Value = entidad.flag;
+                    cmd.Parameters.Add(new IfxParameter()).Value = entidad.tmplength;
                     cmd.ExecuteNonQuery();
                 }
                 respuesta = true;
@@ -139,8 +143,8 @@ namespace PerBioZ.Bioz
                     cmd.Parameters.Add(new IfxParameter()).Value = "UPDATE";
                     cmd.Parameters.Add(new IfxParameter()).Value = entidad.id_huella;
                     cmd.Parameters.Add(new IfxParameter()).Value = entidad.id_empleado;
-                    if (entidad.b64huella != null)
-                        cmd.Parameters.Add(new IfxParameter()).Value = entidad.b64huella;
+                    if (entidad.huella != null)
+                        cmd.Parameters.Add(new IfxParameter()).Value = entidad.huella;
                     cmd.ExecuteNonQuery();
                 }
                 respuesta = true;
@@ -166,18 +170,18 @@ namespace PerBioZ.Bioz
             return respuesta;
 
         }
-        public bool Eliminar(int id)
+        public bool Eliminar(int id_empleado)
         {
             bool respuesta = false;
             try
             {
                 AbrirConexion();
-                var sql = "execute procedure dml_empleado_huella (?,?,NULL);";
+                var sql = "execute procedure dml_empleado_huella (?,NULL,?,NULL,NULL,NULL,NULL,NULL);";
                 using (var cmd = new IfxCommand(sql, Conexion))
                 {
                     cmd.Connection = Conexion;
                     cmd.Parameters.Add(new IfxParameter()).Value = "DELETE";
-                    cmd.Parameters.Add(new IfxParameter()).Value = id;
+                    cmd.Parameters.Add(new IfxParameter()).Value = id_empleado;
                     cmd.ExecuteNonQuery();
                 }
                 respuesta = true;
@@ -193,5 +197,7 @@ namespace PerBioZ.Bioz
             return respuesta;
 
         }
+
+        
     }
 }

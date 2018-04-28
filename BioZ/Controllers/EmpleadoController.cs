@@ -9,25 +9,30 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using zkemkeeper;
 
 namespace BioZ.Controllers
 {
     public class EmpleadoController : Controller
     {
         CtrlEmpleados control = new CtrlEmpleados();
-        CtrlEmpleadoHuella CtrlHuellas = new CtrlEmpleadoHuella();
+        //CtrlEmpleadoHuella ctrlHuellas = new CtrlEmpleadoHuella();
+        CtrlDispositivos ctrlDispositivo = new CtrlDispositivos();
+        CtrlEnrolamiento ctrlEnrolamiento = new CtrlEnrolamiento();
+        CtrlEmpleadoHuella ctrlEmpleadoHuella = new CtrlEmpleadoHuella();
         private int idwErrorCode;
         // GET: Empleado
-        public ZkemClient objZkeeper;        
+        public ZkemClient objZkeeper;
+        
 
 
         // GET: Empleados
-        private bool Connect()
+        private bool Connect(string ip, int puerto)
         {
             bool respuesta = true;
             objZkeeper = new ZkemClient();
 
-            if (!objZkeeper.Connect_Net("172.16.5.163", 4370))
+            if (!objZkeeper.Connect_Net(ip, puerto))
             {
                 respuesta = false;
             }
@@ -40,7 +45,7 @@ namespace BioZ.Controllers
         public ActionResult Index()
         {
             return View();
-        }
+        }        
         public ActionResult Guardar(EntEmpleado entidad)
         {
             var r = false;
@@ -53,11 +58,13 @@ namespace BioZ.Controllers
                 else
                 {
                     r = control.Insertar(entidad);
-                    GuardarDispositivo(new UserInfo
+                    int id_empleado = control.ObtenerTodos().ToList().Max(p => p.id_empleado);
+                    GuardarenDispositivoRH(new UserInfo
                     {
+                        id_empleado = id_empleado,
                         EnrollNumber = entidad.enrollnumber.ToString(),
                         Name = entidad.nombre,
-                        //B64finger = Convert.ToBase64String(entidad.empleadohuellas[0].b64huella)
+                        id_dispositivo = entidad.id_dispositivo,                        
                     });
                 }
 
@@ -73,22 +80,46 @@ namespace BioZ.Controllers
                 return View("Error", new HandleErrorInfo(ex, "Empleados", "Create"));
             }
         }
-        public ActionResult GuardarDispositivo(UserInfo Entidad)
-        {            
-            if (Connect())
-            {
-                if (!objZkeeper.SSR_SetUserInfo(1, Entidad.EnrollNumber, Entidad.Name, "123456", 0, true))
-                {
+        public ActionResult GuardarenDispositivoRH(UserInfo Entidad)
+        {
+            EntDispositivo entidadDisp = ctrlDispositivo.Obtener(Entidad.id_dispositivo);        
+            if (Connect(entidadDisp.ip_dispositivo, int.Parse(entidadDisp.puerto)))
+            {   
+                if (!objZkeeper.SSR_SetUserInfo(1, Entidad.EnrollNumber, Entidad.Name, Entidad.id_empleado.ToString(), 0, true))
+                {                   
                     return Json("Error al agregar el empleado ", JsonRequestBehavior.AllowGet);
-                    //if (!objZkeeper.SetUserTmpExStr(1, Entidad.EnrollNumber, 1, 6, Entidad.B64finger))
-                    //{                        
-                    //    objZkeeper.GetLastError(ref idwErrorCode);
-                    //    return Json("Error al agregar la huella ErrorCode=" + idwErrorCode.ToString(), JsonRequestBehavior.AllowGet);
-                    //}
                 }                                   
             }
             else
                 return Json("Sin conexión", JsonRequestBehavior.AllowGet);
+            return Json("Realizado", JsonRequestBehavior.AllowGet);
+        }      
+        public ActionResult EliminarEnrolamiento(EntEnrolamiento entidad)
+        {
+            
+            try
+            {   
+                EntEnrolamiento Enrolamiento = ctrlEnrolamiento.Obtener(entidad.id_enrolamiento);
+                EntDispositivo Dispositivo = ctrlDispositivo.Obtener(Enrolamiento.id_dispositivo);
+                if (Connect(Dispositivo.ip_dispositivo, int.Parse(Dispositivo.puerto)))
+                {
+                    if (objZkeeper.SSR_DeleteEnrollDataExt(Dispositivo.numeroequipo, Enrolamiento.enrollnumber.ToString(), 12))
+                    {
+                        ctrlEnrolamiento.Eliminar(entidad.id_enrolamiento);
+                    }
+                    else
+                        return Json("SinConexion", JsonRequestBehavior.AllowGet);
+                }
+                return Json("Realizado", JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return View("Error", new HandleErrorInfo(ex, "Dspositivos", "Create"));
+            }
+        }
+        public ActionResult Enrrolar_Dispositivo(UserInfo Entidad)
+        {
+            
             return Json("Realizado", JsonRequestBehavior.AllowGet);
         }
         public ActionResult GetEmpleados()
@@ -124,7 +155,7 @@ namespace BioZ.Controllers
             {
                 EntEmpleado ent = control.Obtener(id);
                 var r = control.Eliminar(id);
-                BorrarDispositivo(ent.enrollnumber);
+                //BorrarDispositivo(ent.enrollnumber);
                 if (!r)
                 {
                     return Json("Error al realizar la operacion", JsonRequestBehavior.AllowGet);
@@ -136,101 +167,8 @@ namespace BioZ.Controllers
             {
                 return View("Error", new HandleErrorInfo(ex, "Empleados", "Eliminar"));
             }
-        }
-        public ActionResult BorrarDispositivo(int id)
-        {
-            if (Connect())
-            {
-                if (!objZkeeper.SSR_DeleteEnrollDataExt(1, id.ToString(), 12))
-                {
-                    return Json("Error al borrar el Usuario", JsonRequestBehavior.AllowGet);
-                }
-            }
-            else
-                return Json("Sin conexión", JsonRequestBehavior.AllowGet);
-            return Json("Realizado", JsonRequestBehavior.AllowGet);
-        }
-
-
-        //public ActionResult RegistrarHuella(string Id_Empledo)
-        //{
-
-
-        //    string fileLocation = @"/App_Finger/RegistroHuella.exe";
-        //    ProcessStartInfo oStartInfo = new ProcessStartInfo();
-        //    oStartInfo.FileName = fileLocation;
-        //    oStartInfo.Arguments = Id_Empledo;
-        //    oStartInfo.UseShellExecute = false;
-        //    oStartInfo.CreateNoWindow = true;
-        //    oStartInfo.WindowStyle = ProcessWindowStyle.Normal;
-        //    oStartInfo.CreateNoWindow = false;
-        //    var process = new Process { StartInfo = oStartInfo, EnableRaisingEvents = true };
-        //    //process.Start();
-
-
-        //    //System.Diagnostics.ProcessStartInfo startInfo;
-
-        //    //Process p = new Process();
-
-        //    ////startInfo = new System.Diagnostics.ProcessStartInfo(@".TEST.EXE", "new");
-        //    //startInfo = new System.Diagnostics.ProcessStartInfo(@"/App_Finger/RegistroHuella.exe");
-        //    //startInfo.Arguments = Id_Empledo;
-        //    ////p.StartInfo = startInfo;
-        //    //Process.Start(startInfo);
-
-        //    //System.Diagnostics.ProcessStartInfo startInfo = new System.Diagnostics.ProcessStartInfo(@"/App_Finger//RegistroHuella.exe", Id_Empledo);
-
-
-
-        //    //var empleado = control.Obtener(id);
-        //    //var serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
-        //    //serializer.MaxJsonLength = 500000000;
-        //    var json = Json(new { data = process }, JsonRequestBehavior.AllowGet);
-        //    //json.MaxJsonLength = 500000000;
-        //    return json;
-        //}
-
-        
-        
-        public ActionResult RegistrarHuella(string Id_Empleado)
-        {
-            ProcessStartInfo psi = new ProcessStartInfo();
-            psi.UseShellExecute = true;
-            psi.LoadUserProfile = true;
-            psi.WorkingDirectory = System.Web.HttpContext.Current.Server.MapPath("../");
-            psi.FileName = System.Web.HttpContext.Current.Server.MapPath("../App_Finger/Registro/RegistroFinger.exe");
-            psi.Arguments = Id_Empleado;
-            Process.Start(psi);
-            //LLega hasta awui desde el DataTabe
-            //return View();
-            var serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
-            serializer.MaxJsonLength = 500000000;
-            var json = Json(new { data = "" }, JsonRequestBehavior.AllowGet);
-            json.MaxJsonLength = 500000000;
-            return json;
-            //return RedirectToAction("Index");
-        }
-
-        public ActionResult ValidarHuella(string Id_Empleado)
-        {
-            ProcessStartInfo psi = new ProcessStartInfo();
-            psi.UseShellExecute = true;
-            psi.LoadUserProfile = true;
-            psi.WorkingDirectory = System.Web.HttpContext.Current.Server.MapPath("../");
-            psi.FileName = System.Web.HttpContext.Current.Server.MapPath("../App_Finger/Asistencia/AsistenciaFinger.exe");
-            psi.Arguments = Id_Empleado;
-            Process.Start(psi);
-            //LLega hasta awui desde el DataTabe
-            //return View();
-            var serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
-            serializer.MaxJsonLength = 500000000;
-            var json = Json(new { data = "" }, JsonRequestBehavior.AllowGet);
-            json.MaxJsonLength = 500000000;
-            return json;
-            //return RedirectToAction("Index");
-        }
-
-        public ActionResult ObtenerEnrollnumber()
+        }        
+        public ActionResult ObtenerEnrollnumber(int id_dispositivo)
         {
             string dwEnrollNumber = string.Empty;
             string name = string.Empty;
@@ -240,9 +178,12 @@ namespace BioZ.Controllers
             string tmpData = string.Empty;
             int Enrollnumber = 0;
             var Listusuarios = new List<UserInfo>();
-            if (Connect())
+
+            EntDispositivo entidadDisp = ctrlDispositivo.Obtener(id_dispositivo);
+
+            if (Connect(entidadDisp.ip_dispositivo, int.Parse(entidadDisp.puerto)))
             {
-                if (objZkeeper.ReadAllUserID(1))
+                if (objZkeeper.ReadAllUserID(entidadDisp.numeroequipo))
                 {
                     while (objZkeeper.SSR_GetAllUserInfo(1, out dwEnrollNumber, out name, out password, out privilege, out enabled))
                     {
@@ -250,7 +191,153 @@ namespace BioZ.Controllers
                     }
                 }
             }
-            return Json(new { data = Enrollnumber+1 }, JsonRequestBehavior.AllowGet);
+            return Json(new { data = Enrollnumber + 1 }, JsonRequestBehavior.AllowGet);
         }
+
+        public ActionResult Savefootprint(EmpleadoHuella entidad)
+        {
+            List<EmpleadoHuella> Lista_Huellas = new List<EmpleadoHuella>();
+            EntEmpleado entidadEmp = control.ObtenerEmpleado(entidad.id_empleado);
+            EntDispositivo entidadDisp = ctrlDispositivo.Obtener(entidadEmp.id_dispositivo);
+
+            if (Connect(entidadDisp.ip_dispositivo, int.Parse(entidadDisp.puerto)))
+            {
+                Lista_Huellas = Get_Footprints_Employee(entidadDisp.numeroequipo, entidadEmp.enrollnumber, entidadEmp.id_empleado);
+            }            
+
+            var r = false;
+            try
+            {
+                if (Lista_Huellas.Count() > 0)
+                {
+                    ctrlEmpleadoHuella.Eliminar(entidad.id_empleado);
+                    foreach (EmpleadoHuella entidad_insert in Lista_Huellas)
+                    {
+                        r = ctrlEmpleadoHuella.Insertar(entidad_insert);
+                    }
+
+                    if (!r)
+                    {
+                        return Json("Error al realizar la operacion", JsonRequestBehavior.AllowGet);
+                    }
+                }
+                else
+                {
+                    return Json("SinHuellas&" + Lista_Huellas.Count().ToString(), JsonRequestBehavior.AllowGet);
+                }
+
+                return Json("Realizado&"+ Lista_Huellas.Count().ToString(), JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return View("Error", new HandleErrorInfo(ex, "Huellas", "Guardar"));
+            }
+        }
+
+        public List<EmpleadoHuella> Get_Footprints_Employee(int machineNumber, int EnrollNumber, int id_empleado)
+        {
+            List<EmpleadoHuella> ListaHuellas = new List<EmpleadoHuella>();
+
+            string sdwEnrollNumber = string.Empty, sName = string.Empty, sPassword = string.Empty, sTmpData = string.Empty;
+            int iTmpLength = 0, iFlag = 0, idwFingerIndex; ;
+
+            string Finger = string.Empty;
+            objZkeeper.ReadAllUserID(machineNumber);
+            objZkeeper.ReadAllTemplate(machineNumber);
+
+            for (idwFingerIndex = 0; idwFingerIndex < 10; idwFingerIndex++)
+            {
+                objZkeeper.GetUserTmpExStr(machineNumber, EnrollNumber.ToString(), idwFingerIndex, out iFlag, out sTmpData, out iTmpLength);
+
+                if (sTmpData != null)
+                {
+                    EmpleadoHuella entidad = new EmpleadoHuella();
+                    entidad.id_empleado = id_empleado;
+                    entidad.enrollnumber = EnrollNumber.ToString();
+                    entidad.fingerIndex = idwFingerIndex.ToString();
+                    entidad.flag = iFlag.ToString();
+                    entidad.huella = sTmpData;
+                    entidad.tmplength = iTmpLength.ToString();
+                    ListaHuellas.Add(entidad);
+                }
+            }
+
+            return ListaHuellas;
+        }
+
+
+
+        public ActionResult Enroll(EntDispositivo entidad)
+        {
+            int idwFingerIndex = 0;
+            try
+            {
+                EntDispositivo Dispositivo = ctrlDispositivo.ObtenerDispositivo(entidad.id_dispositivo);
+                EntEmpleado Empleado = control.Obtener(entidad.id_empleado);
+
+                if (Connect(Dispositivo.ip_dispositivo, int.Parse(Dispositivo.puerto)))
+                {
+                    int Enrollnumber = GetEnrollNumber_AnotherDevice(Dispositivo.numeroequipo);
+
+                    if (Empleado.empleadohuellas.Count() > 0)
+                    {
+                        if (objZkeeper.SSR_SetUserInfo(Dispositivo.numeroequipo, Enrollnumber.ToString(), Empleado.nombre, Empleado.id_empleado.ToString(), 0, true))
+                        {
+                            foreach (EmpleadoHuella empleado_huella in Empleado.empleadohuellas)
+                            {
+                                for (idwFingerIndex = 0; idwFingerIndex < Empleado.empleadohuellas.Count(); idwFingerIndex++)
+                                {
+                                    objZkeeper.SetUserTmpExStr(Dispositivo.numeroequipo, Enrollnumber.ToString(), int.Parse(empleado_huella.fingerIndex), int.Parse(empleado_huella.flag), empleado_huella.huella);
+                                }
+                            }
+                        }
+
+                        EntEnrolamiento entidadEnrolamiento = new EntEnrolamiento();
+                        entidadEnrolamiento.id_empleado = Empleado.id_empleado;
+                        entidadEnrolamiento.id_dispositivo = Dispositivo.id_dispositivo;
+                        entidadEnrolamiento.enrollnumber = Enrollnumber;
+                        ctrlEnrolamiento.Insertar(entidadEnrolamiento);
+                    }
+                    else
+                        return Json("SinHuellas", JsonRequestBehavior.AllowGet);
+                }
+                else
+                    return Json("SinConexion", JsonRequestBehavior.AllowGet);
+
+
+
+                return Json("Realizado", JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return View("Error", new HandleErrorInfo(ex, "Dspositivos", "Create"));
+            }
+        }
+
+        public int GetEnrollNumber_AnotherDevice(int machinenumber)
+        {
+            string dwEnrollNumber = string.Empty;
+            string name = string.Empty;
+            string password = string.Empty;
+            int privilege = 0;
+            bool enabled = false;
+            string tmpData = string.Empty;
+            int Enrollnumber = 0;
+            var Listusuarios = new List<UserInfo>();
+            
+            if (objZkeeper.ReadAllUserID(machinenumber))
+            {
+                while (objZkeeper.SSR_GetAllUserInfo(machinenumber, out dwEnrollNumber, out name, out password, out privilege, out enabled))
+                {
+                    Enrollnumber++;
+                }
+            }
+            else {
+                Enrollnumber = 0;
+            }
+            
+            return Enrollnumber + 1;
+        }
+        
     }
 }

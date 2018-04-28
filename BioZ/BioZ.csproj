@@ -213,6 +213,7 @@
     <Compile Include="Controllers\EmpleadoController.cs" />
     <Compile Include="Controllers\EmpleadosController.cs" />
     <Compile Include="Controllers\EmpresaController.cs" />
+    <Compile Include="Controllers\EnrolamientoController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\SucursalController.cs" />
@@ -405,12 +406,16 @@
     <Content Include="Content\funcionesJs\empleado.js" />
     <Content Include="Content\funcionesJs\empresa.js" />
     <Content Include="Content\funcionesJs\sucursal.js" />
+    <Content Include="Content\img\ajax-loader.gif" />
+    <Content Include="Content\img\Finger.png" />
     <Content Include="Content\img\IconUser.png" />
     <Content Include="Content\img\imagen1.jpg" />
     <Content Include="Content\img\imagen2.jpg" />
     <Content Include="Content\img\Imagen6.jpg" />
+    <Content Include="Content\img\Imagen6_.jpg" />
     <Content Include="Content\img\logo_oficial_bioz.png" />
     <Content Include="Content\img\logo_oficial_bioz_b.png" />
+    <Content Include="Content\img\NoFinger.png" />
     <Content Include="Content\js\bootstrap-select.min.js" />
     <Content Include="Content\js\Jcrop.js" />
     <Content Include="Content\pages\datatables.init.js" />
@@ -719,6 +724,7 @@
     <Content Include="Content\DataTables\css\mixins.scss" />
     <Content Include="Content\DataTables\css\semanticui.scss" />
     <Content Include="Content\plugins\datatables\json\scroller-demo.json" />
+    <None Include="Properties\PublishProfiles\BioZWeb.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -784,6 +790,7 @@
     <Content Include="Views\Horarios\Index.cshtml" />
     <Content Include="Views\Acceso\Index.cshtml" />
     <Content Include="Views\Checkinout\Index.cshtml" />
+    <Content Include="Views\Enrolamiento\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

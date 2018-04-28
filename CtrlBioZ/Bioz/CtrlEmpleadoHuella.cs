@@ -37,9 +37,9 @@ namespace CtrlBioZ.Bioz
             return PerEmpleadoHuella.Update(Entidad);
         }
 
-        public bool Eliminar(int Id_Empleado_Huella)
+        public bool Eliminar(int Id_Empleado)
         {
-            return PerEmpleadoHuella.Eliminar(Id_Empleado_Huella);
-        }
+            return PerEmpleadoHuella.Eliminar(Id_Empleado);
+        }      
     }
 }

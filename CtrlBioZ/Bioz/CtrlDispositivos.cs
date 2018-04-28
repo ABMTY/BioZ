@@ -26,9 +26,23 @@ namespace CtrlBioZ.Bioz
         {
             return (List<EntDispositivo>)new PerDispositivos().ObtenerPorEmpresa(id_empresa);
         }
-        public EntDispositivo Obtener(int Id_Rol)
+        public List<EntDispositivo> ObtenerDispositivosParaEnrolarEmpleado(int id_empleado)
         {
-            return (EntDispositivo)new PerDispositivos().Obtener(Id_Rol);
+            return (List<EntDispositivo>)new PerDispositivos().ObtenerDispositivosParaEnrolarEmpleado(id_empleado);
+        }
+        
+
+        public List<EntDispositivo> ObtenerDispositivosEnroladosporEmpleado(int id_empleado)
+        {
+            return (List<EntDispositivo>)new PerDispositivos().ObtenerDispositivosEnroladosporEmpleado(id_empleado);
+        }
+        public EntDispositivo Obtener(int id_dispositivo)
+        {
+            return (EntDispositivo)new PerDispositivos().Obtener(id_dispositivo);
+        }
+        public EntDispositivo ObtenerDispositivo(int id_dispositivo)
+        {
+            return (EntDispositivo)new PerDispositivos().ObtenerDispositivo(id_dispositivo);
         }
 
         public bool Insertar(EntDispositivo Entidad)
@@ -45,5 +59,6 @@ namespace CtrlBioZ.Bioz
         {
             return PerDispositivo.Eliminar(Id_Vistas);
         }
+
     }
 }

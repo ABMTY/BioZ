@@ -10,7 +10,12 @@ namespace EntBioZ.Modelo.BioZ
     {
         public int id_huella { get; set; }
         public int id_empleado { get; set; }
-        public byte[] b64huella { get; set; }
+        public string huella { get; set; }        
+        public string enrollnumber { get; set; }
+        public string fingerIndex { get; set; }
+        public string flag { get; set; }
+        public string tmplength { get; set; }
+        public int id_dispositivo { get; set; }
 
     }
 }

@@ -24,7 +24,9 @@ function listar() {
         ],
         "columnDefs": [{
             "targets": 0, "data": "id_empleado", "render": function (data, type, full, meta) {
-                return "<button type='button' title='Editar' id='btn_mas" + data + "' class='btn btn-warning' onclick='verDetalle(" + data + ")'  ><i class='fa fa-edit'></i></button>"
+                return "<button type='button' title='Editar' id='btn_mas" + data + "' class='btn btn-warning' onclick='verDetalle(" + data + ")'  ><i class='fa fa-edit'></i>"+
+                       "</button><button type='button' title='Guardar Huellas' id='btn_mas" + data + "' class='btn btn-info' onclick='Confirm_Savefootprint(" + data + ")'  ><i class='fa fa-hand-pointer-o'></i></button>" +
+                       "</button><button type='button' title='Enrolar Huella' id='btn_mas" + data + "' class='btn btn-success' onclick='Enroll_footprint(" + data + ")'  ><i class='fa fa-hand-o-right'></i></button> "
             },
         },        
         {
@@ -41,6 +43,8 @@ function listar() {
         }]
     });
 }
+
+
 
 //Listar Departamentos
 function listarDepartamentos() {
@@ -102,6 +106,37 @@ function listarSucursales() {
     })
 }
 
+//Listar Sucursales
+function listarDispositivo() {
+    $.ajax({
+        url: "/Dispositivos/GetDspositivosParaRH/?id_empresa=" + $("#Id_Empresa").val()+"&rh="+true,
+        async: true,
+        beforeSend: function () { },
+        dataType: "json",
+        data: '{ }',
+        type: "POST",
+        contentType: "application/json; charset=utf-8",
+        success: function (data) {
+            console.log(data);
+            $("#dispositivo").append("<option value='0'>Seleccione el dispositivo</option>")
+            $.each(data.data, function (i, Item) {
+                $("#dispositivo").append("<option value='" + Item.id_dispositivo + "'>" + Item.nombre_dispositivo + "</option>")
+            });
+            $('#dispositivo').selectpicker('refresh');
+        },
+        xhr: function () {
+            var xhr = $.ajaxSettings.xhr();
+            xhr.onprogress = function (evt) {
+                var porcentaje = Math.floor((evt.loaded / evt.total * 100));
+            };
+            return xhr;
+        },
+        error: function (request, status, error) {
+            console.log("Error => " + error);
+        }
+    })
+}
+
 //Mostrar Formulario de Agregar
 function Agregar() {
     $("#listadoregistros").hide();
@@ -109,19 +144,22 @@ function Agregar() {
     $("#btnAgregar").hide();
     document.getElementById("botones").style.display = "inline";
     limpiar();
-    ObtenerEnrollnumber();
+    //ObtenerEnrollnumber();
     listarDepartamentos();
     listarSucursales();
+    listarDispositivo();
 }
+
 
 //Obtener Enroller
 function ObtenerEnrollnumber() {
+    var id_dispositivo = $("#dispositivo").val();
     $.ajax({
         url: "/Empleado/ObtenerEnrollnumber/",
         async: true,
         beforeSend: function () { },
         dataType: "json",
-        data: '{ }',
+        data: '{id_dispositivo:' + id_dispositivo + '}',
         type: "POST",
         contentType: "application/json; charset=utf-8",
         success: function (data) {
@@ -160,6 +198,7 @@ function limpiar() {
     $("#id_departamento").val("");
     $("#id_sucursal").val("");
     $("#enrollnumber").val("");
+    $("#dispositivo").html("");
     $("#sucursal").html("");
     $("#departamento").html("");
     $("#imgBase64").text("");
@@ -190,7 +229,8 @@ function guardarEditar() {
         "id_departamento": $("#id_departamento").val(),
         "id_sucursal": $("#id_sucursal").val(),
         "enrollnumber": $("#enrollnumber").val(),
-        "imagen": $("#base64").text().split(',')[1]
+        "imagen": $("#base64").text().split(',')[1],
+        "id_dispositivo": $("#dispositivo").val(),
     }
     $.ajax({
         url: "/Empleado/Guardar/",
@@ -378,3 +418,64 @@ function webCam() {
         ev.preventDefault();
     }, false);
 }
+
+//-------------------BEGIN SAVEFOOTPRINT--------------------------------------------------------------------------------------------------------------------------------------//
+
+function Confirm_Savefootprint(id_employee) {
+    $('#load').hide();
+    $('#Form_Savefootprint').modal('show');    
+    $("#txt_message").html("Se va obtener la huellas del dispositivo para guardar las huellas, esta operación puede tardar unos minutos!<br/><br/>¿Desea Continuar?");
+    $("#id_employee").text(id_employee);
+}
+
+
+function Save_Savefootprint() {
+    $('#load').show();
+    employee_footprint = {
+        "id_empleado": $("#id_employee").text(),
+    };
+
+    $.ajax({
+        url: "/Empleado/Savefootprint/",
+        async: true,
+        dataType: "json",
+        data: JSON.stringify(employee_footprint),
+        type: "POST",
+        contentType: "application/json; charset=utf-8",
+        success: function (data) {            
+            dato = data.split('&')
+            if (dato[0] != "SinHuellas")
+            {
+                $('#load').hide();
+                $('#Form_Savefootprint').modal('hide');
+                swal({ title: "Huellas", text: "Se registro correctamente " + dato[1]+" huellas", type: "success" }, function () { listar();});
+            }
+            else {
+                $('#load').hide();
+                $('#Form_Savefootprint').modal('hide');
+                swal({ title: "Huellas", text: "Favor de registrar las huellas en el dispositivo, \n para guardar y enrolar en otros dispositivos!", type: "info" }, function () { listar(); });
+            }                   
+        },
+        error: function (request, status, error) {
+            console.log("error" + error);
+        }
+    });
+}
+
+function Cancel() {
+    $("#secc_lista").show();
+    $("#secc_add").hide();    
+    //RecargarPagina();
+}
+
+function Enroll_footprint(id_employee) {
+    window.location = "/Enrolamiento/Index?id_employee=" + id_employee
+}
+
+function RecargarPagina()
+{
+    location.reload(true);
+}
+
+
+//-------------------END SAVEFOOTPRINT--------------------------------------------------------------------------------------------------------------------------------------//

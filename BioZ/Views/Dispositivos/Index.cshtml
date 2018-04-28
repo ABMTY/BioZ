@@ -53,6 +53,10 @@
                                 <div class="col-lg-6">
                                     <input type="text" id="id" value="" hidden />
                                     <div class="form-group col-md-12">
+                                        <label class="control-label" for="">Es para Recurso Humano?</label>&nbsp; &nbsp;
+                                        <input type="checkbox" id="chk_rh">
+                                    </div>
+                                    <div class="form-group col-md-12">
                                         <label class="control-label" for="">Dispositivo *</label>
                                         <div>
                                             <input type="text" id="txt_Dispositivo" class="form-control">
@@ -79,7 +83,13 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-lg-6">                                  
+                                <div class="col-lg-6">      
+                                    <div class="form-group col-md-12">
+                                        <label class="control-label" for="">Numero Equipo *</label>
+                                        <div>
+                                            <input type="text" id="txt_Numeroequipo" class="form-control">
+                                        </div>
+                                    </div>                              
                                     <div class="form-group col-md-12">
                                         <label class="control-label" for="">IP *</label>
                                         <div>
@@ -91,7 +101,7 @@
                                         <div>
                                             <input type="text" id="txt_Puerto" class="form-control">
                                         </div>
-                                    </div>
+                                    </div>                                    
                                     <div class="form-group col-md-12">
                                         <label>Foto del dispositivo </label>
                                         <input type="file" id="subirImagen" onchange="convertirImagen()" value="" />
@@ -165,7 +175,8 @@
     function Limpiar() {
         $("#id").val("");
         $("#txt_Dispositivo").val(""),
-        $("#txt_Ip").val(""),
+        $("#txt_").val(""),
+        $("#txt_Numeroequipo").val(""),
         $("#txt_Puerto").val(""),
         $("#txt_Serie").val(""),
         $("#ddl_Sucursal").html("")
@@ -173,6 +184,7 @@
         $("#subirImagen").val("");
         $("#imagen").attr('src', '');
         $("#imagenOriginal").attr('src', '');
+        $("#chk_rh").prop('checked', false);
     }
 
     function Cargar_Dispositivos() {
@@ -271,7 +283,9 @@
                 $("#secc_add").show();
                 console.log(data);
                 $("#id").val(Id_Dispositivo);
+                $("#chk_rh").prop('checked', data.data.rh);   
                 $("#txt_Dispositivo").val(data.data.nombre_dispositivo);
+                $("#txt_Numeroequipo").val(data.data.numeroequipo);
                 $("#txt_Ip").val(data.data.ip_dispositivo);
                 $("#txt_Puerto").val(data.data.puerto);
                 $("#txt_Serie").val(data.data.numero_serie);
@@ -302,6 +316,8 @@
             "numero_serie": $("#txt_Serie").val(),
             "id_sucursal": $("#ddl_Sucursal").val(),
             "imagen": $("#imgBase64").text(),
+            "rh": $("#chk_rh").is(':checked'),         
+            "numeroequipo": $("#txt_Numeroequipo").val(),
         };
         console.log(Dispositivo),
         $.ajax(

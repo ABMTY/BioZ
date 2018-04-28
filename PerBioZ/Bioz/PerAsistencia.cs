@@ -95,5 +95,50 @@ namespace PerBioZ.Bioz
             return Lista;
 
         }
+
+        public List<EntAsistencia> ObtenerAsistencia_RelojSucursal()
+        {
+            List<EntAsistencia> Lista = new List<EntAsistencia>();
+            EntAsistencia entidad = null;
+            try
+            {
+                AbrirConexion();
+                StringBuilder CadenaSql = new StringBuilder();
+                var sql = "select em.id_empleado, chk.enrollnumber, date ,min(hour) hora_ini , min(checkinout) check_ini,max(hour) hora_fin,";
+                sql += " max(checkinout) check_fin ,trim(em.nombre)||' '||TRIM(em.ap_paterno)||' '||TRIM(em.ap_materno) as nombre_completo,sc.desc_sucursal, chk.device";
+                sql += " from checkinout chk inner join empleados em on chk.enrollnumber=em.enrollnumber";
+                sql += " left join sucursales sc on em.id_sucursal=sc.id_sucursal";
+                sql += " group by em.id_empleado,chk.enrollnumber,chk.date, em.nombre,em.ap_paterno,em.ap_materno, sc.desc_sucursal, chk.device";
+
+                IfxCommand cmd = new IfxCommand(sql, Conexion);
+                using (var dr = cmd.ExecuteReader())
+                {
+                    while (dr.Read())
+                    {
+                        entidad = new EntAsistencia();
+                        entidad.id_empleado = int.Parse(dr["id_empleado"].ToString());
+                        entidad.date = dr["date"].ToString();
+                        entidad.hora_ini = dr["hora_ini"].ToString();
+                        entidad.check_ini = DateTime.Parse(dr["check_ini"].ToString());
+                        entidad.hora_fin = dr["hora_fin"].ToString();
+                        entidad.check_fin = DateTime.Parse(dr["check_fin"].ToString());
+                        entidad.device = dr["device"].ToString();
+                        entidad.nombre_completo = dr["nombre_completo"].ToString();
+                        entidad.desc_sucursal = dr["desc_sucursal"].ToString();
+                        Lista.Add(entidad);
+                    }
+                }
+            }
+            catch (Exception exc)
+            {
+                throw exc;
+            }
+            finally
+            {
+                CerrarConexion();
+            }
+            return Lista;
+
+        }
     }
 }

@@ -19,7 +19,7 @@ namespace PerBioZ.Bioz
             {
                 AbrirConexion();
                 StringBuilder CadenaSql = new StringBuilder();
-                var sql = "SELECT a.id_dispositivo, a.nombre_dispositivo,a.numero_serie,a.ip_dispositivo,a.puerto,a.id_sucursal,b.desc_sucursal,a.imagen FROM informix.dispositivos ";
+                var sql = "SELECT a.id_dispositivo, a.nombre_dispositivo,a.numero_serie,a.ip_dispositivo,a.puerto,a.id_sucursal,b.desc_sucursal,a.imagen,a.rh, a.numeroequipo FROM informix.dispositivos ";
                     sql+= "a inner join informix.sucursales b on a.id_sucursal=b.id_sucursal";   
                 IfxCommand cmd = new IfxCommand(sql, Conexion);
    
@@ -37,6 +37,8 @@ namespace PerBioZ.Bioz
                         entidad.id_sucursal = int.Parse(dr["id_sucursal"].ToString());
                         entidad.desc_sucursal = dr["desc_sucursal"].ToString();
                         entidad.imagen = dr["imagen"].ToString();
+                        entidad.rh = bool.Parse(dr["rh"].ToString());
+                        entidad.numeroequipo = int.Parse(dr["numeroequipo"].ToString());
                         Lista.Add(entidad);
                     }
                 }
@@ -60,7 +62,7 @@ namespace PerBioZ.Bioz
             {
                 AbrirConexion();
                 StringBuilder CadenaSql = new StringBuilder();
-                var sql = "SELECT a.id_dispositivo, a.nombre_dispositivo,a.numero_serie,a.ip_dispositivo,a.puerto,a.id_sucursal,b.desc_sucursal,a.imagen FROM informix.dispositivos ";
+                var sql = "SELECT a.id_dispositivo, a.nombre_dispositivo,a.numero_serie,a.ip_dispositivo,a.puerto,a.id_sucursal,b.desc_sucursal,a.imagen,a.rh,a.numeroequipo FROM informix.dispositivos ";
                 sql += "a inner join informix.sucursales b on a.id_sucursal=b.id_sucursal";
                 sql += " WHERE b.id_empresa=?";
                 IfxCommand cmd = new IfxCommand(sql, Conexion);
@@ -79,6 +81,102 @@ namespace PerBioZ.Bioz
                         entidad.id_sucursal = int.Parse(dr["id_sucursal"].ToString());
                         entidad.desc_sucursal = dr["desc_sucursal"].ToString();
                         entidad.imagen = dr["imagen"].ToString();
+                        entidad.rh = bool.Parse(dr["rh"].ToString());
+                        entidad.numeroequipo = int.Parse(dr["numeroequipo"].ToString());
+                        Lista.Add(entidad);
+                    }
+                }
+            }
+            catch (Exception exc)
+            {
+                throw exc;
+            }
+            finally
+            {
+                CerrarConexion();
+            }
+            return Lista;
+
+        }
+
+        public List<EntDispositivo> ObtenerDispositivosParaEnrolarEmpleado(int id_empleado)
+        {
+            List<EntDispositivo> Lista = new List<EntDispositivo>();
+            EntDispositivo entidad = null;
+            try
+            {
+                AbrirConexion();
+                StringBuilder CadenaSql = new StringBuilder();
+
+                var sql = "SELECT a.id_dispositivo, a.nombre_dispositivo,a.numero_serie,a.ip_dispositivo,a.puerto,a.id_sucursal,b.desc_sucursal,a.rh,a.numeroequipo FROM informix.dispositivos  ";
+                sql += " a left join informix.sucursales b on a.id_sucursal = b.id_sucursal ";
+                sql += " INNER join informix.empleados c on b.id_sucursal = c.id_sucursal";
+                sql += " WHERE c.id_empleado=? AND a.rh='f'";           
+                IfxCommand cmd = new IfxCommand(sql, Conexion);
+                cmd.Parameters.Add(new IfxParameter()).Value = id_empleado;
+
+                using (var dr = cmd.ExecuteReader())
+                {
+                    while (dr.Read())
+                    {
+                        entidad = new EntDispositivo();
+                        entidad.id_dispositivo = int.Parse(dr["id_dispositivo"].ToString());
+                        entidad.nombre_dispositivo = dr["nombre_dispositivo"].ToString();
+                        entidad.ip_dispositivo = dr["ip_dispositivo"].ToString();
+                        entidad.numero_serie = dr["numero_serie"].ToString();
+                        entidad.puerto = dr["puerto"].ToString();
+                        entidad.id_sucursal = int.Parse(dr["id_sucursal"].ToString());
+                        entidad.desc_sucursal = dr["desc_sucursal"].ToString();
+                        entidad.rh = bool.Parse(dr["rh"].ToString());
+                        entidad.numeroequipo = int.Parse(dr["numeroequipo"].ToString());
+                        //entidad.imagen = dr["imagen"].ToString();
+                        Lista.Add(entidad);
+                    }
+                }
+            }
+            catch (Exception exc)
+            {
+                throw exc;
+            }
+            finally
+            {
+                CerrarConexion();
+            }
+            return Lista;
+
+        }
+
+        
+
+        public List<EntDispositivo> ObtenerDispositivosEnroladosporEmpleado(int id_empleado)
+        {
+            List<EntDispositivo> Lista = new List<EntDispositivo>();
+            EntDispositivo entidad = null;
+            try
+            {
+                AbrirConexion();
+                StringBuilder CadenaSql = new StringBuilder();
+                var sql = "SELECT  c.id_enrolamiento, d.id_empleado,a.id_dispositivo, a.nombre_dispositivo,b.desc_sucursal,a.id_sucursal, a.rh, a.numeroequipo";
+                sql += " FROM informix.dispositivos a inner join informix.sucursales b on a.id_sucursal=b.id_sucursal";
+                sql += " inner join informix.enrolamiento c on a.id_dispositivo = c.id_dispositivo";
+                sql += " inner join informix.empleados d on c.id_empleado = d.id_empleado";                
+                sql += " WHERE d.id_empleado=?";
+                IfxCommand cmd = new IfxCommand(sql, Conexion);
+                cmd.Parameters.Add(new IfxParameter()).Value = id_empleado;
+
+                using (var dr = cmd.ExecuteReader())
+                {
+                    while (dr.Read())
+                    {
+                        entidad = new EntDispositivo();
+                        entidad.id_enrolamiento= int.Parse(dr["id_enrolamiento"].ToString());
+                        entidad.id_empleado = int.Parse(dr["id_empleado"].ToString());
+                        entidad.id_dispositivo = int.Parse(dr["id_dispositivo"].ToString());
+                        entidad.nombre_dispositivo = dr["nombre_dispositivo"].ToString();
+                        entidad.desc_sucursal = dr["desc_sucursal"].ToString();
+                        entidad.id_sucursal = int.Parse(dr["id_sucursal"].ToString());
+                        entidad.rh = bool.Parse(dr["rh"].ToString());
+                        entidad.numeroequipo = int.Parse(dr["numeroequipo"].ToString());
                         Lista.Add(entidad);
                     }
                 }
@@ -103,7 +201,7 @@ namespace PerBioZ.Bioz
                 StringBuilder CadenaSql = new StringBuilder();
 
                 IfxCommand cmd = new IfxCommand(string.Empty, Conexion);
-                var sql = "SELECT a.id_dispositivo, a.nombre_dispositivo,a.numero_serie,a.ip_dispositivo,a.puerto,a.id_sucursal,b.desc_sucursal,b.id_empresa, a.imagen FROM ";
+                var sql = "SELECT a.id_dispositivo, a.nombre_dispositivo,a.numero_serie,a.ip_dispositivo,a.puerto,a.id_sucursal,b.desc_sucursal,b.id_empresa, a.imagen, a.rh, a.numeroequipo FROM ";
                     sql += "informix.dispositivos a left join informix.sucursales b on a.id_sucursal=b.id_sucursal WHERE a.id_dispositivo=?";
                 cmd.CommandText = sql;
                 cmd.Parameters.Add(new IfxParameter()).Value = id;
@@ -121,6 +219,48 @@ namespace PerBioZ.Bioz
                         entidad.desc_sucursal = dr["desc_sucursal"].ToString();
                         entidad.id_empresa = int.Parse(dr["id_empresa"].ToString());
                         entidad.imagen = dr["imagen"].ToString();
+                        entidad.rh = bool.Parse(dr["rh"].ToString());
+                        entidad.numeroequipo = int.Parse(dr["numeroequipo"].ToString());
+                    }
+                }
+            }
+            catch (Exception exc)
+            {
+                throw exc;
+            }
+            finally
+            {
+                CerrarConexion();
+            }
+            return entidad;
+
+        }
+
+        public EntDispositivo ObtenerDispositivo(int id)
+        {
+            EntDispositivo entidad = null;
+            try
+            {
+                AbrirConexion();
+                StringBuilder CadenaSql = new StringBuilder();
+
+                IfxCommand cmd = new IfxCommand(string.Empty, Conexion);
+                var sql = "SELECT a.id_dispositivo, a.nombre_dispositivo, a.numero_serie, a.ip_dispositivo, a.puerto, a.id_sucursal, a.rh, a.numeroequipo ";
+                sql += "FROM informix.dispositivos a WHERE a.id_dispositivo=?";
+                cmd.CommandText = sql;
+                cmd.Parameters.Add(new IfxParameter()).Value = id;
+                using (var dr = cmd.ExecuteReader())
+                {
+                    if (dr.Read())
+                    {
+                        entidad = new EntDispositivo();
+                        entidad.id_dispositivo = int.Parse(dr["id_dispositivo"].ToString());
+                        entidad.nombre_dispositivo = dr["nombre_dispositivo"].ToString();
+                        entidad.numero_serie = dr["numero_serie"].ToString();
+                        entidad.ip_dispositivo = dr["ip_dispositivo"].ToString();
+                        entidad.puerto = dr["puerto"].ToString();
+                        entidad.id_sucursal = int.Parse(dr["id_sucursal"].ToString());                                                                                                
+                        entidad.numeroequipo = int.Parse(dr["numeroequipo"].ToString());
                     }
                 }
             }
@@ -143,9 +283,9 @@ namespace PerBioZ.Bioz
                 var sql = string.Empty;
                 AbrirConexion();
                 if (entidad.imagen!=null)
-                    sql = "execute procedure dml_dispositivo (?,NULL,?,?,?,?,?,?);";
+                    sql = "execute procedure dml_dispositivo (?,NULL,?,?,?,?,?,?,?,?);";
                 else
-                    sql = "execute procedure dml_dispositivo (?,NULL,?,?,?,?,?,NULL);";
+                    sql = "execute procedure dml_dispositivo (?,NULL,?,?,?,?,?,NULL,?,?);";
                 using (var cmd = new IfxCommand(sql, Conexion))
                 {
                     cmd.Connection = Conexion;
@@ -157,6 +297,8 @@ namespace PerBioZ.Bioz
                     cmd.Parameters.Add(new IfxParameter()).Value = entidad.id_sucursal;                    
                     if (entidad.imagen != null)
                         cmd.Parameters.Add(new IfxParameter()).Value = entidad.imagen;
+                    cmd.Parameters.Add(new IfxParameter()).Value = entidad.rh;
+                    cmd.Parameters.Add(new IfxParameter()).Value = entidad.numeroequipo;                    
                     cmd.ExecuteNonQuery();
                 }
                 respuesta = true;
@@ -190,9 +332,9 @@ namespace PerBioZ.Bioz
                 var sql = string.Empty;
                 AbrirConexion();
                 if (entidad.imagen!=null)
-                    sql = "execute procedure dml_dispositivo (?,?,?,?,?,?,?,?);";
+                    sql = "execute procedure dml_dispositivo (?,?,?,?,?,?,?,?,?,?);";
                 else
-                    sql = "execute procedure dml_dispositivo (?,?,?,?,?,?,?,NULL);";
+                    sql = "execute procedure dml_dispositivo (?,?,?,?,?,?,?,NULL,?,?);";
 
                 using (var cmd = new IfxCommand(sql, Conexion))
                 {
@@ -206,6 +348,8 @@ namespace PerBioZ.Bioz
                     cmd.Parameters.Add(new IfxParameter()).Value = entidad.id_sucursal;
                     if (entidad.imagen != null)
                         cmd.Parameters.Add(new IfxParameter()).Value = entidad.imagen;
+                    cmd.Parameters.Add(new IfxParameter()).Value = entidad.rh;
+                    cmd.Parameters.Add(new IfxParameter()).Value = entidad.numeroequipo;
                     cmd.ExecuteNonQuery();
                 }
                 respuesta = true;

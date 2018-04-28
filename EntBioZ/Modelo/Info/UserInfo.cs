@@ -19,5 +19,7 @@ namespace EntBioZ.Modelo.Info
         public bool Enabled { get; set; }
         public string iFlag { get; set; }
         public List<FingerUser> Fingers { get; set; }
+        public int id_empleado { get; set; }
+        public int id_dispositivo { get; set; }
     }
 }

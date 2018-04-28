@@ -31,6 +31,11 @@ namespace CtrlBioZ.Bioz
             return (EntEmpleado)new PerEmpleados().Obtener(Id_Empleado);
         }
 
+        public EntEmpleado ObtenerEmpleado(int Id_Empleado)
+        {
+            return (EntEmpleado)new PerEmpleados().ObtenerEmpleado(Id_Empleado);
+        }
+
 
         public bool Insertar(EntEmpleado Entidad)
         {

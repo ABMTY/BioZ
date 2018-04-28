@@ -54,6 +54,7 @@
     <Compile Include="Bioz\PerEmpleadoHuella.cs" />
     <Compile Include="Bioz\PerEmpleados.cs" />
     <Compile Include="Bioz\PerEmpresa.cs" />
+    <Compile Include="Bioz\PerEnrolamiento.cs" />
     <Compile Include="Bioz\PerHorario.cs" />
     <Compile Include="Bioz\PerJornadaEmpleado.cs" />
     <Compile Include="Bioz\PerJornadas.cs" />

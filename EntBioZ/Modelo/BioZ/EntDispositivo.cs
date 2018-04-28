@@ -17,5 +17,11 @@ namespace EntBioZ.Modelo.BioZ
         public string desc_sucursal { get; set; }
         public int id_empresa { get; set; }
         public string imagen { get; set; }
+        public int id_empleado { get; set; }
+        public int id_enrolamiento { get; set; }
+        public bool rh { get; set; }
+        public int numeroequipo { get; set; }
+
+
     }
 }

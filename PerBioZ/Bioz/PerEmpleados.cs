@@ -19,7 +19,7 @@ namespace PerBioZ.Bioz
             {
                 AbrirConexion();
                 StringBuilder CadenaSql = new StringBuilder();
-                var sql = "SELECT a.id_empleado,a.nombre,a.ap_paterno,a.ap_materno,a.id_departamento,a.id_sucursal,a.enrollnumber,a.imagen,b.desc_departamento,c.desc_sucursal ";
+                var sql = "SELECT a.id_empleado,a.nombre,a.ap_paterno,a.ap_materno,a.id_departamento,a.id_sucursal,a.enrollnumber,a.imagen,b.desc_departamento,c.desc_sucursal,a.id_dispositivo ";
                 sql = sql + "FROM informix.empleados a left join informix.departamentos b on a.id_departamento=b.id_departamento left join informix.sucursales c on a.id_sucursal=c.id_sucursal";
                 IfxCommand cmd = new IfxCommand(sql, Conexion);
                 using (var dr = cmd.ExecuteReader())
@@ -37,6 +37,7 @@ namespace PerBioZ.Bioz
                         entidad.desc_sucursal = dr["desc_sucursal"].ToString();
                         entidad.enrollnumber = int.Parse(dr["enrollnumber"].ToString());
                         entidad.imagen = dr["imagen"].ToString();
+                        entidad.id_dispositivo = int.Parse(dr["id_dispositivo"].ToString());
                         Lista.Add(entidad);
                     }
                 }
@@ -60,7 +61,7 @@ namespace PerBioZ.Bioz
             {
                 AbrirConexion();
                 StringBuilder CadenaSql = new StringBuilder();
-                var sql = "SELECT a.id_empleado,a.nombre,a.ap_paterno,a.ap_materno,a.id_departamento,a.id_sucursal,a.enrollnumber,a.imagen,b.desc_departamento,c.desc_sucursal ";
+                var sql = "SELECT a.id_empleado,a.nombre,a.ap_paterno,a.ap_materno,a.id_departamento,a.id_sucursal,a.enrollnumber,a.imagen,b.desc_departamento,c.desc_sucursal,a.id_dispositivo ";
                 sql += "FROM informix.empleados a inner join informix.departamentos b on a.id_departamento=b.id_departamento inner join informix.sucursales c on a.id_sucursal=c.id_sucursal";
                 sql +=  " WHERE c.id_empresa =?";
                 IfxCommand cmd = new IfxCommand(sql, Conexion);
@@ -81,6 +82,7 @@ namespace PerBioZ.Bioz
                         entidad.desc_sucursal = dr["desc_sucursal"].ToString();
                         entidad.enrollnumber = int.Parse(dr["enrollnumber"].ToString());
                         entidad.imagen = dr["imagen"].ToString();
+                        entidad.id_dispositivo = int.Parse(dr["id_dispositivo"].ToString());
                         Lista.Add(entidad);
                     }
                 }
@@ -105,7 +107,7 @@ namespace PerBioZ.Bioz
                 StringBuilder CadenaSql = new StringBuilder();
 
                 IfxCommand cmd = new IfxCommand(string.Empty, Conexion);
-                var sql = "SELECT a.id_empleado,a.nombre,a.ap_paterno,a.ap_materno,a.id_departamento,a.id_sucursal,a.enrollnumber,a.imagen,b.desc_departamento,c.desc_sucursal FROM informix.empleados ";
+                var sql = "SELECT a.id_empleado,a.nombre,a.ap_paterno,a.ap_materno,a.id_departamento,a.id_sucursal,a.enrollnumber,a.imagen,b.desc_departamento,c.desc_sucursal, a.id_dispositivo FROM informix.empleados ";
                 sql = sql + "a left join informix.departamentos b on a.id_departamento=b.id_departamento left join informix.sucursales c on a.id_sucursal=c.id_sucursal WHERE a.id_empleado=?";
                 cmd.CommandText = sql;
                 
@@ -125,24 +127,29 @@ namespace PerBioZ.Bioz
                         entidad.desc_sucursal = dr["desc_sucursal"].ToString();
                         entidad.enrollnumber = int.Parse(dr["enrollnumber"].ToString());
                         entidad.imagen = dr["imagen"].ToString();
+                        entidad.id_dispositivo = int.Parse(dr["id_dispositivo"].ToString());
                     }
                 }
                 #region GetEmpleadoHuellas
                 entidad.empleadohuellas = new List<EmpleadoHuella>();
-                cmd.CommandText = "SELECT id_huella, id_empleado, b64huella FROM informix.empleado_huella where id_empleado=?";
+                cmd.CommandText = "SELECT id_huella, id_empleado, huella, enrollnumber, fingerindex, flag, tmplength FROM empleado_huella where id_empleado=?";
                 cmd.Parameters.Clear();
                 cmd.Parameters.Add(new IfxParameter()).Value = id;
                 using (var dr = cmd.ExecuteReader())
                 {
-                    if (dr.Read())
+                    while (dr.Read())
                     {
                         EmpleadoHuella huella = new EmpleadoHuella();
                         huella.id_huella = int.Parse(dr["id_huella"].ToString());
                         huella.id_empleado = int.Parse(dr["id_empleado"].ToString());
-                        if (dr["b64huella"].ToString() != string.Empty)
+                        if (dr["huella"].ToString() != string.Empty)
                         {
-                            huella.b64huella = Convert.FromBase64String(dr["b64huella"].ToString());
+                            huella.huella = dr["huella"].ToString();
                         }
+                        huella.enrollnumber = dr["enrollnumber"].ToString();
+                        huella.fingerIndex = dr["fingerIndex"].ToString();
+                        huella.flag = dr["flag"].ToString();
+                        huella.tmplength = dr["tmplength"].ToString();
                         entidad.empleadohuellas.Add(huella);
                     }
                 }
@@ -159,6 +166,49 @@ namespace PerBioZ.Bioz
             return entidad;
 
         }
+
+
+        public EntEmpleado ObtenerEmpleado(int id)
+        {
+            EntEmpleado entidad = null;
+            try
+            {
+                AbrirConexion();
+                StringBuilder CadenaSql = new StringBuilder();
+
+                IfxCommand cmd = new IfxCommand(string.Empty, Conexion);
+                var sql = "SELECT a.id_empleado,a.nombre,a.ap_paterno,a.ap_materno,a.id_departamento,a.id_sucursal,a.enrollnumber,a.id_dispositivo FROM informix.empleados a ";
+                sql = sql + " WHERE a.id_empleado=?";
+                cmd.CommandText = sql;
+
+                cmd.Parameters.Add(new IfxParameter()).Value = id;
+                using (var dr = cmd.ExecuteReader())
+                {
+                    if (dr.Read())
+                    {
+                        entidad = new EntEmpleado();
+                        entidad.id_empleado = int.Parse(dr["id_empleado"].ToString());
+                        entidad.nombre = dr["nombre"].ToString();
+                        entidad.ap_paterno = dr["ap_paterno"].ToString();
+                        entidad.ap_materno = dr["ap_materno"].ToString();
+                        entidad.id_departamento = int.Parse(dr["id_departamento"].ToString());                                                                        
+                        entidad.enrollnumber = int.Parse(dr["enrollnumber"].ToString());                        
+                        entidad.id_dispositivo = int.Parse(dr["id_dispositivo"].ToString());
+                    }
+                }               
+            }
+            catch (Exception exc)
+            {
+                throw exc;
+            }
+            finally
+            {
+                CerrarConexion();
+            }
+            return entidad;
+
+        }
+
         public bool Insert(EntEmpleado entidad)
         {
             bool respuesta = false;
@@ -167,9 +217,9 @@ namespace PerBioZ.Bioz
                 var sql = string.Empty;
                 AbrirConexion();
                 if (entidad.imagen!=null)
-                    sql = "execute procedure dml_empleados (?,NULL,?,?,?,?,?,?,?);";
+                    sql = "execute procedure dml_empleados (?,NULL,?,?,?,?,?,?,?,?);";
                 else
-                    sql = "execute procedure dml_empleados (?,NULL,?,?,?,?,?,?,NULL);";
+                    sql = "execute procedure dml_empleados (?,NULL,?,?,?,?,?,?,NULL,?);";
 
                 using (var cmd = new IfxCommand(sql, Conexion))
                 {
@@ -183,6 +233,7 @@ namespace PerBioZ.Bioz
                     cmd.Parameters.Add(new IfxParameter()).Value = entidad.enrollnumber;
                     if (entidad.imagen!=null)
                         cmd.Parameters.Add(new IfxParameter()).Value = entidad.imagen;
+                    cmd.Parameters.Add(new IfxParameter()).Value = entidad.id_dispositivo;
 
                     cmd.ExecuteNonQuery();
                 }
@@ -217,9 +268,9 @@ namespace PerBioZ.Bioz
                 var sql = string.Empty;
                 AbrirConexion();
                 if (entidad.imagen != null)
-                    sql = "execute procedure dml_empleados (?,?,?,?,?,?,?,?,?);";
+                    sql = "execute procedure dml_empleados (?,?,?,?,?,?,?,?,?,?);";
                 else
-                    sql = "execute procedure dml_empleados (?,?,?,?,?,?,?,?,NULL);";
+                    sql = "execute procedure dml_empleados (?,?,?,?,?,?,?,?,NULL,?);";
                 using (var cmd = new IfxCommand(sql, Conexion))
                 {
                     cmd.Connection = Conexion;
@@ -233,6 +284,7 @@ namespace PerBioZ.Bioz
                     cmd.Parameters.Add(new IfxParameter()).Value = entidad.enrollnumber;
                     if (entidad.imagen != null)
                         cmd.Parameters.Add(new IfxParameter()).Value = entidad.imagen;
+                    cmd.Parameters.Add(new IfxParameter()).Value = entidad.id_dispositivo;
                     cmd.ExecuteNonQuery();
                 }
                 respuesta = true;

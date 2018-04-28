@@ -20,5 +20,12 @@ namespace CtrlBioZ.Bioz
         {
             return (List<EntChekinout>)new PerCkeckinout().ObtenerAsistencia();
         }
+
+        public List<EntChekinout> ObtenerAsistencia_Sucursales()
+        {
+            return (List<EntChekinout>)new PerCkeckinout().ObtenerAsistencia_Sucursales();
+        }
+
+        
     }
 }

@@ -20,5 +20,10 @@ namespace CtrlBioZ.Bioz
         {
             return (List<EntAsistencia>)new PerAsistencia().ObtenerAsistencia();
         }
+
+        public List<EntAsistencia> ObtenerAsistencia_RelojSucursal()
+        {
+            return (List<EntAsistencia>)new PerAsistencia().ObtenerAsistencia_RelojSucursal();
+        }
     }
 }

@@ -1,0 +1,342 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<ol class="breadcrumb">    
+    <li class="active"><a href='@Url.Action("Index", "Empleado")'>Empleados</a></li>
+    <li class="active">Enrolamiento</li>
+</ol>
+<input type="text" id="txt_idemployee" value="" hidden />
+<input type="text" id="id_branch" value="" hidden />
+<div class="row">
+    <div class="col-md-3">   
+        <!-- Profile Supervisor -->
+        <div class="box box-primary">
+            <div class="box-body box-profile">
+                <strong>Empleado</strong>
+                <hr>
+                <img class="profile-user-img img-responsive img-circle" id="employee_photo">
+                <h3 class="profile-username text-center" id="name_employee">Nombre</h3>
+                <center><p class="text-muted" id="Department">Departamento</p></center>
+            </div>
+            <!-- /.box-body -->
+        </div>
+        <!-- /.box -->      
+
+        <!-- TABLE: DISPOSITIVOS ENROLADOS -->
+        <div class="box box-primary" id="viewDiviceEnroller">
+            <div class="box-header with-border">
+                <strong>Dispositivos Enrolados</strong>
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                        <i class="fa fa-minus"></i>
+                    </button>                    
+                </div>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body" >
+                <div class="table-responsive">
+                    <table  class="table no-margin">
+                        <thead>
+                            <tr>
+                                <th>Eliminar</th>
+                                <th>Dispositivo</th>
+                                <th>Sucursal</th>                                
+                            </tr>
+                        </thead>
+                        <tbody  id="DispositivosEnrolado">
+                          
+                        </tbody>
+                    </table>
+                </div>
+                <!-- /.table-responsive -->
+            </div>           
+            <!-- /.box-footer -->
+        </div>
+        <!-- /.box -->
+    </div>
+    <!-- /.col -->
+    <div class="col-md-9">
+        <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+                <li class="active"><a href="#activity" data-toggle="tab">Dispositivos</a></li>
+            </ul>
+            <div class="tab-content">
+                <div class="active tab-pane" id="activity">     
+                    <!-- centro -->
+                    <div class="panel-body table-responsive">
+                        <div class="card-box">
+                            <table id="List_Device" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th>Enrolar</th>
+                                        <th style="display:none">No.</th>
+                                        <th>Dispositivo</th>
+                                        <th>Sucursal</th>                                      
+                                        <th>Foto</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                    <!--Fin centro -->              
+                </div>
+            </div>
+            <!-- /.tab-content -->
+        </div>
+        <!-- /.nav-tabs-custom -->
+    </div>
+    <!-- /.col -->
+</div>
+<!-- /.row -->
+
+<div class="modal fade" id="Modal_Enrollment">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">Enrolar empleado al dispositivo</h4>
+            </div>
+            <div class="modal-body">
+                <h4 id="lbl_msj"></h4>
+                <span id="txt_id_device" style="display:none;"></span>
+            </div>
+            <div class="modal-footer"> 
+                <div id="load" class="pull-left center">
+                    <img src='~/Content/img/ajax-loader.gif' />&nbsp;&nbsp;&nbsp;Procesando...              
+                </div>                 
+                <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times" aria-hidden="true"></i>No</button>
+                <button type="button" class="btn btn-primary" onclick="Enroll(); return false;"><i class="fa fa-check" aria-hidden="true"></i>Si</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+
+<div class="modal fade" id="Modal_Delete_Enrollment">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">Eliminar Enrolamiento</h4>
+            </div>
+            <div class="modal-body">
+                <h4 id="lbl_msj_1"></h4>
+                <span id="id_enrollment" style="display:none;"></span>
+            </div>
+            <div class="modal-footer">
+                <div id="loaddel" class="pull-left center">
+                    <img src='~/Content/img/ajax-loader.gif' />&nbsp;&nbsp;&nbsp;Procesando...
+                </div>    
+                <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times" aria-hidden="true"></i>No</button>
+                <button type="button" class="btn btn-primary" onclick="Delete_Enrrol(); return false;"><i class="fa fa-check" aria-hidden="true"></i>Si</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        var id_employee = ($_GET("id_employee"));
+        Employee_Detail(id_employee);
+        $('#List_Device').DataTable();
+        Load_Devices(id_employee);
+        Load_Device_Enroll(id_employee);  
+    });
+
+    function $_GET(param) {
+        url = document.URL;
+        url = String(url.match(/\?+.+/));
+        url = url.replace("?", "");
+        url = url.split("&");
+        x = 0;
+        while (x < url.length) {
+            p = url[x].split("=");
+            if (p[0] == param) {
+                return decodeURIComponent(p[1]);
+            }
+            x++;
+        }
+    }
+
+    function Employee_Detail(id_employee) {
+
+        $.ajax({
+            url: "/Empleado/GetEmpleado/" + id_employee,
+            async: true,
+            beforeSend: function () { },
+            dataType: "json",
+            data: '{ }',
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {                
+                $("#txt_idemployee").text(data.data.id_empleado);
+                $("#id_branch").text(data.data.id_sucursal);
+                $("#name_employee").text(data.data.nombre + " " + data.data.ap_paterno + " " + data.data.ap_materno);
+                $("#Department").text("Departamento de " + data.data.desc_departamento);                
+                document.getElementById("employee_photo").src = "data:image/png;base64," + data.data.imagen;
+            },
+            xhr: function () {
+                var xhr = $.ajaxSettings.xhr();
+                xhr.onprogress = function (evt) {
+                    var porcentaje = Math.floor((evt.loaded / evt.total * 100));
+                };
+                return xhr;
+            },
+            error: function (request, status, error) {
+                console.log("Error => " + error);
+            }
+        })
+    }
+
+    function Load_Devices(id_employee) {
+        $('#List_Device').DataTable({
+            destroy: true,
+            searching: true,
+            "ajax": {
+                "url": "/Dispositivos/GetDispositivosParaEnrolarEmpleado/?id_empleado=" + id_employee,
+                "type": "GET"
+            },
+            "columns": [
+                { "defaultContent": "<i>..</i>" },
+                { "data": "id_dispositivo" },
+                { "data": "nombre_dispositivo" },
+                { "data": "desc_sucursal" },               
+            ],
+            "columnDefs": [
+                {
+                    "targets": 0, "data": "id_dispositivo", "render": function (data, type, full, meta) {
+                        return "<button type='button' title='Enrolar Huella' id='btn_borrar" + data + "' class='btn btn-success' onclick='Confirm_Enroll(" + data + ")'><i class='fa fa-hand-o-right'></i></button> "
+                    }
+                }
+            ]
+        });
+    }
+
+    function Load_Device_Enroll(id_employee) {
+
+        $("#DispositivosEnrolado").html("");
+
+        $.ajax({
+            url: "/Dispositivos/GetDispositivosEnroladosporEmpleado/?id_empleado=" + id_employee,
+            async: true,
+            dataType: "json",
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {                
+                if (data.data.length > 0) {
+                    $("#viewDiviceEnroller").show();
+                    $.each(data.data, function (i, item) {
+                        $('<tr>').html("<td><button type='button' title='Eliminar Enrolamiento' id='btn_borrar" + data.data[i].id_enrolamiento + "' class='btn btn-danger' onclick='Confirm_Delete_Enrollment(" + data.data[i].id_enrolamiento + ")'><i class='fa fa-trash'></i></button></td><td>" + data.data[i].nombre_dispositivo + "</td><td>" + data.data[i].desc_sucursal + "</td>").appendTo('#DispositivosEnrolado');
+                    });
+                }
+                else
+                {
+                    $("#viewDiviceEnroller").hide();
+                }
+
+            },
+            error: function (request, status, error) {
+                console.log("error" + error);
+            }
+        });
+    }  
+
+    function Confirm_Enroll(id_device) {
+        $('#load').hide();
+        $('#Modal_Enrollment').modal('show');
+        $("#lbl_msj").html("Esta seguro enrolar el empleado con este dispositivo, <br/>esta operación puede tardar unos minutos!  <br/><br/>¿Desea Continuar?");
+        $("#txt_id_device").text(id_device);
+    }
+
+    function Enroll() {
+        $('#load').show();
+        Dispositivo = {
+            "id_empleado": $("#txt_idemployee").text(),
+            "Id_Dispositivo": $("#txt_id_device").text(),
+        };
+        $.ajax({
+            url: "/Empleado/Enroll/",
+            async: true,
+            dataType: "json",
+            data: JSON.stringify(Dispositivo),
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                if (data == "Realizado") {
+                    $('#load').hide();
+                    $('#Modal_Enrollment').modal('hide');
+                    swal({ title: "Enrolamiento a Dispositivo", text: "Se enrolo correctamente el empleado!", type: "success" }, function () { Load_Devices($("#txt_idemployee").text()); Load_Device_Enroll($("#txt_idemployee").text()); });
+                }
+                if (data == "SinHuellas") {
+                    $('#load').hide();
+                    $('#Modal_Enrollment').modal('hide');
+                    swal({ title: "Dispositivo", text: "No exite huellas registrada en la base de datos!", type: "info" }, function () { Load_Devices($("#txt_idemployee").text()); Load_Device_Enroll($("#txt_idemployee").text()); });
+                }
+                if (data == "SinConexion") {
+                    $('#load').hide();
+                    $('#Modal_Enrollment').modal('hide');
+                    swal({ title: "Dispositivo", text: "No exite conexión con el dispositivo!!", type: "warning" }, function () { Load_Devices($("#txt_idemployee").text()); });
+                }
+            },
+            error: function (request, status, error) {
+                console.log("error" + error);
+            }
+        });
+    }
+
+    function Confirm_Delete_Enrollment(id_enrollment) {
+        $('#loaddel').hide();
+        $('#Modal_Delete_Enrollment').modal('show');
+        $("#lbl_msj_1").html("Esta seguro eliminar el enrolamiento de este dispositivo? <br/><br/>¿Desea Continuar?");
+        $("#id_enrollment").text(id_enrollment);
+    }
+
+    function Delete_Enrrol() {
+        $('#loaddel').show();
+        enrollment = {
+            "id_empleado": $("#txt_idemployee").text(),
+            "id_enrolamiento": $("#id_enrollment").text(),
+        };
+        $.ajax({
+            url: "/Empleado/EliminarEnrolamiento/",
+            async: true,
+            dataType: "json",
+            data: JSON.stringify(enrollment),
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                if(data=="Realizado")
+                {
+                    $('#loaddel').hide();
+                    $('#Modal_Delete_Enrollment').modal('hide');
+                    swal({ title: "Enrolamiento a Dispositivo", text: "Se eliminó exitosamente!", type: "success" }, function () { Load_Devices($("#txt_idemployee").text()); Load_Device_Enroll($("#txt_idemployee").text()); });
+                }               
+                if(data=="SinConexion")
+                {
+                    $('#loaddel').hide();
+                    $('#Modal_Delete_Enrollment').modal('hide');
+                    swal({ title: "Enrolamiento a Dispositivo", text: "No exite conexión con el dispositivo!!", type: "warning" }, function () { Load_Devices($("#txt_idemployee").text()); });
+                }
+            },
+            error: function (request, status, error) {
+                console.log("error" + error);
+            }
+        });
+    }
+
+</script>
+
+
+

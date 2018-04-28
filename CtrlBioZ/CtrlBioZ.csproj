@@ -47,6 +47,7 @@
     <Compile Include="Bioz\CtrlEmpleadoHuella.cs" />
     <Compile Include="Bioz\CtrlEmpleados.cs" />
     <Compile Include="Bioz\CtrlEmpresa.cs" />
+    <Compile Include="Bioz\CtrlEnrolamiento.cs" />
     <Compile Include="Bioz\CtrlHorarios.cs" />
     <Compile Include="Bioz\CtrlJornadaEmpleado.cs" />
     <Compile Include="Bioz\CtrlJornadas.cs" />

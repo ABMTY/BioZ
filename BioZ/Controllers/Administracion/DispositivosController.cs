@@ -11,6 +11,7 @@ namespace BioZ.Controllers.Administracion
     public class DispositivosController : Controller
     {
         CtrlDispositivos control = new CtrlDispositivos();
+        CtrlEnrolamiento ctrlEnrolamiento = new CtrlEnrolamiento();
         // GET: Dispositivos
         public ActionResult Index()
         {
@@ -54,6 +55,58 @@ namespace BioZ.Controllers.Administracion
             json.MaxJsonLength = 500000000;
             return json;
         }
+
+        public ActionResult GetDspositivosParaRH(int id_empresa,bool rh)
+        {
+            var Dspositivos = control.ObtenerPorEmpresa(id_empresa).Where(s => s.rh == rh).ToList();            
+            var serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
+            serializer.MaxJsonLength = 500000000;
+            var json = Json(new { data = Dspositivos }, JsonRequestBehavior.AllowGet);
+            json.MaxJsonLength = 500000000;
+            return json;
+        }
+
+        public ActionResult GetDispositivosParaEnrolarEmpleado(int id_empleado)
+        {
+            List<EntEnrolamiento> ListaDispEnrolados = ctrlEnrolamiento.ObtenerTodosporEmpleado(id_empleado);
+            List<EntDispositivo> Dispositivos = control.ObtenerDispositivosParaEnrolarEmpleado(id_empleado);
+            List<EntDispositivo> ListaDispositivo = new List<EntDispositivo>();
+
+            foreach (EntDispositivo itemDisp in Dispositivos)
+            {
+                foreach (EntEnrolamiento item in ListaDispEnrolados)
+                {
+                    if (itemDisp.id_dispositivo != item.id_dispositivo && item.id_empleado == id_empleado)
+                    {
+                        EntDispositivo entidad = new EntDispositivo();
+                        entidad = itemDisp;
+                        ListaDispositivo.Add(entidad);
+                    }
+                }
+            }
+
+            if (ListaDispositivo.Count() == 0)
+                ListaDispositivo = Dispositivos;
+
+            var serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
+            serializer.MaxJsonLength = 500000000;
+            var json = Json(new { data = ListaDispositivo }, JsonRequestBehavior.AllowGet);
+            json.MaxJsonLength = 500000000;
+            return json;
+        }
+
+        public ActionResult GetDispositivosEnroladosporEmpleado(int id_empleado)
+        {
+            var Dspositivos = control.ObtenerDispositivosEnroladosporEmpleado(id_empleado);
+            var serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
+            serializer.MaxJsonLength = 500000000;
+            var json = Json(new { data = Dspositivos }, JsonRequestBehavior.AllowGet);
+            json.MaxJsonLength = 500000000;
+            return json;
+        }
+
+        
+
         public ActionResult GetDispositivo(int id)
         {
             var Dispositivo = control.Obtener(id);
@@ -81,5 +134,8 @@ namespace BioZ.Controllers.Administracion
                 return View("Error", new HandleErrorInfo(ex, "Dispositivos", "Eliminar"));
             }
         }
+
+        
+
     }
 }

@@ -11,6 +11,7 @@ namespace BioZ.Controllers
     public class CheckinoutController : Controller
     {
         CtrlAsistencia control = new CtrlAsistencia();
+        CtrlCheckinout ctrlCheckinout = new CtrlCheckinout();
         // GET: Checkinout
         public ActionResult Index()
         {
@@ -28,6 +29,24 @@ namespace BioZ.Controllers
             var listaAsistencia = new List<EntAsistencia>();
 
             listaAsistencia = control.ObtenerAsistencia();
+            return Json(new { data = listaAsistencia }, JsonRequestBehavior.AllowGet);
+        }
+
+        //public ActionResult ObtenerAsistenciaporEmpleados()
+        //{
+        //    var listaAsistencia = new List<EntChekinout>();
+
+        //    listaAsistencia = control.ObtenerAsistencia();
+
+        //    return Json(new { data = listaAsistencia }, JsonRequestBehavior.AllowGet);
+        //}
+
+        public ActionResult ObtenerAsistencia_Sucursales()
+        {
+            var listaAsistencia = new List<EntChekinout>();
+
+            listaAsistencia = ctrlCheckinout.ObtenerAsistencia_Sucursales();
+
             return Json(new { data = listaAsistencia }, JsonRequestBehavior.AllowGet);
         }
     }
